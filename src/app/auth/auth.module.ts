@@ -10,13 +10,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ReceptionistDashboardComponent } from './receptionist-dashboard/receptionist-dashboard.component';
 import { PharmacistDashboardComponent } from './pharmacist-dashboard/pharmacist-dashboard.component';
 import { LabDashboardComponent } from './lab-dashboard/lab-dashboard.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
-    DoctorDashboardComponent,
     NavigationBarComponent,
     NotFoundComponent,
     ReceptionistDashboardComponent,
@@ -25,7 +25,8 @@ import { LabDashboardComponent } from './lab-dashboard/lab-dashboard.component';
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }

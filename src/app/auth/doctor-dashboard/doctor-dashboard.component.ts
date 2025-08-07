@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Appointment } from 'src/app/shared/model/receptionist/appointment';
+import { AuthService } from 'src/app/shared/Service/auth.service';
 
 @Component({
   selector: 'app-doctor-dashboard',
@@ -7,9 +10,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DoctorDashboardComponent implements OnInit {
 
-  constructor() { }
+  allAppointments: Appointment[] = [];
+  filteredAppointments: Appointment[] = [];
+  activeTab: 'all' | 'mine' = 'all';
+  doctorId: number =0;
+
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.doctorId = this.authService.getDoctorId();
+    this.loadAppointments();
+  }
+
+  loadAppointments(): void {
+    // this.http.get<any[]>(`https://your-api.com/api/appointments/doctor/${this.doctorId}`)
+    //   .subscribe({
+    //     next: (data) => {
+    //       this.allAppointments = data;
+    //     },
+    //     error: (err) => {
+    //       console.error('Failed to load appointments', err);
+    //     }
+    //   });
+  }
+
+  showAllAppointments(): void {
+    this.router.navigate(['/appointments']);
+  }
+
+  // showMySchedule(): void {
+  //   this.activeTab = 'mine';
+  //   this.filteredAppointments = this.allAppointments.filter(app => app.doctorId === this.doctorId);
+  // }
+
+  consultAppointment(appointmentId: string): void {
+    this.router.navigate(['/doctor/prescribe', appointmentId]);
   }
 
 }

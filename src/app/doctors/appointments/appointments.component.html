@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h2>Scheduled Appointments</h2>
+  <table class="table table-bordered mt-3" *ngIf="appointments.length > 0; else noData">
+    <thead class="table-dark">
+      <tr>
+        <th>Patient Name</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appt of appointments">
+        <td>{{ appt.patientName }}</td>
+        <!-- <td>{{ appt.date | date: "dd-MM-yyyy" }}</td> -->
+        <td>{{ appt.time }}</td>
+        <td>
+          <!-- <a [routerLink]="['/doctor/prescribe', appt.patientId, appt.appointmentId]" class="btn btn-primary btn-sm"> -->
+            Prescribe
+          <!-- </a> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <div class="alert alert-info">No appointments scheduled.</div>
+  </ng-template>
+</div>

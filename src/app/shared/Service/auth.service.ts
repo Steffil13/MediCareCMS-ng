@@ -10,11 +10,16 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
+  getDoctorId(): number {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  return user?.doctorId;
+  }
+
   constructor(private httpClient: HttpClient, 
     private router: Router) { }
     //login 
     public loginVerify(user: users): Observable<any>{
-      return this.httpClient.get<users>(environment.apiUrl + 'Logins/' + user.userName + '/' + user.password
+      return this.httpClient.get<users>(environment.apiUrl + '/Logins/' + user.userName + '/' + user.password
 
       );
     }

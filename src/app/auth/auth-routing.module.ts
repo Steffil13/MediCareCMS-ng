@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { DoctorDashboardComponent } from './doctor-dashboard/doctor-dashboard.component';
+import { AuthGuard } from '../shared/guards/auth.guard';
+import { DoctorAppointmentsComponent } from '../doctors/appointments/appointments.component';
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent}
-  // {path: 'admin', component:AdmindashboardComponent, canActivate:[AuthGuard], data:{role: '1'}},
-  // {path: 'manager', component: ManagerdashboardComponent, canActivate:[AuthGuard], data:{role: '2'}},
-  // {path: 'notfound', component: NotfoundComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'doctor', component:DoctorDashboardComponent, canActivate:[AuthGuard], data:{role: '5'}},
+  {path: 'appointments', component: DoctorAppointmentsComponent},
+  //{path: 'notfound', component: NotfoundComponent}
 ];
 
 @NgModule({

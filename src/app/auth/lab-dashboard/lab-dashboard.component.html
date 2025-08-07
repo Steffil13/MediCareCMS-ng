@@ -1,1 +1,27 @@
-<p>lab-dashboard works!</p>
+<div class="container text-center mt-5">
+  <h2>Welcome, Lab Technician</h2>
+  <p>Manage all your lab operations from here</p>
+
+  <div class="row justify-content-center mt-4">
+    <!-- View Lab Tests -->
+    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #007bff;">
+      <h5>View Lab Tests</h5>
+      <p>See all available lab tests</p>
+      <a routerLink="/labtests" class="btn btn-primary">Go</a>
+    </div>
+
+    <!-- View Lab History -->
+    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #17a2b8;">
+      <h5>View Lab History</h5>
+      <p>Review completed test results</p>
+      <a routerLink="/testresults" class="btn btn-info">Go</a>
+    </div>
+
+    <!-- Add New Lab Test -->
+    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #ffc107;">
+      <h5>Add Lab Test</h5>
+      <p>Add a new lab test</p>
+      <a routerLink="/addlabtest" class="btn btn-warning">Go</a>
+    </div>
+  </div>
+</div>

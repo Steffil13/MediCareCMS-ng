@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h3>Update Test Result</h3>
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Result Value</label>
+      <input class="form-control" formControlName="resultValue" required />
+    </div>
+
+    <div class="mb-3">
+      <label>Status</label>
+      <select class="form-control" formControlName="resultStatus">
+        <option [value]="true">Positive</option>
+        <option [value]="false">Negative</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Remarks</label>
+      <textarea class="form-control" formControlName="remarks"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Record Date</label>
+      <input type="date" class="form-control" formControlName="recordDate" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+  </form>
+</div>

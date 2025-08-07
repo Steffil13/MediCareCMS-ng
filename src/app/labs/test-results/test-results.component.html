@@ -1,0 +1,26 @@
+<h2 class="mb-3">All Tested Lab Results</h2>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Test ID</th>
+      <th>patientName</th>
+      <th>Lab Name</th>
+      <th>Result</th>
+      <th>Status</th>
+      <th>Remarks</th>
+      <th>Recorded On</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of testResults">
+      <td>{{ result.testResultId }}</td>
+          <td>{{ result.patientName }}</td>
+
+      <td>{{ result.testName }}</td>
+      <td>{{ result.resultValue }}</td>
+      <td>{{ result.resultStatus ? 'Positive' : 'Negative' }}</td>
+      <td>{{ result.remarks }}</td>
+      <td>{{ result.recordDate | date: 'short' }}</td>
+    </tr>
+  </tbody>
+</table>

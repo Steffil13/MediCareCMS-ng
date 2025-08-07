@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Labtest } from '../../shared/model/AssignedLabTest';
-import { LabtestService } from '../../shared/service/AssignedLabTest.service';
+import { Labtest } from '../../shared/model/labtech/AssignedLabTest';
+import { LabTechnicianService } from '../../shared/service/LabTechnician.service';
 
 @Component({
   selector: 'app-labtest-view',
@@ -10,15 +10,15 @@ import { LabtestService } from '../../shared/service/AssignedLabTest.service';
 export class LabtestViewComponent implements OnInit {
   labTests: Labtest[] = [];
 
-  constructor(private labtestService: LabtestService) { }
+  constructor(private labtestService: LabTechnicianService) { }
 
   ngOnInit(): void {
     this.labtestService.getAllPrescribedLabTests().subscribe({
-      next: (data) => {
+      next: (data: Labtest[]) => {
         console.log('Lab tests:', data);
         this.labTests = data;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error fetching lab tests:', err);
       }
     });

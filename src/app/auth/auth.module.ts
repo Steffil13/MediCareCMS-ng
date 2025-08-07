@@ -10,6 +10,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ReceptionistDashboardComponent } from './receptionist-dashboard/receptionist-dashboard.component';
 import { PharmacistDashboardComponent } from './pharmacist-dashboard/pharmacist-dashboard.component';
 import { LabDashboardComponent } from './lab-dashboard/lab-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashborad/admin-dashborad.component';
+
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { LabDashboardComponent } from './lab-dashboard/lab-dashboard.component';
     NotFoundComponent,
     ReceptionistDashboardComponent,
     PharmacistDashboardComponent,
-    LabDashboardComponent
+    LabDashboardComponent,
+    AdminDashboardComponent
   ],
   imports: [
     CommonModule,

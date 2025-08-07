@@ -1,1 +1,76 @@
-<p>admin-list works!</p>
+<div class="mb-3">
+  <button class="btn btn-success me-2" (click)="selectRole('Receptionist')">Add Receptionist</button>
+  <button class="btn btn-info me-2" (click)="selectRole('LabTechnician')">Add Lab Technician</button>
+  <button class="btn btn-warning me-2" (click)="selectRole('Pharmacist')">Add Pharmacist</button>
+  <button class="btn btn-primary" (click)="selectRole('Doctor')">Add Doctor</button>
+</div>
+
+<!-- Doctor-specific buttons -->
+<div *ngIf="role === 'Doctor'" class="mb-3">
+  <button class="btn btn-primary me-2" (click)="addDoctor()">Add Doctor</button>
+  <button class="btn btn-secondary me-2" (click)="toggleDepartments()">
+    {{ showDepartments ? 'Hide' : 'Show' }} Departments
+  </button>
+  <button *ngIf="showDepartments && !showAddDepartmentForm" class="btn btn-success" (click)="addDepartmentForm()">
+    Add Department
+  </button>
+</div>
+
+<!-- Departments Table -->
+<table *ngIf="role === 'Doctor' && showDepartments" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Department Name</th>
+      <th>Doctor Fee</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dept of departments">
+      <td>{{ dept.departmentName }}</td>
+      <td>₹{{ dept.doctorFee }}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" (click)="deleteDepartment(dept.departmentId)">Delete</button>
+      </td>
+    </tr>
+
+    <!-- Form to add new department -->
+    <tr *ngIf="showAddDepartmentForm">
+      <td>
+        <input type="text" [(ngModel)]="newDepartment.departmentName" class="form-control" placeholder="Department Name" />
+      </td>
+      <td>
+        <input type="number" [(ngModel)]="newDepartment.doctorFee" class="form-control" placeholder="Fee" />
+      </td>
+      <td>
+        <button class="btn btn-success btn-sm" (click)="saveDepartment()">Save</button>
+        <button class="btn btn-secondary btn-sm ms-2" (click)="cancelAddDepartment()">Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Users Table -->
+<h2 *ngIf="role">All Users ({{ role }})</h2>
+<table class="table" *ngIf="role !== 'Doctor' || !showDepartments">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.username }}</td>
+      <td>{{ user.roleName }}</td>
+      <td>{{ user.isActive ? 'Active' : 'Inactive' }}</td>
+      <td>
+        <button class="btn btn-danger btn-sm" (click)="deactivateUser(user.id)" [disabled]="!user.isActive">
+          Deactivate
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

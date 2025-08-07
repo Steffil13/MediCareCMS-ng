@@ -5,6 +5,13 @@ export class users {
     userId: number = 0;
     userName: string = '';
     password: string = '';
+    
+
+    // admin        
+    // id: number = 0;
+    // username: string = "";
+    // roleName: string = "";
+    // isActive: boolean = true;
 
     //Response
     "uName": string = '';

@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LabtestViewComponent } from './labs/labtest-view/labtest-view.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LabtestViewComponent
+    
   ],
   imports: [
     BrowserModule,

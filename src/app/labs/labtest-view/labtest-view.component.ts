@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Labtest } from '../../shared/model/AssignedLabTest';
-import { LabtestService } from '../../shared/service/AssignedLabTest.service';
+import { LabtestService } from 'src/app/shared/Service/AssignedLabTest.service';
+
 
 @Component({
   selector: 'app-labtest-view',

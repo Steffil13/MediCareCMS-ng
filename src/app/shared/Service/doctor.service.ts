@@ -1,5 +1,5 @@
 // src/app/shared/Service/doctor.service.ts
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -59,7 +59,15 @@ export class DoctorService {
   }
 
   //2. Get appointments for the doctor
-  getAppointmentsByDoctorId(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/doctor/appointments`);
+  getAppointmentsByDoctorId(doctorId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/doctor/appointments/:doctorId`);
   }
+
+  getAllLabTests() {
+  return this.http.get<any[]>(`${environment.apiUrl}/LabTechnician/all-lab-tests`);
+}
+
+getAllMedicines() {
+  return this.http.get<any[]>(`${environment.apiUrl}/PharmacistControllers/all-medicines`);
+}
 }

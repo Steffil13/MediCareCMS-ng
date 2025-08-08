@@ -10,7 +10,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('JWT_TOKEN');
 
     let authReq = req;
     if (token) {

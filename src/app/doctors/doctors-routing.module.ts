@@ -8,7 +8,7 @@ import { DoctorDashboardComponent } from '../auth/doctor-dashboard/doctor-dashbo
 const routes: Routes = [
   { path: 'doctor', component: DoctorDashboardComponent },
   { path: 'appointments', component: DoctorAppointmentsComponent },
-  { path: 'create-prescription/:appointmentId', component: PrescriptionCreateComponent },
+  { path: 'consult/:appointmentId', component: PrescriptionCreateComponent },
   { path: 'view-prescription/:appointmentId', component: PrescriptionViewComponent }
 ];
 

@@ -1,48 +1,154 @@
-// src/app/doctor/prescription-create/prescription-create.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from 'src/app/shared/Service/doctor.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-prescription-create',
-  templateUrl: './prescription-create.component.html'
+  templateUrl: './prescription-create.component.html',
 })
 export class PrescriptionCreateComponent implements OnInit {
-  prescriptionForm!: FormGroup;
-  appointments: any[] = [];
+
+  prescription = {
+    appointmentId: 0,
+    doctorId: 0, // from localStorage
+    symptoms: '',
+    diagnosis: '',
+    notes: ''
+  };
+
+  // Medicines
+  medicines = [{ medicineId: '', dosage: '', duration: '' }];
+  availableMedicines: any[] = [];
+
+  // Lab tests
+  labTests = [{ labId: null as number | null}];
+  availableLabTests: any[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    private http: HttpClient,
+    private route: ActivatedRoute,
     private doctorService: DoctorService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
-    this.prescriptionForm = this.fb.group({
-      appointmentId: ['', Validators.required],
-      notes: ['', Validators.required]
-    });
+  ngOnInit() {
+    // ✅ Get doctorId from localStorage
+    const storedDoctorId = localStorage.getItem('doctorId');
+    if (storedDoctorId) {
+      this.prescription.doctorId = parseInt(storedDoctorId, 10);
+    }
 
-    this.loadAppointments();
+    // ✅ Get appointmentId from route
+    this.prescription.appointmentId = +this.route.snapshot.params['appointmentId'] || 0;
+
+    // Load dropdown data
+    console.log("lab tests:", this.availableLabTests);
+
+    this.loadAvailableMedicines();
+    this.loadAvailableLabTests();
   }
 
-  loadAppointments() {
-    this.doctorService.getDoctorAppointments().subscribe({
-      next: (res) => this.appointments = res,
-      error: () => this.toastr.error('Failed to load appointments')
-    });
-  }
+  // 🔹 Load medicines for dropdown
+  loadAvailableMedicines() {
+    this.http.get<any[]>(`${environment.apiUrl}/PharmacistControllers/all-medicines`).subscribe({
 
-  onSubmit() {
-    if (this.prescriptionForm.invalid) return;
-
-    this.doctorService.createPrescription(this.prescriptionForm.value).subscribe({
       next: (res) => {
-        this.toastr.success('Prescription created');
-        this.prescriptionForm.reset();
+        console.log('Medicines loaded:', res);  // <-- Add this line
+        this.availableMedicines = res;
       },
-      error: () => this.toastr.error('Failed to create prescription')
+
+      error: () => this.toastr.error('Failed to load medicines')
     });
+  }
+
+  // 🔹 Load lab tests for dropdown
+  loadAvailableLabTests() {
+    this.http.get<any[]>(`${environment.apiUrl}/LabTechnician/all-lab-tests`).subscribe({
+      next: (res) => {
+        console.log('Test loaded:', res);  // <-- Add this line
+        this.availableLabTests = res;
+      },
+      error: () => this.toastr.error('Failed to load lab tests')
+    });
+  }
+
+  // 🔹 Add/remove rows
+  addMedicineRow() {
+    this.medicines.push({ medicineId: '', dosage: '', duration: '' });
+  }
+
+  removeMedicineRow(index: number) {
+    if (this.medicines.length > 1) {
+      this.medicines.splice(index, 1);
+    }
+  }
+
+  addLabTestRow() {
+    this.labTests.push({ labId: null});
+  }
+
+  removeLabTestRow(index: number) {
+    if (this.labTests.length > 1) {
+      this.labTests.splice(index, 1);
+    }
+  }
+
+  // 🔹 Submit
+  async submitConsultation() {
+    try {
+      // Step 1️⃣ Create Prescription
+      const prescriptionRes: any = await this.http
+        .post(`${environment.apiUrl}/doctor/add-prescription`, this.prescription)
+        .toPromise();
+
+      const prescriptionId = prescriptionRes.data.prescriptionId;
+      console.log("preid:", prescriptionId);
+
+
+      // Step 2️⃣ Add Medicines
+      for (const med of this.medicines) {
+        console.log('Sending medicine data:', { prescriptionId, ...med });
+        await this.http
+          .post(`${environment.apiUrl}/doctor/add-medicine`, {
+
+            prescriptionId,
+            ...med
+          })
+          .toPromise();
+      }
+
+      // 3️⃣ Add Lab Tests
+      for (const lab of this.labTests) {
+        console.log('Sending lab test data:', { prescriptionId, ...lab });
+        const selectedLab = this.availableLabTests.find(t => t.labId === Number(lab.labId));
+        console.log("selectedLab", selectedLab);
+        console.log("selectedLabName", selectedLab.labName);
+        
+        await this.http
+          .post(`${environment.apiUrl}/doctor/add-labtest`, {
+
+            prescriptionId,
+            labId: selectedLab.labId
+          })
+          .toPromise();
+        // const selectedLab = this.availableLabTests.find(t => t.testId === lab.labId);
+        // const labId = lab.labId ?? 0;  // fallback to 0 if null
+
+        // await this.http.post(`${environment.apiUrl}/doctor/add-labtest`, {
+        //   prescriptionId,
+        //   labId: labId,
+        //   labName: selectedLab ? selectedLab.labName : '',
+        //   remarks: lab.remarks
+        // }).toPromise();
+      }
+
+      this.toastr.success('Consultation completed successfully!');
+    } catch (err) {
+      console.error('Consultation failed', err);
+      this.toastr.error('Consultation failed');
+    }
   }
 }

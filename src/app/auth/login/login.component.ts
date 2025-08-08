@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("USER_NAME", response.uName);
           localStorage.setItem("ACCESS_ROLE", response.roleId.toString());
           localStorage.setItem("JWT_TOKEN", response.token);
+          localStorage.setItem("DOC_ID", response.doctorId);
 
           if (response.roleId == 1) {
             console.log("Admin Login");

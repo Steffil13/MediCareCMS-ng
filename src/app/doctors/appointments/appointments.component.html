@@ -1,29 +1,31 @@
 <div class="container mt-4">
-  <h2>Scheduled Appointments</h2>
-  <table class="table table-bordered mt-3" *ngIf="appointments.length > 0; else noData">
-    <thead class="table-dark">
-      <tr>
-        <th>Patient Name</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let appt of appointments">
-        <td>{{ appt.patientName }}</td>
-        <!-- <td>{{ appt.date | date: "dd-MM-yyyy" }}</td> -->
-        <td>{{ appt.time }}</td>
-        <td>
-          <!-- <a [routerLink]="['/doctor/prescribe', appt.patientId, appt.appointmentId]" class="btn btn-primary btn-sm"> -->
-            Prescribe
-          <!-- </a> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <h2 class="mb-4">Scheduled Appointments</h2>
+
+  <div class="row g-3" *ngIf="appointments.length > 0; else noData">
+    <div class="col-md-4" *ngFor="let appt of appointments">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-header bg-primary text-white">
+          Token #{{ appt.tokenNumber }}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ appt.patientName }}</h5>
+          <p class="mb-1"><strong>Date:</strong> {{ appt.appointmentDate | date: "dd-MM-yyyy" }}</p>
+          <p class="mb-1"><strong>Time:</strong> {{ appt.appointmentTime }}</p>
+          <p class="mb-1"><strong>Appointment Number:</strong> {{ appt.appointmentNumber }}</p>
+        </div>
+        <div class="card-footer bg-light">
+          <button class="btn btn-success btn-sm w-100"
+                  (click)="consultPatient(appt)">
+            <i class="bi bi-chat-dots-fill me-1"></i> Consult
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <ng-template #noData>
-    <div class="alert alert-info">No appointments scheduled.</div>
+    <div class="alert alert-info text-center">
+      No appointments scheduled.
+    </div>
   </ng-template>
 </div>

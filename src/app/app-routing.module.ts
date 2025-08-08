@@ -5,6 +5,7 @@ import { AddLabtestComponent } from './labs/add-labtest/add-labtest.component'; 
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
 import { TestResultsComponent } from './labs/test-results/test-results.component';
 import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
+import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
 
 const routes: Routes = [
     {
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'addlabtest', component: AddLabtestComponent },   
   { path: 'labdashboard', component: LabDashboardComponent },
   { path: 'testresults', component: TestResultsComponent },
-  { path: 'update', component: UpdateTestResultComponent },
+  { path: 'update-test-result/:plabTestId', component: UpdateTestResultComponent },
+  { path: 'generate-lab-bill', component: LabBillComponent },
 
   { path: '', redirectTo: '/labdashboard', pathMatch: 'full' } 
  

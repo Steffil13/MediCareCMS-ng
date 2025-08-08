@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'addlabtest', component: AddLabtestComponent },   
   { path: 'labdashboard', component: LabDashboardComponent },
   { path: 'testresults', component: TestResultsComponent },
-  { path: 'update-test-result/:id', component: UpdateTestResultComponent }
+  { path: 'update-result', component: UpdateTestResultComponent }
 
 
 

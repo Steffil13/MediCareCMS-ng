@@ -7,5 +7,6 @@ export class Labtest {
   doctorName: string = '';
   patientName: string = '';
   isCompleted: boolean = false;
+  static plabTestId: any;
 }
 

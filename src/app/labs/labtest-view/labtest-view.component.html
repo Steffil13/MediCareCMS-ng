@@ -1,4 +1,12 @@
 <div class="container mt-5">
+
+  <!-- Back to Dashboard Button -->
+  <div class="mb-3">
+    <button class="btn btn-outline-primary" routerLink="/labdashboard">
+      &larr; Back to Dashboard
+    </button>
+  </div>
+
   <div class="card shadow rounded">
     <div class="card-header bg-primary text-white">
       <h4 class="mb-0">Prescribed Lab Tests</h4>
@@ -26,10 +34,11 @@
               </span>
             </td>
             <td>
-  <button class="btn btn-outline-primary btn-sm" [routerLink]="['/update']">
-    Assign
-  </button>
-</td>
+              <button class="btn btn-outline-primary btn-sm" (click)="assignLabTest(test)">Assign</button>
+              <!-- <button class="btn btn-outline-primary btn-sm" [routerLink]="['/update-result', test.plabTestId]">
+                Assign
+              </button> -->
+            </td>
           </tr>
         </tbody>
       </table>

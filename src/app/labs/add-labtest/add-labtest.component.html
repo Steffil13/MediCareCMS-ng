@@ -1,26 +1,57 @@
-<div class="container mt-4">
-  <h3>Add Lab Test</h3>
-  <form [formGroup]="labTestForm" (ngSubmit)="onSubmit()">
-    <div class="form-group mb-3">
-      <label for="testName">Test Name</label>
-      <input type="text" id="testName" class="form-control" formControlName="testName" />
-      <div *ngIf="submitted && labTestForm.controls['testName'].errors" class="text-danger">
+<div class="container mt-5" style="max-width: 500px;">
+    <!-- MediCare+ Heading -->
+  <h1 class="text-center mb-4" style="font-weight: 700; color: #d6336c; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    MediCare+
+  </h1>
+
+  <h3 class="mb-4 text-center fw-bold text-primary">Add Lab Test</h3>
+
+  <form [formGroup]="labTestForm" (ngSubmit)="onSubmit()" novalidate>
+    <!-- Test Name -->
+    <div class="mb-4">
+      <label for="testName" class="form-label fw-semibold">Test Name <span class="text-danger">*</span></label>
+      <input
+        type="text"
+        id="testName"
+        class="form-control"
+        formControlName="testName"
+        [ngClass]="{'is-invalid': submitted && labTestForm.controls['testName'].invalid}"
+        placeholder="Enter test name"
+      />
+      <div *ngIf="submitted && labTestForm.controls['testName'].errors" class="invalid-feedback">
         Test Name is required.
       </div>
     </div>
 
-    <div class="form-group mb-3">
-      <label for="normalrange">Normal Range</label>
-      <input type="text" id="normalrange" class="form-control" formControlName="normalrange" />
-      <div *ngIf="submitted && labTestForm.controls['normalrange'].errors" class="text-danger">
+    <!-- Normal Range -->
+    <div class="mb-4">
+      <label for="normalrange" class="form-label fw-semibold">Normal Range <span class="text-danger">*</span></label>
+      <input
+        type="text"
+        id="normalrange"
+        class="form-control"
+        formControlName="normalrange"
+        [ngClass]="{'is-invalid': submitted && labTestForm.controls['normalrange'].invalid}"
+        placeholder="Enter normal range (e.g. 70-110 mg/dL)"
+      />
+      <div *ngIf="submitted && labTestForm.controls['normalrange'].errors" class="invalid-feedback">
         Normal Range is required.
       </div>
     </div>
 
-    <div class="form-group mb-3">
-      <label for="amount">Amount</label>
-      <input type="number" id="amount" class="form-control" formControlName="amount" />
-      <div *ngIf="submitted && labTestForm.controls['amount'].errors" class="text-danger">
+    <!-- Amount -->
+    <div class="mb-4">
+      <label for="amount" class="form-label fw-semibold">Amount <span class="text-danger">*</span></label>
+      <input
+        type="number"
+        id="amount"
+        class="form-control"
+        formControlName="amount"
+        [ngClass]="{'is-invalid': submitted && labTestForm.controls['amount'].invalid}"
+        placeholder="Enter amount"
+        min="1"
+      />
+      <div *ngIf="submitted && labTestForm.controls['amount'].errors" class="invalid-feedback">
         <div *ngIf="labTestForm.controls['amount'].errors?.['required']">
           Amount is required.
         </div>
@@ -30,9 +61,16 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+    </div>
 
-    <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert alert-success mt-4 text-center">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-4 text-center">
+      {{ errorMessage }}
+    </div>
   </form>
 </div>

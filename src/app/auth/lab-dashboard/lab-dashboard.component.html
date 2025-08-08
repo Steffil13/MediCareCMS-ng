@@ -1,27 +1,32 @@
 <div class="container text-center mt-5">
-  <h2>Welcome, Lab Technician</h2>
-  <p>Manage all your lab operations from here</p>
+
+  <!-- Main Heading -->
+  <h1 class="mb-3" style="font-size: 3rem; font-weight: bold; color: #ff4d4d; text-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+    Medi Care+
+  </h1>
+  <h4 class="text-muted">Lab Technician Dashboard</h4>
+  <p class="lead">Manage all your lab operations from here</p>
 
   <div class="row justify-content-center mt-4">
     <!-- View Lab Tests -->
-    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #007bff;">
-      <h5>View Lab Tests</h5>
+    <div class="col-md-3 m-3 p-4 border rounded shadow-sm" style="border-color: #007bff; background-color: #f8f9fa;">
+      <h5 class="mb-3" style="color: #007bff;">View Lab Tests</h5>
       <p>See all available lab tests</p>
-      <a routerLink="/labtests" class="btn btn-primary">Go</a>
+      <a routerLink="/labtests" class="btn btn-primary btn-lg">view</a>
     </div>
 
     <!-- View Lab History -->
-    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #17a2b8;">
-      <h5>View Lab History</h5>
+    <div class="col-md-3 m-3 p-4 border rounded shadow-sm" style="border-color: #17a2b8; background-color: #f8f9fa;">
+      <h5 class="mb-3" style="color: #17a2b8;">View Lab History</h5>
       <p>Review completed test results</p>
-      <a routerLink="/testresults" class="btn btn-info">Go</a>
+      <a routerLink="/testresults" class="btn btn-info btn-lg">view</a>
     </div>
 
     <!-- Add New Lab Test -->
-    <div class="col-md-2 m-2 p-3 border rounded text-center" style="border-color: #ffc107;">
-      <h5>Add Lab Test</h5>
+    <div class="col-md-3 m-3 p-4 border rounded shadow-sm" style="border-color: #ffc107; background-color: #f8f9fa;">
+      <h5 class="mb-3" style="color: #ffc107;">Add Lab Test</h5>
       <p>Add a new lab test</p>
-      <a routerLink="/addlabtest" class="btn btn-warning">Go</a>
+      <a routerLink="/addlabtest" class="btn btn-warning btn-lg text-white">Add</a>
     </div>
   </div>
 </div>

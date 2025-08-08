@@ -11,7 +11,7 @@ const routes: Routes = [
    { path: '', component: AdminDashboardComponent },
   { path: 'list/:role', component: AdminListComponent },
   //add
-  {path:'add',component:AdminAddComponent},
+  {path:'add/:role',component:AdminAddComponent},
   //edit
   {path:'edit/:id',component:AdminEditComponent},
   //

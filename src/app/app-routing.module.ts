@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { LabtestViewComponent } from './labs/labtest-view/labtest-view.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   //Employees Route-- redirect to Login

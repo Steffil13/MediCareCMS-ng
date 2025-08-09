@@ -1,16 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
 import { Labtest } from '../../shared/model/labtech/AssignedLabTest';
-import { LabTechnicianService } from '../../shared/service/LabTechnician.service';
 import { Router } from '@angular/router';
-=======
-import { Labtest } from '../../shared/model/AssignedLabTest';
-import { LabtestService } from 'src/app/shared/Service/AssignedLabTest.service';
-<<<<<<< HEAD
-=======
-
->>>>>>> 2fe4b822afa03bf6338fb94a116c78415806fbe3
->>>>>>> 80011a0ba31559b928fe04a1cb82720cbe549b28
+import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.service';
 
 @Component({
   selector: 'app-labtest-view',

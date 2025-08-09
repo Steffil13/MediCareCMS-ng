@@ -3,8 +3,11 @@ import { LabtestViewComponent } from './labs/labtest-view/labtest-view.component
 import { LoginComponent } from './auth/login/login.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
+import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [
+
+  { path: 'pharmacist', component: PharmacistComponent },
   //Employees Route-- redirect to Login
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   //parent : Lazy loading the employee module

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PharmacistsRoutingModule } from './pharmacists-routing.module';
 import { PharmacistComponent } from './pharmacist.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { PharmacistComponent } from './pharmacist.component';
   ],
   imports: [
     CommonModule,
-    PharmacistsRoutingModule
+    PharmacistsRoutingModule,
+    FormsModule 
   ]
 })
 export class PharmacistsModule { }

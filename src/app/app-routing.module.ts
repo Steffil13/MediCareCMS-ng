@@ -6,7 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddLabtestComponent } from './labs/add-labtest/add-labtest.component';
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
 import { TestResultsComponent } from './labs/test-results/test-results.component';
-import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
 import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
 import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';

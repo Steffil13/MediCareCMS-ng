@@ -9,6 +9,7 @@ import { AdminDeleteComponent } from './admin-delete/admin-delete.component';
 import { AdminListComponent } from './admin-list/admin-list.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/nav/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -24,7 +25,9 @@ import { SharedModule } from '../shared/nav/shared/shared.module';
     AdminsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    NgxPaginationModule
+    
   ]
 })
 export class AdminsModule { }

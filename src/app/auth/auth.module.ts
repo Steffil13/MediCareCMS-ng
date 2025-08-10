@@ -22,7 +22,7 @@ import { AdminDashboardComponent } from './admin-dashborad/admin-dashborad.compo
     NotFoundComponent,
     ReceptionistDashboardComponent,
     PharmacistDashboardComponent,
-    LabDashboardComponent,
+   // LabDashboardComponent,
     AdminDashboardComponent
   ],
   imports: [

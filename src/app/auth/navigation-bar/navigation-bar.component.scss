@@ -1,0 +1,40 @@
+/* styles.scss OR admin-navbar.component.scss */
+.custom-bg-nav-bar {
+  background-color: #03033a !important; /* your theme color */
+}
+
+/* Make navbar text white for contrast */
+.custom-bg-nav-bar .navbar-brand,
+.custom-bg-nav-bar .nav-link,
+.custom-bg-nav-bar span {
+  color: #ffffff !important;
+}
+
+.navbar-brand img {
+  max-height: 150px; /* adjust as needed */
+  width: auto;      /* maintain aspect ratio */
+}
+
+// .navbar-brand {
+//   display: flex;
+//   align-items: center; /* vertically center */
+//   justify-content: center; /* horizontally center content inside .navbar-brand */
+//   gap: 0.5rem; /* spacing between image and text */
+//   width: 100%; /* make it full width to help centering */
+//   text-align: center;
+// }
+h2 {
+  color: white;
+}
+
+
+/* Style the logout button */
+.custom-bg-nav-bar .btn-outline-danger {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.custom-bg-nav-bar .btn-outline-danger:hover {
+  background-color: #ffffff;
+  color: #03045e;
+}

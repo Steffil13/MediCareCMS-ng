@@ -1,0 +1,165 @@
+<div class="container mt-4">
+  <h2>Create Prescription</h2>
+
+  <!-- Appointment Info -->
+  <!-- <div class="card p-3 mb-3">
+    <p><strong>Appointment ID:</strong> {{ appointment?.appointmentId }}</p>
+    <p><strong>Patient Name:</strong> {{ appointment?.patientName }}</p>
+    <p><strong>Date:</strong> {{ appointment?.date | date }}</p>
+  </div> -->
+
+  <!-- Prescription Form -->
+  <form (ngSubmit)="submitConsultation()" #prescriptionForm="ngForm">
+
+    <!-- Symptoms -->
+    <div class="mb-3">
+      <label class="form-label">Symptoms</label>
+      <textarea
+        class="form-control"
+        [(ngModel)]="prescription.symptoms"
+        name="symptoms"
+        required>
+      </textarea>
+    </div>
+
+    <!-- Diagnosis -->
+    <div class="mb-3">
+      <label class="form-label">Diagnosis</label>
+      <textarea
+        class="form-control"
+        [(ngModel)]="prescription.diagnosis"
+        name="diagnosis"
+        required>
+      </textarea>
+    </div>
+
+    <!-- Notes -->
+    <div class="mb-3">
+      <label class="form-label">Notes</label>
+      <textarea
+        class="form-control"
+        [(ngModel)]="prescription.notes"
+        name="notes">
+      </textarea>
+    </div>
+
+   <!-- Medicines Section -->
+<h4>Medicines</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Medicine Name</th>
+      <th>Dosage</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let med of medicines; let i = index">
+      <td>
+        <select
+          class="form-control"
+          [(ngModel)]="med.medicineId"
+          name="medicineId{{i}}"
+          required
+        >
+          <option value="" disabled>Select Medicine</option>
+          <option *ngFor="let m of availableMedicines" [value]="m.medicineId">
+            {{ m.medicineName }}
+          </option>
+        </select>
+      </td>
+      <td>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="med.dosage"
+          name="dosage{{i}}"
+          required
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="med.duration"
+          name="duration{{i}}"
+          required
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button type="button" class="btn btn-secondary mb-3" (click)="addMedicineRow()">+ Add Medicine</button>
+
+<!-- Lab Tests Section -->
+<div class="mt-4">
+  <h4>Lab Tests</h4>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th style="width: 50%">Test Name</th>
+        <th style="width: 40%">Remarks</th>
+        <th style="width: 10%">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lab of labTests; let i = index">
+        <!-- Test Dropdown -->
+        <td>
+          <select
+            class="form-control"
+            [(ngModel)]="lab.labId"
+            name="labId{{ i }}"
+            required
+          >
+            <option value="" disabled>Select Test</option>
+            <option *ngFor="let t of availableLabTests" [ngValue]="t.labId">
+              {{ t.labName }}
+            </option>
+          </select>
+        </td>
+
+        <!-- Remarks Input -->
+        <!-- <td>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="lab.remarks"
+            name="remarks{{ i }}"
+            placeholder="Enter remarks"
+          />
+        </td> -->
+
+        <!-- Remove Row Button -->
+        <td class="text-center">
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="removeLabTestRow(i)"
+            *ngIf="labTests.length > 1"
+          >
+            ×
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add Row Button -->
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="addLabTestRow()"
+  >
+    + Add Lab Test
+  </button>
+</div>
+
+
+    <!-- Submit -->
+    <div>
+      <button type="submit" class="btn btn-primary">Submit Consultation</button>
+    </div>
+  </form>
+</div>

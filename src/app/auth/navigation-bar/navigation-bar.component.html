@@ -1,1 +1,26 @@
-<p>navigation-bar works!</p>
+<nav class="navbar navbar-expand-lg bg-light shadow-sm p-3
+custom-bg-nav-bar">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand text-primary fw-bold d-flex align-items-center justify-content-center" routerLink="/">
+            <img src="assets/logo.png" alt="Logo" width="200" height="150" class="me-2">
+            
+        </a>
+        <h2>MEDICARE</h2>
+
+        <!-- right-side items -->
+
+        <div class="d-flex align-items-center">
+            <!-- Login Name -->
+            <span class="navbar-brand text-primary fw-bold">
+                <i class="fa fa-user"></i>{{loginName}}
+            </span>
+
+            <!-- LogOut Button -->
+            <button class="btn btn-outline-danger" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i> LogOut
+            </button>
+        </div>
+    </div>
+
+</nav>

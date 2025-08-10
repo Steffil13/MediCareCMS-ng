@@ -1,0 +1,40 @@
+.btn-light-navy {
+    background-color: #12126a;
+    /* lighter than #03045e */
+    color: #fff;
+    /* keep text white for contrast */
+    border: none;
+    padding: 1rem 2.5rem;
+    /* more height and width */
+    font-size: 1.25rem;
+    /* bigger text */
+    border-radius: 0.5rem;
+}
+
+.page-content {
+    min-height: 100vh;
+    padding-top: 40px;
+    /* space below navbar */
+    background: linear-gradient(to top, #03033a, silver);
+}
+
+
+.btn-light-navy:hover {
+    background-color: #3a3b78;
+    /* even lighter on hover */
+}
+
+.button-container {
+    margin-top: 140px;
+    /* adjust as needed */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+
+.button-container .btn {
+    flex: 0 0 calc(50% - 15px);
+    /* exactly two per row */
+}

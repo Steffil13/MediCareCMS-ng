@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^14.0.0",
+    "@angular/animations": "^14.3.0",
     "@angular/common": "^14.0.0",
     "@angular/compiler": "^14.0.0",
     "@angular/core": "^14.0.0",
@@ -31,7 +31,6 @@
     "@angular/cli": "~14.0.0",
     "@angular/compiler-cli": "^14.0.0",
     "@types/jasmine": "~4.0.0",
-    "@types/node": "^16.11.7",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -39,5 +38,17 @@
     "karma-jasmine": "~5.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "^4.7.2"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.0.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Steffil13/MediCareCMS-ng.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Steffil13/MediCareCMS-ng/issues"
+  },
+  "homepage": "https://github.com/Steffil13/MediCareCMS-ng#readme"
 }

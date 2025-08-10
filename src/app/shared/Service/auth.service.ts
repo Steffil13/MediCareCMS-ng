@@ -1,20 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+
 import { Observable } from 'rxjs';
 import { users } from '../model/users';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  getDoctorId(): number {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  return user?.doctorId;
+  }
+
   constructor(private httpClient: HttpClient, 
     private router: Router) { }
     //login 
     public loginVerify(user: users): Observable<any>{
-      return this.httpClient.get<users>(environment.apiUrl + 'Logins/' + user.userName + '/' + user.password
+      return this.httpClient.get<users>(environment.apiUrl + '/Logins/' + user.userName + '/' + user.password
 
       );
     }

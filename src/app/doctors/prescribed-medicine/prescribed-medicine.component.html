@@ -1,0 +1,20 @@
+<h2>Prescribe Medicine</h2>
+
+<form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="prescriptionId">Prescription ID</label>
+    <input type="text" class="form-control" formControlName="prescriptionId" placeholder="Enter prescription ID" />
+  </div>
+
+  <div class="form-group">
+    <label for="medicineName">Medicine Name</label>
+    <input type="text" class="form-control" formControlName="medicineName" placeholder="Enter medicine name" />
+  </div>
+
+  <div class="form-group">
+    <label for="dosage">Dosage</label>
+    <input type="text" class="form-control" formControlName="dosage" placeholder="e.g., 2 times/day for 5 days" />
+  </div>
+
+  <button type="submit" class="btn btn-success" [disabled]="medicineForm.invalid">Add Medicine</button>
+</form>

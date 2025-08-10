@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // ✅ Import
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
-import { TestResultsComponent } from './labs/test-results/test-results.component';
 
 @NgModule({
   declarations: [

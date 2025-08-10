@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LabBillViewModel, TestResult, UpdateTestResult, } from '../model/labtech/labtech';
+import { LabBillViewModel, TestResult, } from '../model/labtech/labtech';
+import { LabBill } from '../model/labtech/labbill';
+import { LabTest } from '../model/labtech/labtest';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class LabTechnicianService {
   }
 
   addLabTest(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/add-labtest`, data);
+    return this.http.post(`${this.apiUrl}/add-lab-test`, data);
   }
 
 
@@ -36,8 +38,18 @@ export class LabTechnicianService {
     return this.http.get<TestResult[]>(`${this.apiUrl}/alllabtests`);
   }
 
-   generateLabBill(bill: LabBillViewModel): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/generate-lab-bill`, bill);
+  getLabTestsByPrescription(prescriptionId: number): Observable<LabTest[]> {
+    return this.http.get<LabTest[]>(`${this.apiUrl}/labtests/by-prescription/${prescriptionId}`);
+  }
+
+  getPrescriptionDetails(prescriptionId: number): Observable<{ patientId: number; doctorId: number; labTechnicianId: number }> {
+    return this.http.get<{ patientId: number; doctorId: number; labTechnicianId: number }>(
+      `${this.apiUrl}/prescription-details/${prescriptionId}`
+    );
+  }
+
+  generateLabBill(billModel: LabBillViewModel): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/generate-lab-bill`, billModel);
 }
 
 

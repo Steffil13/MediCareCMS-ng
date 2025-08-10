@@ -4,8 +4,8 @@ import { LabtestViewComponent } from './labs/labtest-view/labtest-view.component
 import { AddLabtestComponent } from './labs/add-labtest/add-labtest.component'; // ✅ Import
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
 import { TestResultsComponent } from './labs/test-results/test-results.component';
-import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
 import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
+import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
 
 const routes: Routes = [
     {
@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'labdashboard', component: LabDashboardComponent },
   { path: 'testresults', component: TestResultsComponent },
   { path: 'update-test-result/:plabTestId', component: UpdateTestResultComponent },
-  { path: 'generate-lab-bill', component: LabBillComponent },
+  { path: 'generate-labbill/:prescriptionId', component: LabBillComponent },
 
   { path: '', redirectTo: '/labdashboard', pathMatch: 'full' } 
  

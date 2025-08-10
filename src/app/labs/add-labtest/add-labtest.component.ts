@@ -14,9 +14,9 @@ export class AddLabtestComponent {
 
   constructor(private fb: FormBuilder, private labService: LabTechnicianService) {
     this.labTestForm = this.fb.group({
-      testName: ['', Validators.required],
+      LabName: ['', Validators.required],
       normalrange: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.min(1)]],
+      price: ['', [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -31,6 +31,7 @@ export class AddLabtestComponent {
 
     this.labService.addLabTest(labTest).subscribe({
       next: () => {
+        console.log('Lab test added successfully', labTest);
         this.successMessage = 'Lab test added successfully!';
         this.errorMessage = '';
         this.labTestForm.reset();

@@ -1,1 +1,12 @@
-<p>lab-bill works!</p>
+<div *ngIf="generatedBill; else loadingOrError">
+  <h3>Lab Bill Generated Successfully!</h3>
+  <p><strong>Bill Number:</strong> {{ generatedBill.labBillNumber }}</p>
+  <p><strong>Total Amount:</strong> {{ generatedBill.totalAmount }}</p>
+  <p><strong>Issued Date:</strong> {{ generatedBill.issuedDate | date:'medium' }}</p>
+  <p><strong>Is Paid:</strong> {{ generatedBill.isPaid ? 'Yes' : 'No' }}</p>
+</div>
+
+<ng-template #loadingOrError>
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+  <p *ngIf="!errorMessage">Generating lab bill, please wait...</p>
+</ng-template>

@@ -9,16 +9,16 @@
   <form [formGroup]="labTestForm" (ngSubmit)="onSubmit()" novalidate>
     <!-- Test Name -->
     <div class="mb-4">
-      <label for="testName" class="form-label fw-semibold">Test Name <span class="text-danger">*</span></label>
+      <label for="LabName" class="form-label fw-semibold">Test Name <span class="text-danger">*</span></label>
       <input
         type="text"
-        id="testName"
+        id="LabName"
         class="form-control"
-        formControlName="testName"
-        [ngClass]="{'is-invalid': submitted && labTestForm.controls['testName'].invalid}"
+        formControlName="LabName"
+        [ngClass]="{'is-invalid': submitted && labTestForm.controls['LabName'].invalid}"
         placeholder="Enter test name"
       />
-      <div *ngIf="submitted && labTestForm.controls['testName'].errors" class="invalid-feedback">
+      <div *ngIf="submitted && labTestForm.controls['LabName'].errors" class="invalid-feedback">
         Test Name is required.
       </div>
     </div>
@@ -41,21 +41,21 @@
 
     <!-- Amount -->
     <div class="mb-4">
-      <label for="amount" class="form-label fw-semibold">Amount <span class="text-danger">*</span></label>
+      <label for="price" class="form-label fw-semibold">Amount <span class="text-danger">*</span></label>
       <input
         type="number"
-        id="amount"
+        id="price"
         class="form-control"
-        formControlName="amount"
-        [ngClass]="{'is-invalid': submitted && labTestForm.controls['amount'].invalid}"
+        formControlName="price"
+        [ngClass]="{'is-invalid': submitted && labTestForm.controls['price'].invalid}"
         placeholder="Enter amount"
         min="1"
       />
-      <div *ngIf="submitted && labTestForm.controls['amount'].errors" class="invalid-feedback">
-        <div *ngIf="labTestForm.controls['amount'].errors?.['required']">
+      <div *ngIf="submitted && labTestForm.controls['price'].errors" class="invalid-feedback">
+        <div *ngIf="labTestForm.controls['price'].errors?.['required']">
           Amount is required.
         </div>
-        <div *ngIf="labTestForm.controls['amount'].errors?.['min']">
+        <div *ngIf="labTestForm.controls['price'].errors?.['min']">
           Amount must be greater than 0.
         </div>
       </div>

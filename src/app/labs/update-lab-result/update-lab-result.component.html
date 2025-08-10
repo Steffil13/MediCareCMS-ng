@@ -1,29 +1,51 @@
 <div class="container mt-4">
-  <h3>Update Test Result</h3>
+  <h3>Assigning Test Result</h3>
   <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <label>Result Value</label>
-      <input class="form-control" formControlName="resultValue" required />
+      <label for="resultValue" class="form-label">Result Value</label>
+      <input
+        id="resultValue"
+        type="text"
+        class="form-control"
+        formControlName="resultValue"
+        required
+      />
+      <div
+        *ngIf="
+          updateForm.get('resultValue')?.invalid &&
+          (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
+        "
+        class="text-danger"
+      >
+        Result Value is required.
+      </div>
     </div>
 
     <div class="mb-3">
-      <label>Status</label>
-      <select class="form-control" formControlName="resultStatus">
-        <option [value]="true">Positive</option>
-        <option [value]="false">Negative</option>
+      <label for="resultStatus" class="form-label">Status</label>
+      <select id="resultStatus" class="form-control" formControlName="resultStatus">
+        <option [ngValue]="true">Positive</option>
+        <option [ngValue]="false">Negative</option>
       </select>
     </div>
 
     <div class="mb-3">
-      <label>Remarks</label>
-      <textarea class="form-control" formControlName="remarks"></textarea>
+      <label for="remarks" class="form-label">Remarks</label>
+      <textarea id="remarks" class="form-control" formControlName="remarks"></textarea>
     </div>
 
     <div class="mb-3">
-      <label>Record Date</label>
-      <input type="date" class="form-control" formControlName="recordDate" />
+      <label for="recordDate" class="form-label">Record Date</label>
+      <input
+        id="recordDate"
+        type="date"
+        class="form-control"
+        formControlName="recordDate"
+      />
     </div>
 
-    <button type="submit" class="btn btn-success">Update</button>
+    <button type="submit" class="btn btn-success" [disabled]="updateForm.invalid">
+      Assign Result
+    </button>
   </form>
 </div>

@@ -1,1 +1,31 @@
 <p>receptionist-dashboard works!</p>
+<div class="dashboard-container">
+  <h2>Pharmacist Dashboard</h2>
+
+  <div class="card-container">
+    <div class="dashboard-card" routerLink="/pharmacist/view-patients">
+      <h3>View Patients</h3>
+      <p>Search and view patient details.</p>
+    </div>
+
+    <div class="dashboard-card" routerLink="/pharmacist/view-prescriptions">
+      <h3>View Prescription</h3>
+      <p>Check prescriptions given by doctors.</p>
+    </div>
+
+    <div class="dashboard-card" routerLink="/pharmacist/generate-medicine">
+      <h3>Generate Medicine</h3>
+      <p>Prepare and hand out medicines for patients.</p>
+    </div>
+
+    <div class="dashboard-card" routerLink="/pharmacist/inventory">
+      <h3>Inventory</h3>
+      <p>Manage medicine stock and supplies.</p>
+    </div>
+
+    <div class="dashboard-card" routerLink="/pharmacist/generate-bill">
+      <h3>Generate Bill</h3>
+      <p>Create bills for medicines issued.</p>
+    </div>
+  </div>
+</div>

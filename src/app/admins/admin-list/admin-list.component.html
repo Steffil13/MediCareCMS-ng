@@ -1,37 +1,38 @@
-<h2 *ngIf="role">All Users ({{ role }})</h2>
+<app-navigation-bar></app-navigation-bar>
+
+<h2 *ngIf="role">List Of {{ role }}</h2>
 
 <div class="mb-3 d-flex align-items-center gap-2 flex-wrap">
-  <button *ngIf="role" 
-          class="btn"
-          [ngClass]="{
-            'btn-success': role === 'Receptionist',
-            'btn-info': role === 'LabTechnician',
-            'btn-warning': role === 'Pharmacist',
-            'btn-primary': role === 'Doctor'
-          }"
-          (click)="role === 'Doctor' ? addDoctor() : addStaff(role)"
-  >
+  <button *ngIf="role" class="btn" [ngClass]="{
+        'btn-success': role === 'Receptionist',
+        'btn-info': role === 'LabTechnician',
+        'btn-warning': role === 'Pharmacist',
+        'btn-primary': role === 'Doctor'
+      }" (click)="role === 'Doctor' ? addDoctor() : addStaff(role)">
     Add {{ role }}
   </button>
+</div>
+
+<!-- SEARCH BOX added here -->
+<div class="mb-3 col-sm-8">
+  <input type="search"
+         placeholder="Search the Employee"
+         class="form-control"
+         [(ngModel)]="searchTerm"
+         (ngModelChange)="onSearchChange()">
 </div>
 
 <div class="mb-3">
   <button class="btn btn-secondary" (click)="goBack()">Back</button>
 </div>
 
-
-<table 
-  class="table table-hover"
-  *ngIf="role !== 'Doctor' || (role === 'Doctor' && !showDepartments)"
->
+<table class="table table-hover" *ngIf="role !== 'Doctor' || (role === 'Doctor' && !showDepartments)">
   <thead class="table-light">
     <tr>
-      <!-- <th>Username</th> -->
       <th>Full Name</th>
       <th>Gender</th>
       <th>Email</th>
       <th>Contact</th>
-      <!-- Show Department header only if role is Doctor -->
       <th *ngIf="role === 'Doctor'">Department</th>
       <th>Blood Group</th>
       <th>Username</th>
@@ -41,21 +42,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <!-- <td>{{ user.username }}</td> -->
+    <!-- LOOP UPDATED: now uses filteredUsers -->
+    <tr *ngFor="let user of filteredUsers">
       <td>{{ user.fullName || (user.firstName + ' ' + user.lastName) || 'N/A' }}</td>
       <td>{{user.gender}}</td>
       <td>{{ user.email || 'N/A' }}</td>
       <td>{{ user.contact || 'N/A' }}</td>
-      <!-- Show Department cell only if role is Doctor -->
       <td *ngIf="role === 'Doctor'">
         {{ getDepartmentNameById(user.departmentId) || 'N/A' }}
       </td>
-
       <td>{{ user.bloodGroup || 'N/A' }}</td>
       <td>{{ user.username }}</td>
-
-      <!-- Password with show/hide toggle -->
       <td>
         <span *ngIf="passwordVisibility[user.userId]; else maskedPassword">
           {{ user.password }}
@@ -63,44 +60,33 @@
         <ng-template #maskedPassword>
           &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
         </ng-template>
-        <button
-          type="button"
-          class="btn btn-link btn-sm p-0 ms-2"
-          (click)="togglePasswordVisibility(user.userId)"
-          [attr.aria-label]="
-            passwordVisibility[user.userId] ? 'Hide Password' : 'Show Password'
-          "
-          title="{{ passwordVisibility[user.userId] ? 'Hide Password' : 'Show Password' }}"
-        >
-          <i
-            class="fa"
-            [ngClass]="
-              passwordVisibility[user.userId] ? 'fa-eye-slash' : 'fa-eye'
-            "
-          ></i>
+        <button type="button" class="btn btn-link btn-sm p-0 ms-2"
+                (click)="togglePasswordVisibility(user.userId)"
+                [attr.aria-label]="passwordVisibility[user.userId] ? 'Hide Password' : 'Show Password'"
+                title="{{ passwordVisibility[user.userId] ? 'Hide Password' : 'Show Password' }}">
+          <i class="fa" [ngClass]="passwordVisibility[user.userId] ? 'fa-eye-slash' : 'fa-eye'"></i>
         </button>
       </td>
-
-
       <td>
-        <span
-          [class]="user.isActive ? 'badge bg-success' : 'badge bg-secondary'"
-        >
+        <span [class]="user.isActive ? 'badge bg-success' : 'badge bg-secondary'">
           {{ user.isActive ? 'Active' : 'Inactive' }}
         </span>
       </td>
-     <td>
-                    <button class="btn btn-sm btn-outline-warning" >
-                        <i class="fa fa-edit"></i>
-
-                    </button>&nbsp;
-                    <button class="btn btn-sm btn-outline-danger ">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
+      <td>
+        <button class="btn btn-sm btn-outline-warning"
+                (click)="editStaff(user.userId)">
+          <i class="fa fa-edit"></i>
+        </button>
+        &nbsp;
+        <button class="btn btn-sm btn-outline-danger"
+                (click)="softDeleteStaff(user.userId)">
+          <i class="fa fa-trash"></i>
+        </button>
+      </td>
     </tr>
-    <tr *ngIf="users.length === 0">
-      <td [attr.colspan]="role === 'Doctor' ? 9 : 8" class="text-center text-muted">
+    <!-- Show message if no users -->
+    <tr *ngIf="filteredUsers.length === 0">
+      <td [attr.colspan]="role === 'Doctor' ? 10 : 9" class="text-center text-muted">
         No users found.
       </td>
     </tr>

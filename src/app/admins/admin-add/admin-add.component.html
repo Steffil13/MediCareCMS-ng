@@ -1,21 +1,15 @@
 <div class="container mt-4">
-  <h2>Add New {{ role }}</h2>
-
+  <h2>Add  {{ role }}</h2>
+  <div class="mb-3">
+  <button class="btn btn-secondary" (click)="goBack()">Back</button>
+</div>
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
-
     <!-- First Name -->
     <div class="mb-3">
       <label for="firstName" class="form-label">First Name *</label>
-      <input
-        type="text"
-        id="firstName"
-        formControlName="firstName"
-        class="form-control"
-        [class.is-invalid]="f['firstName'].touched && f['firstName'].invalid"
-        aria-describedby="firstNameFeedback"
-        autocomplete="given-name"
-      />
-      <div *ngIf="f['firstName'].touched && f['firstName'].invalid" id="firstNameFeedback" class="invalid-feedback">
+      <input type="text" id="firstName" formControlName="firstName" class="form-control"
+        [class.is-invalid]="f['firstName'].touched && f['firstName'].invalid" />
+      <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="invalid-feedback">
         First Name is required.
       </div>
     </div>
@@ -23,16 +17,9 @@
     <!-- Last Name -->
     <div class="mb-3">
       <label for="lastName" class="form-label">Last Name *</label>
-      <input
-        type="text"
-        id="lastName"
-        formControlName="lastName"
-        class="form-control"
-        [class.is-invalid]="f['lastName'].touched && f['lastName'].invalid"
-        aria-describedby="lastNameFeedback"
-        autocomplete="family-name"
-      />
-      <div *ngIf="f['lastName'].touched && f['lastName'].invalid" id="lastNameFeedback" class="invalid-feedback">
+      <input type="text" id="lastName" formControlName="lastName" class="form-control"
+        [class.is-invalid]="f['lastName'].touched && f['lastName'].invalid" />
+      <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="invalid-feedback">
         Last Name is required.
       </div>
     </div>
@@ -40,16 +27,9 @@
     <!-- Email -->
     <div class="mb-3">
       <label for="email" class="form-label">Email *</label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        class="form-control"
-        [class.is-invalid]="f['email'].touched && f['email'].invalid"
-        aria-describedby="emailFeedback"
-        autocomplete="email"
-      />
-      <div *ngIf="f['email'].touched && f['email'].invalid" id="emailFeedback" class="invalid-feedback">
+      <input type="email" id="email" formControlName="email" class="form-control"
+        [class.is-invalid]="f['email'].touched && f['email'].invalid" />
+      <div *ngIf="f['email'].touched && f['email'].invalid" class="invalid-feedback">
         Valid email is required.
       </div>
     </div>
@@ -57,59 +37,70 @@
     <!-- Gender radios -->
     <div class="mb-3">
       <label class="form-label d-block">Gender *</label>
-
       <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          id="genderMale"
-          formControlName="gender"
-          value="Male"
-        />
+        <input class="form-check-input" type="radio" id="genderMale" formControlName="gender" value="Male" />
         <label class="form-check-label" for="genderMale">Male</label>
       </div>
-
       <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          id="genderFemale"
-          formControlName="gender"
-          value="Female"
-        />
+        <input class="form-check-input" type="radio" id="genderFemale" formControlName="gender" value="Female" />
         <label class="form-check-label" for="genderFemale">Female</label>
       </div>
-
       <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          id="genderOther"
-          formControlName="gender"
-          value="Other"
-        />
+        <input class="form-check-input" type="radio" id="genderOther" formControlName="gender" value="Other" />
         <label class="form-check-label" for="genderOther">Other</label>
       </div>
-
       <div *ngIf="f['gender'].touched && f['gender'].invalid" class="text-danger mt-1">
         Please select a gender.
       </div>
     </div>
 
-    <!-- Contact -->
+    <!-- Contact (UPDATED FOR DUPLICATE CHECK) -->
     <div class="mb-3">
-      <label for="contact" class="form-label">Contact</label>
-      <input
-        type="text"
-        id="contact"
-        formControlName="contact"
-        class="form-control"
-        [class.is-invalid]="f['contact'].touched && f['contact'].invalid"
-        aria-describedby="contactFeedback"
-        autocomplete="tel"
-      />
-      <div *ngIf="f['contact'].touched && f['contact'].invalid" id="contactFeedback" class="invalid-feedback">
-        Please enter a valid phone number.
+      <label for="contact" class="form-label">Contact *</label>
+      <input type="text" id="contact" formControlName="contact" class="form-control"
+        [class.is-invalid]="f['contact'].touched && f['contact'].invalid" />
+      <div *ngIf="f['contact'].touched && f['contact'].invalid" class="invalid-feedback">
+        <span *ngIf="f['contact'].errors?.['required']">Contact is required.</span>
+        <span *ngIf="f['contact'].errors?.['invalidPhone']">Please enter a valid 10-digit phone number.</span>
+        <span *ngIf="f['contact'].errors?.['contactExists']">This contact number is already registered.</span>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="mb-3">
+      <label for="addresss" class="form-label">Address *</label>
+      <input type="text" id="addresss" formControlName="addresss" class="form-control"
+        [class.is-invalid]="f['addresss'].touched && f['addresss'].invalid" />
+      <div *ngIf="f['addresss'].touched && f['addresss'].invalid" class="invalid-feedback">
+        <span *ngIf="f['addresss'].errors?.['required']">Address is required.</span>
+        <span *ngIf="f['addresss'].errors?.['minlength']">Minimum 3 characters required.</span>
+        <span *ngIf="f['addresss'].errors?.['invalidChars']">Only letters and numbers allowed.</span>
+      </div>
+    </div>
+
+    <!-- Blood Group -->
+    <div class="mb-3">
+      <label for="bloodGroup" class="form-label">Blood Group *</label>
+      <select id="bloodGroup" formControlName="bloodGroup" class="form-select"
+        [class.is-invalid]="f['bloodGroup'].touched && f['bloodGroup'].invalid">
+        <option value="" disabled>Select Blood Group</option>
+        <option *ngFor="let bg of bloodGroups" [value]="bg">{{ bg }}</option>
+      </select>
+      <div *ngIf="f['bloodGroup'].touched && f['bloodGroup'].invalid" class="invalid-feedback">
+        Blood Group is required.
+      </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date of Birth *</label>
+      <input type="date" id="dob" formControlName="dob" class="form-control"
+        [class.is-invalid]="f['dob'].touched && f['dob'].invalid" />
+      <div *ngIf="f['dob'].touched && f['dob'].invalid" class="invalid-feedback">
+        <span *ngIf="f['dob'].errors?.['required']">Date of Birth is required.</span>
+        <span *ngIf="f['dob'].errors?.['futureDate']">Date cannot be in the future.</span>
+        <span *ngIf="f['dob'].errors?.['tooYoung']">You must be at least 18 years old.</span>
+        <span *ngIf="f['dob'].errors?.['tooOld']">You must be 65 years old or younger.</span>
       </div>
     </div>
 
@@ -117,36 +108,23 @@
     <div *ngIf="role === 'Doctor'">
       <div class="mb-3">
         <label for="departmentId" class="form-label">Department *</label>
-        <select
-          id="departmentId"
-          formControlName="departmentId"
-          class="form-select"
-          [class.is-invalid]="f['departmentId'].touched && f['departmentId'].invalid"
-          aria-describedby="departmentFeedback"
-        >
+        <select id="departmentId" formControlName="departmentId" class="form-select"
+          [class.is-invalid]="f['departmentId'].touched && f['departmentId'].invalid">
           <option value="" disabled>Select Department</option>
           <option *ngFor="let dept of departments" [value]="dept.departmentId">
             {{ dept.departmentName }}
           </option>
         </select>
-        <div *ngIf="f['departmentId'].touched && f['departmentId'].invalid" id="departmentFeedback" class="invalid-feedback">
+        <div *ngIf="f['departmentId'].touched && f['departmentId'].invalid" class="invalid-feedback">
           Department is required.
         </div>
       </div>
 
       <div class="mb-3">
         <label for="doctorFee" class="form-label">Doctor Fee *</label>
-        <input
-          id="doctorFee"
-          type="number"
-          formControlName="doctorFee"
-          min="0"
-          class="form-control"
-          [class.is-invalid]="f['doctorFee'].touched && f['doctorFee'].invalid"
-          aria-describedby="doctorFeeFeedback"
-          readonly
-        />
-        <div *ngIf="f['doctorFee'].touched && f['doctorFee'].invalid" id="doctorFeeFeedback" class="invalid-feedback">
+        <input id="doctorFee" type="number" formControlName="doctorFee" min="0" class="form-control"
+          [class.is-invalid]="f['doctorFee'].touched && f['doctorFee'].invalid" readonly />
+        <div *ngIf="f['doctorFee'].touched && f['doctorFee'].invalid" class="invalid-feedback">
           Doctor fee is required and must be zero or greater.
         </div>
       </div>
@@ -154,12 +132,7 @@
 
     <!-- Is Active -->
     <div class="form-check mb-3">
-      <input
-        type="checkbox"
-        id="isActive"
-        formControlName="isActive"
-        class="form-check-input"
-      />
+      <input type="checkbox" id="isActive" formControlName="isActive" class="form-check-input" />
       <label for="isActive" class="form-check-label">Active</label>
     </div>
 

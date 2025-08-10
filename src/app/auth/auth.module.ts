@@ -12,13 +12,13 @@ import { PharmacistDashboardComponent } from './pharmacist-dashboard/pharmacist-
 import { LabDashboardComponent } from './lab-dashboard/lab-dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminDashboardComponent } from './admin-dashborad/admin-dashborad.component';
+import { SharedModule } from '../shared/nav/shared/shared.module';
 
 
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
-    NavigationBarComponent,
     NotFoundComponent,
     ReceptionistDashboardComponent,
     PharmacistDashboardComponent,
@@ -28,7 +28,9 @@ import { AdminDashboardComponent } from './admin-dashborad/admin-dashborad.compo
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
+
 export class AuthModule { }

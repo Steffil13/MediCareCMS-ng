@@ -22,7 +22,7 @@ import { SharedModule } from '../shared/nav/shared/shared.module';
     NotFoundComponent,
     ReceptionistDashboardComponent,
     PharmacistDashboardComponent,
-    LabDashboardComponent,
+   // LabDashboardComponent,
     AdminDashboardComponent
   ],
   imports: [

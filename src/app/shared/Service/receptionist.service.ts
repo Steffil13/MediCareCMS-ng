@@ -71,8 +71,8 @@ export class ReceptionistService {
     });
   }
 
-  generateBillForPatient(patientId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/billings/${patientId}`);
+  generateBillForPatient(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/billings`);
   }
   getDepartments(): Observable<Department[]> {
     return this.http.get<Department[]>(`${environment.apiUrl}/admin/departments`);

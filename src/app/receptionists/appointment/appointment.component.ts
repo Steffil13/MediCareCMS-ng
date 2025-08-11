@@ -317,7 +317,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   generateBill() {
-    this.appointmentService.generateBillForPatient(this.newAppointment.patientId).subscribe({
+    this.appointmentService.generateBillForPatient().subscribe({
       next: bill => {
         this.billData = bill;
         this.showBill = true;

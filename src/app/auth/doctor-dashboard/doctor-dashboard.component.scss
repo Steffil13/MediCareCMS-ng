@@ -1,0 +1,29 @@
+.dashboard-container {
+  padding: 20px;
+  background: linear-gradient(to top, #03033a, silver);
+  min-height: 100vh;
+}
+
+.dashboard-buttons {
+  margin-top: 140px; /* same spacing as .button-container */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.dashboard-buttons button {
+  background-color: #12126a; /* same as btn-light-navy */
+  color: #fff;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 0 0 calc(50% - 15px); /* two buttons per row */
+}
+
+.dashboard-buttons button:hover {
+  background-color: #3a3b78; /* lighter navy on hover */
+}

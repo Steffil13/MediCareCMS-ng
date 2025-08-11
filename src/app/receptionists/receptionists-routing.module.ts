@@ -4,6 +4,7 @@ import { ReceptionistDashboardComponent } from '../auth/receptionist-dashboard/r
 import { AddPatientComponent } from './patient/add-patient/add-patient.component';
 import { EditPatientComponent } from './patient/edit-patient/edit-patient.component';
 import { PatientComponent } from './patient/patient.component';
+import { AppointmentComponent } from './appointment/appointment.component';
 
 const routes: Routes = [
   { path: 'patient', loadChildren: () => import('./patient/patient.module').then(m => m.PatientModule) }, 
@@ -15,7 +16,8 @@ const routes: Routes = [
     children: [
       { path: 'patients', component: PatientComponent },
       { path: 'patients/add', component: AddPatientComponent },
-      { path: 'patients/edit/:id', component: EditPatientComponent }
+      { path: 'patients/edit/:id', component: EditPatientComponent },
+      {path: 'billings' , component: AppointmentComponent}
     ]
   }
 ];

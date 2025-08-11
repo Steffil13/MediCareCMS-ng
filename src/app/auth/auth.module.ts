@@ -23,7 +23,8 @@ import { SharedModule } from '../shared/nav/shared/shared.module';
     ReceptionistDashboardComponent,
     PharmacistDashboardComponent,
    // LabDashboardComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    DoctorDashboardComponent
   ],
   imports: [
     CommonModule,

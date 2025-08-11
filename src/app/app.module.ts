@@ -18,6 +18,7 @@ import { MedicineAddComponent } from './pharmacists/medicine-add/medicine-add.co
 import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list.component';
 import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
 import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,8 @@ import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.co
       positionClass: 'toast-bottom-right',
       preventDuplicates: true
     }),
+    RouterModule.forRoot([]), // keep your routes here
+    ReactiveFormsModule
   ],
   providers: [
     {

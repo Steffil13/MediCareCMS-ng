@@ -1,0 +1,110 @@
+<div class="appointment-container">
+    <h3>Patient Appointment Management</h3>
+
+    <!-- Patient Search -->
+    <div class="search-patient">
+        <label>Search Patient by Register Number:</label>
+        <input type="text" [(ngModel)]="registerNumber" placeholder="Enter Register Number" />
+        <button (click)="searchPatients()">Search</button>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+    <!-- Patient list after search -->
+    <div *ngIf="searchedPatients.length">
+        <h4>Search Results:</h4>
+        <ul>
+            <li *ngFor="let patient of searchedPatients" (click)="selectPatient(patient)" class="patient-item">
+                {{ patient.firstName }} {{ patient.lastName }} - Register#: {{ patient.registerNumber }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- Selected Patient Details -->
+    <div *ngIf="selectedPatient" class="patient-details">
+        <h4>Selected Patient:</h4>
+        <p><strong>Name:</strong> {{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</p>
+        <p><strong>Register Number:</strong> {{ selectedPatient.registerNumber }}</p>
+        <p><strong>Contact:</strong> {{ selectedPatient.contact }}</p>
+    </div>
+
+    <div *ngIf="selectedPatient">
+        <h4>Appointments for Patient ID: {{ selectedPatient.patientId }}</h4>
+
+        <form (ngSubmit)="scheduleAppointment()" #appointmentForm="ngForm">
+            <div>
+                <label>Department:</label>
+                <select [(ngModel)]="selectedDepartmentId" name="department" (change)="onDepartmentChange()" required>
+                    <option value="" disabled selected>Select Department</option>
+                    <option *ngFor="let dept of departments" [value]="dept.departmentId">{{ dept.departmentName }}
+                    </option>
+                </select>
+            </div>
+
+            <div *ngIf="doctors.length > 0">
+                <label>Doctor:</label>
+                <select [(ngModel)]="newAppointment.doctorId" name="doctor" required>
+                    <option value="" disabled selected>Select Doctor</option>
+                    <option *ngFor="let doc of doctors" [value]="doc.doctorId">{{ doc.doctorName }}</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Date:</label>
+                <input type="date" [value]="todayString" name="appointmentDate" disabled />
+            </div>
+
+            <div>
+                <label>Time:</label>
+                <select [(ngModel)]="newAppointment.appointmentTime" name="appointmentTime" required>
+                    <option value="" disabled selected>Select Time</option>
+                    <option *ngFor="let time of availableTimes" [value]="time" [disabled]="isTimeSlotBooked(time)">
+                        {{ time }}
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" [disabled]="!appointmentForm.form.valid || !isDoctorSelected() || !isTimeSelected()">
+                {{ isEditMode ? 'Update Appointment' : 'Schedule Appointment' }}
+            </button>
+            <button type="button" *ngIf="isEditMode" (click)="resetAppointmentForm()">Cancel Edit</button>
+        </form>
+    </div>
+
+
+    <div *ngIf="isLoading">Loading appointments...</div>
+
+    <table *ngIf="appointments.length">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Doctor ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let appt of appointments">
+                <td>{{ appt.appointmentId }}</td>
+                <td>{{ appt.doctorId }}</td>
+                <td>{{ appt.appointmentDate | date:'yyyy-MM-dd' }}</td>
+                <td>{{ appt.appointmentTime }}</td>
+                <td>
+                    <button (click)="editAppointment(appt)">Edit</button>
+                    <button (click)="deleteAppointment(appt.appointmentId!)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bill display modal/section -->
+<div *ngIf="showBill" class="bill-section">
+    <h3>Bill Details</h3>
+    <pre>{{ billData | json }}</pre> <!-- replace with your formatted bill -->
+
+    <button (click)="printBill()">Print PDF</button>
+    <button (click)="cancelPrint()">Cancel</button>
+</div>

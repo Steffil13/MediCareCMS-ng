@@ -1,1 +1,398 @@
-/* You can add global styles to this file, and also import other style files */
+// /* You can add global styles to this file, and also import other style files */
+// // dashborad
+// .btn-light-navy {
+//     background-color: #12126a;
+//     /* lighter than #03045e */
+//     color: #fff;
+//     /* keep text white for contrast */
+//     border: none;
+//     padding: 1rem 2.5rem;
+//     /* more height and width */
+//     font-size: 1.25rem;
+//     /* bigger text */
+//     border-radius: 0.5rem;
+// }
+
+
+// .page-contentdash {
+//     min-height: 100vh;
+//     padding-top: 40px;
+//     /* space below navbar */
+//     background: linear-gradient(to top, #03033a, silver);
+// }
+
+
+// .btn-light-navy:hover {
+//     background-color: #3a3b78;
+//     /* even lighter on hover */
+// }
+
+// .button-container {
+//     margin-top: 140px;
+//     /* adjust as needed */
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     gap: 30px;
+// }
+
+
+// .button-container .btn {
+//     flex: 0 0 calc(50% - 15px);
+//     /* exactly two per row */
+// }
+
+// // list
+// .page-content {
+//     min-height: 100vh;
+//     padding-top: 40px;
+//     background: linear-gradient(to top, #03033a, silver);
+//     color: #e0e0e0; // light text for contrast
+//     padding-bottom: 4rem;
+//     /* adjust so footer doesn't overlap content */
+// }
+
+// .table {
+//     background-color: rgba(5, 6, 73, 0.9); // navy with transparency
+//     color: #fff;
+//     border-radius: 0.5rem;
+//     border-collapse: separate;
+//     border-spacing: 0 0.5rem;
+//     box-shadow: 0 0 15px rgba(10, 20, 70, 0.7);
+
+
+//     thead {
+//         background-color: #12126a; // dark blue header matching btn-light-navy bg
+//         color: #fff;
+//     }
+
+//     tbody tr {
+//         background-color: transparent; // transparent instead of solid blue
+
+//         &:hover {
+//             background-color: rgba(134, 135, 230, 0.3); // semi-transparent navy on hover
+//             color: #fff;
+//         }
+//     }
+
+
+//     th,
+//     td {
+//         vertical-align: middle;
+//         border-color: transparent;
+//     }
+// }
+
+
+// .btn {
+//     background-color: #12126a !important; // dark navy
+//     color: #fff !important; // white text for contrast
+//     border: none;
+//     border-radius: 0.5rem !important;
+
+//     &:hover {
+//         background-color: #3a3b78 !important; // lighter navy on hover
+//     }
+// }
+
+// .btn-back {
+//     margin-left: 30px; // adjust as needed
+//     margin-right: 20px;
+
+// }
+
+// .center-container {
+//     display: flex;
+//     justify-content: center;
+// }
+
+// .center-narrow {
+//     width: 90%;
+//     /* search/table width */
+//     max-width: 1150px;
+//     // margin-right: 20px;
+//     // margin-left: px;
+// }
+
+
+// // Adjust pagination-controls style to fit theme:
+
+// .pagination-controls,
+// .custom-page {
+//     margin-top: 1rem;
+//     display: flex;
+//     justify-content: center;
+
+//     ul.pagination {
+//         list-style: none;
+//         display: flex;
+//         gap: 0.5rem;
+//         padding-left: 0;
+//     }
+
+//     ul.pagination li {
+//         display: inline-block;
+//     }
+
+//     ul.pagination li a {
+//         color: #fff;
+//         background-color: #12126a;
+//         padding: 0.5rem 0.75rem;
+//         border-radius: 0.5rem;
+//         text-decoration: none;
+//         cursor: pointer;
+//         border: 1px solid #3a3b78;
+//     }
+
+//     ul.pagination li a.active {
+//         background-color: #3a3b78;
+//         border-color: #050649;
+//         font-weight: bold;
+//     }
+
+//     ul.pagination li a:hover:not(.active) {
+//         background-color: #7375cf;
+//         border-color: #3a3b78;
+//     }
+
+//     ul.pagination li.disabled a {
+//         color: #999;
+//         pointer-events: none;
+//         background-color: transparent;
+//         border-color: transparent;
+//     }
+
+//    .footer-pagination {
+//   position: fixed;
+//   bottom: 0;
+//   left: 0;
+//   width: 100%;
+//   background: transparent; /* Change to #12126a if you want color bar */
+//   display: flex;
+//   justify-content: center;
+//   padding: 0.75rem 0;
+//   z-index: 100;
+// }
+
+// /* To avoid table overlapping with fixed pagination */
+// .page-content {
+//   padding-bottom: 4rem; /* matches the footer height */
+// }
+
+// }
+// // add
+// /* Page Background & Container */
+// .page-contentadd,
+// .container {
+//   background: linear-gradient(to top, #03033a, silver);
+//   color: #e0e0e0;
+//   padding: 2rem;
+//   border-radius: 0.5rem;
+//   max-width: 800px; /* keeps form nicely centered */
+//   margin: 0 auto;
+//   box-shadow: 0 0 20px rgba(0,0,0,0.4);
+// }
+
+// /* Heading */
+// h2 {
+//   font-weight: bold;
+//   color: #fff;
+//   margin-bottom: 1.5rem;
+//   text-align: center;
+// }
+
+// /* Labels */
+// .form-label {
+//   font-weight: 600;
+//   color: #fff;
+// }
+
+// /* Inputs & Selects */
+// .form-control,
+// .form-select {
+//   background-color: rgba(255,255,255,0.9);
+//   border-radius: 0.5rem;
+//   border: 1px solid #ccc;
+//   padding: 0.5rem 0.75rem;
+//   font-size: 1rem;
+//   color: #000;
+
+//   &:focus {
+//     border-color: #12126a;
+//     box-shadow: 0 0 5px rgba(18, 18, 106, 0.5);
+//   }
+// }
+
+// /* Invalid State */
+// .is-invalid {
+//   border-color: #dc3545 !important;
+// }
+// .invalid-feedback,
+// .text-danger {
+//   font-size: 0.875rem;
+// }
+
+// /* Radio & Checkbox Styling */
+// .form-check-input:checked {
+//   background-color: #12126a;
+//   border-color: #12126a;
+// }
+
+// .form-check-label {
+//   color: #fff;
+//   margin-left: 0.3rem;
+// }
+
+// /* Buttons */
+// .btn-primary {
+//   background-color: #12126a;
+//   border-color: #12126a;
+//   border-radius: 0.5rem;
+//   padding: 0.5rem 1.25rem;
+//   font-size: 1rem;
+
+//   &:hover {
+//     background-color: #3a3b78;
+//     border-color: #3a3b78;
+//   }
+// }
+
+// .btn-secondary {
+//   background-color: #12126a;
+//     border-color: #12126a;
+//   border-radius: 0.5rem;
+
+//   &:hover {
+//     background-color: #3a3b78;
+//   }
+// }
+
+// /* Back button top spacing */
+// .container > .mb-3 > .btn {
+//   min-width: 100px;
+// }
+
+// /* Save / Cancel Spacing */
+// button + button {
+//   margin-left: 0.5rem;
+// }
+
+// /* Department / Doctor Fee layout */
+// [formControlName='doctorFee'] {
+//   background-color: #f5f5f5;
+//   color: #444;
+//   font-weight: bold;
+// }
+
+// /* Active Checkbox label */
+// #isActive + .form-check-label {
+//   color: #fff;
+// }
+// // edit
+// /* Page Background & Container */
+// .page-content,
+// .container {
+//   background: linear-gradient(to top, #03033a, silver);
+//   color: #e0e0e0;
+//   padding: 2rem;
+//   border-radius: 0.5rem;
+//   max-width: 800px; /* keeps form nicely centered */
+//   margin: 0 auto;
+//   box-shadow: 0 0 20px rgba(0,0,0,0.4);
+// }
+
+// /* Heading */
+// h2 {
+//   font-weight: bold;
+//   color: #fff;
+//   margin-bottom: 1.5rem;
+//   text-align: center;
+// }
+
+// /* Labels */
+// .form-label {
+//   font-weight: 600;
+//   color: #fff;
+// }
+
+// /* Inputs & Selects */
+// .form-control,
+// .form-select {
+//   background-color: rgba(255,255,255,0.9);
+//   border-radius: 0.5rem;
+//   border: 1px solid #ccc;
+//   padding: 0.5rem 0.75rem;
+//   font-size: 1rem;
+//   color: #000;
+
+//   &:focus {
+//     border-color: #12126a;
+//     box-shadow: 0 0 5px rgba(18, 18, 106, 0.5);
+//   }
+// }
+
+// /* Invalid State */
+// .is-invalid {
+//   border-color: #dc3545 !important;
+// }
+// .invalid-feedback,
+// .text-danger {
+//   font-size: 0.875rem;
+// }
+
+// /* Radio & Checkbox Styling */
+// .form-check-input:checked {
+//   background-color: #12126a;
+//   border-color: #12126a;
+// }
+
+// .form-check-label {
+//   color: #fff;
+//   margin-left: 0.3rem;
+// }
+
+// /* Buttons */
+// .btn-primary {
+//   background-color: #12126a;
+//   border-color: #12126a;
+//   border-radius: 0.5rem;
+//   padding: 0.5rem 1.25rem;
+//   font-size: 1rem;
+
+//   &:hover {
+//     background-color: #3a3b78;
+//     border-color: #3a3b78;
+//   }
+// }
+
+// .btn-secondary {
+//   background-color: #12126a;
+//     border-color: #12126a;
+//   border-radius: 0.5rem;
+
+//   &:hover {
+//     background-color: #3a3b78;
+//   }
+// }
+
+// /* Back button top spacing */
+// .container > .mb-3 > .btn {
+//   min-width: 100px;
+// }
+
+// /* Save / Cancel Spacing */
+// button + button {
+//   margin-left: 0.5rem;
+// }
+
+// /* Department / Doctor Fee layout */
+// [formControlName='doctorFee'] {
+//   background-color: #f5f5f5;
+//   color: #444;
+//   font-weight: bold;
+// }
+
+// /* Active Checkbox label */
+// #isActive + .form-check-label {
+//   color: #fff;
+// }

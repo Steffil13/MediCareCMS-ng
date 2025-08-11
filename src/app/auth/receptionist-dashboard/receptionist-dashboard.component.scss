@@ -1,0 +1,39 @@
+.dashboard-container {
+  padding: 20px;
+  background: linear-gradient(to top, #03033a, silver);
+  min-height: 100vh;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #12126a; /* same as btn-light-navy bg */
+  color: #fff; /* white text for contrast */
+  padding: 1.5rem 2.5rem; /* a bit more padding for card */
+  border-radius: 0.5rem; /* same radius as buttons */
+  flex: 0 0 calc(33% - 20px); /* 3 per row */
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(18, 18, 106, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.card p {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.card:hover {
+  background-color: #3a3b78; /* same lighter hover as btn */
+  box-shadow: 0 6px 12px rgba(58, 59, 120, 0.6);
+}

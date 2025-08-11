@@ -17,6 +17,8 @@ export class AdminListComponent implements OnInit {
   filteredUsers: User[] = [];   // ✅ filtered list for search
   searchTerm: string = '';      // ✅ search input binding
   departments: Department[] = [];
+  page : number=1;
+  pageSize : number = 4;
 
   showDepartments: boolean = false;
   showAddDepartmentForm: boolean = false;

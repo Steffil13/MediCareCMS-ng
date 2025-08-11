@@ -1,0 +1,61 @@
+<div class="patient-container">
+  <h2>Patient Management</h2>
+
+  <!-- Actions Section -->
+  <div class="actions">
+    <!-- Search -->
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by phone"
+      />
+      <button (click)="onSearch()">🔍 Search</button>
+      <button (click)="getAllPatients()">📋 View All</button>
+    </div>
+
+    <!-- Add Patient -->
+    <div class="add-patient">
+      <button (click)="onAddPatient()">➕ Add Patient</button>
+    </div>
+  </div>
+
+  <!-- Status Messages -->
+  <div *ngIf="loading" class="loading">Loading patients...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- Patients Table -->
+  <table *ngIf="!loading && patients.length" class="patient-table">
+    <thead>
+      <tr>
+        <th>Patient ID</th>
+        <th>Patient Number</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of patients">
+        <td>{{ p.patientId }}</td>
+        <td>{{ p.registerNumber }}</td>
+        <td>{{ p.firstName }} {{ p.lastName }}</td>
+        <td>{{ p.contact }}</td>
+        <td>{{ calculateAge(p.dob) }}</td>
+        <td>{{ p.gender }}</td>
+        <td>{{ p.address }}</td>
+        <td>
+          <button (click)="onEditPatient(p)">✏️ Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Data Message -->
+  <div *ngIf="!loading && !patients.length" class="no-data">
+    No patients found.
+  </div>
+</div>

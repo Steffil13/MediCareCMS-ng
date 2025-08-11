@@ -1,0 +1,72 @@
+/* Gradient page background */
+.page-content {
+  background: linear-gradient(to top, #03033a, silver);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Glass effect form */
+.page-content .form-container {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #e0e0e0;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Headings */
+.brand-heading {
+  font-weight: 700;
+  color: #d6336c;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.page-title {
+  color: #fff;
+}
+
+/* Labels */
+.page-content .form-label {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Transparent Inputs */
+.page-content .form-control {
+  background-color: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.9rem;
+}
+.page-content .form-control::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+.page-content .form-control:focus {
+  background-color: rgba(255,255,255,0.25);
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+/* Invalid feedback */
+.page-content .invalid-feedback {
+  font-size: 0.875rem;
+}
+
+/* Buttons */
+.page-content .btn-primary {
+  background-color: #12126a !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+}
+.page-content .btn-primary:hover {
+  background-color: #3a3b78 !important;
+}

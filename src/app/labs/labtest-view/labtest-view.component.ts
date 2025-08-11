@@ -10,6 +10,9 @@ import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.servi
 })
 export class LabtestViewComponent implements OnInit {
   labTests: Labtest[] = [];
+  page : number=1;
+  pageSize : number = 4;
+  
 
   constructor(private labtestService: LabTechnicianService, private router: Router) { }
 

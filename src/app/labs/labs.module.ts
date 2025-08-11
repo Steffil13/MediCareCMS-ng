@@ -9,6 +9,8 @@ import { TestResultsComponent } from './test-results/test-results.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LabBillComponent } from './lab-bill/lab-bill.component';
 import { UpdateTestResultComponent } from './update-lab-result/update-lab-result.component';
+import { SharedModule } from '../shared/nav/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -26,7 +28,9 @@ import { UpdateTestResultComponent } from './update-lab-result/update-lab-result
     CommonModule,
     LabsRoutingModule,
     FormsModule,
-    ReactiveFormsModule  
+    ReactiveFormsModule,
+    SharedModule,
+    NgxPaginationModule
   ]
 })
 export class LabsModule { }

@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/nav/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { RouterModule } from '@angular/router';
       preventDuplicates: true
     }),
     RouterModule.forRoot([]), // keep your routes here
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule,
+    NgxPaginationModule
   ],
   providers: [
     {

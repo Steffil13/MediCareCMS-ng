@@ -1,51 +1,61 @@
-<div class="container mt-4">
-  <h3>Assigning Test Result</h3>
-  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="resultValue" class="form-label">Result Value</label>
-      <input
-        id="resultValue"
-        type="text"
-        class="form-control"
-        formControlName="resultValue"
-        required
-      />
-      <div
-        *ngIf="
-          updateForm.get('resultValue')?.invalid &&
-          (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
-        "
-        class="text-danger"
-      >
-        Result Value is required.
+<app-navigation-bar></app-navigation-bar>
+
+<div class="page-content">
+  <div class="form-container">
+
+    <!-- Page Heading -->
+    <h2>Assigning Test Result</h2>
+
+    <!-- Assign Result Form -->
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+
+      <!-- Result Value -->
+      <div class="mb-3">
+        <label for="resultValue" class="form-label">Result Value</label>
+        <input id="resultValue" type="text" class="form-control" formControlName="resultValue" required [ngClass]="{
+            'is-invalid':
+              updateForm.get('resultValue')?.invalid &&
+              (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
+          }" />
+        <div *ngIf="
+            updateForm.get('resultValue')?.invalid &&
+            (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
+          " class="invalid-feedback">
+          Result Value is required.
+        </div>
       </div>
-    </div>
 
-    <div class="mb-3">
-      <label for="resultStatus" class="form-label">Status</label>
-      <select id="resultStatus" class="form-control" formControlName="resultStatus">
-        <option [ngValue]="true">Positive</option>
-        <option [ngValue]="false">Negative</option>
-      </select>
-    </div>
+      <!-- Status -->
+      <div class="mb-3">
+        <label for="resultStatus" class="form-label">Status</label>
+        <select id="resultStatus" class="form-select" formControlName="resultStatus">
+          <option [ngValue]="true">Positive</option>
+          <option [ngValue]="false">Negative</option>
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label for="remarks" class="form-label">Remarks</label>
-      <textarea id="remarks" class="form-control" formControlName="remarks"></textarea>
-    </div>
+      <!-- Remarks -->
+      <div class="mb-3">
+        <label for="remarks" class="form-label">Remarks</label>
+        <textarea id="remarks" class="form-control" formControlName="remarks" rows="3"></textarea>
+      </div>
 
-    <div class="mb-3">
-      <label for="recordDate" class="form-label">Record Date</label>
-      <input
-        id="recordDate"
-        type="date"
-        class="form-control"
-        formControlName="recordDate"
-      />
-    </div>
+      <!-- Record Date -->
+      <div class="mb-3">
+        <label for="recordDate" class="form-label">Record Date</label>
+        <input id="recordDate" type="date" class="form-control" formControlName="recordDate" />
+      </div>
 
-    <button type="submit" class="btn btn-success" [disabled]="updateForm.invalid">
-      Assign Result
-    </button>
-  </form>
+      <!-- Buttons -->
+      <div class="d-flex justify-content-start">
+        <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid">
+          Assign Result
+        </button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-secondary ms-2" routerLink="/labdashboard">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
 </div>

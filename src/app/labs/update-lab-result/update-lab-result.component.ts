@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-result',
-  templateUrl: './update-lab-result.component.html'
+  templateUrl: './update-lab-result.component.html',
+  styleUrls: ['./update-lab-result.component.scss']
 })
 export class UpdateTestResultComponent implements OnInit {
   updateForm!: FormGroup;

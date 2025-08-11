@@ -5,6 +5,8 @@ import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.servi
 @Component({
   selector: 'app-add-labtest',
   templateUrl: './add-labtest.component.html',
+  styleUrls: ['./add-labtest.component.scss']
+
 })
 export class AddLabtestComponent {
   labTestForm: FormGroup;

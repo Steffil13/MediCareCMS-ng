@@ -5,7 +5,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-test-results',
-  templateUrl: './test-results.component.html'
+  templateUrl: './test-results.component.html',
+  styleUrls: ['./test-results.component.scss']
 })
 export class TestResultsComponent implements OnInit {
   testResults: TestResult[] = [];

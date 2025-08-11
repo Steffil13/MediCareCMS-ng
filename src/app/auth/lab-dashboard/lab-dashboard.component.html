@@ -1,79 +1,33 @@
-<div class="d-flex" style="min-height: 100vh; font-family: 'Segoe UI', Tahoma, sans-serif;">
+<app-navigation-bar></app-navigation-bar>
 
-  <!-- Sidebar -->
-  <div class="p-4 text-white d-flex flex-column justify-content-start align-items-center"
-    style="background: linear-gradient(180deg, #30045E, #4b067e); width: 260px; box-shadow: 3px 0 12px rgba(0,0,0,0.15); border-right: 1px solid rgba(255,255,255,0.1);">
-
-    <h2 class="text-center mb-4" style="font-weight: bold; letter-spacing: 1px;">
-      MediCare+
-    </h2>
-
-    <div style="max-width: 220px;">
-      <p style="font-size: 15px; line-height: 1.6; opacity: 0.95; margin-bottom: 16px;">
-        <strong> Precision in Every Test</strong> — Our lab combines advanced technology with expert analysis for results you can trust.
-      </p>
-      <p style="font-size: 15px; line-height: 1.6; opacity: 0.95; margin-bottom: 16px;">
-        <strong> Fast Turnaround</strong> — We value your time, delivering quick and accurate diagnostics.
-      </p>
-      <p style="font-size: 15px; line-height: 1.6; opacity: 0.95; margin-bottom: 16px;">
-        <strong> Patient-Centered Care</strong> — Confidential, careful, and focused on your well-being.
-      </p>
-      <p style="font-size: 15px; line-height: 1.6; opacity: 0.95;">
-        Serving our community with dedication since <strong>2008</strong>.
-      </p>
-    </div>
-  </div>
+<div class="dashboard-wrapper">
 
   <!-- Main Content -->
-  <div class="flex-grow-1" style="background-color: #faf9fc;">
-    <!-- Top Bar -->
-    <div class="d-flex justify-content-between align-items-center p-3 bg-white border-bottom shadow-sm"
-      style="padding-left: 25px; padding-right: 25px;">
-      <h4 class="mb-0" style="color: #30045E; font-weight: bold;">Lab Technician Dashboard</h4>
-      <span style="font-size: 15px; color: #555;">Welcome, <strong>LabTech Name</strong></span>
-    </div>
+  <div class="main-content w-100">
 
     <!-- Dashboard Content -->
-    <div class="container text-center mt-5" style="color: #30045E; max-width: 1100px;">
-      <p class="lead mb-5" style="color: #555;">Manage all your lab operations from one place</p>
+    <div class="dashboard-container text-center">
+      <p class="lead dashboard-subtitle">Manage all your lab operations from one place</p>
 
-      <div class="row justify-content-center">
+      <!-- Cards Wrapper -->
+      <div class="dashboard-cards">
 
-        <!-- Card Template -->
-        <div class="col-md-3 m-3 p-4 rounded shadow-sm card-hover"
-          style="border: none; background-color: #ffffff; transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;"
-          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)';"
-          onmouseout="this.style.transform=''; this.style.boxShadow='';">
-          <h5 class="mb-3" style="color: #30045E; font-weight: 600;">View Lab Tests</h5>
-          <p style="font-size: 14px; color: #555;">Browse all available lab tests with details</p>
-          <a routerLink="/labtests" class="btn btn-lg mt-2"
-            style="background-color: #30045E; color: white; border-radius: 8px; padding: 8px 20px; font-size: 14px;">
-            View
-          </a>
+        <!-- Card 1 -->
+        <div class="card" routerLink="/labtests">
+          <h3>View Lab Tests</h3>
+          <p>Browse all available lab tests with details</p>
         </div>
 
-        <div class="col-md-3 m-3 p-4 rounded shadow-sm card-hover"
-          style="border: none; background-color: #ffffff; transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;"
-          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)';"
-          onmouseout="this.style.transform=''; this.style.boxShadow='';">
-          <h5 class="mb-3" style="color: #30045E; font-weight: 600;">View Lab History</h5>
-          <p style="font-size: 14px; color: #555;">Review completed test results for patients</p>
-          <a routerLink="/testresults" class="btn btn-lg mt-2"
-            style="background-color: #30045E; color: white; border-radius: 8px; padding: 8px 20px; font-size: 14px;">
-            View
-          </a>
+        <!-- Card 2 -->
+        <div class="card" routerLink="/testresults">
+          <h3>View Lab History</h3>
+          <p>Review completed test results for patients</p>
         </div>
 
-        <div class="col-md-3 m-3 p-4 rounded shadow-sm card-hover"
-          style="border: none; background-color: #ffffff; transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;"
-          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)';"
-          onmouseout="this.style.transform=''; this.style.boxShadow='';">
-          <h5 class="mb-3" style="color: #30045E; font-weight: 600;">Add Lab Test</h5>
-          <p style="font-size: 14px; color: #555;">Add a new lab test to the system easily</p>
-          <a routerLink="/addlabtest" class="btn btn-lg mt-2"
-            style="background-color: #30045E; color: white; border-radius: 8px; padding: 8px 20px; font-size: 14px;">
-            Add
-          </a>
+        <!-- Card 3 -->
+        <div class="card" routerLink="/addlabtest">
+          <h3>Add Lab Test</h3>
+          <p>Add a new lab test to the system easily</p>
         </div>
 
       </div>

@@ -1,0 +1,65 @@
+// add-patient.component.scss
+
+.add-patient-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0a775f;
+    font-weight: 600;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select,
+    textarea {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: #0a775f;
+      }
+    }
+
+    button {
+      background-color: #0a775f;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken(#0a775f, 8%);
+      }
+    }
+  }
+
+  .error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: -10px;
+  }
+}

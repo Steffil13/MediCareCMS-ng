@@ -1,63 +1,86 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Patient } from '../models/patient.model';
-import { Appointment } from '../models/appointment.model';
-import { Billing } from '../models/billing.model';
+import { environment } from 'src/environments/environment';
+import { Patient } from '../model/receptionist/patient';
+import { Appointment } from '../model/receptionist/appointment';
+import { ConsultationBill } from '../model/receptionist/consultation-bill';
+import { Department } from '../model/admin/department';
+import { Doctor } from '../model/admin/doctor';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReceptionistService {
 
-  private baseUrl = 'https://localhost:7288/api/Receptionist'; // Your backend URL
+  private baseUrl = `${environment.apiUrl}/receptionist`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // 🧾 Patients
-  getAllPatients(): Observable<Patient[]> {
-    return this.http.get<Patient[]>(`${this.baseUrl}/GetAllPatients`);
-  }
-
-  getPatientById(id: number): Observable<Patient> {
-    return this.http.get<Patient>(`${this.baseUrl}/GetPatientById/${id}`);
-  }
-
+  // 🩺 Patient APIs
   addPatient(patient: Patient): Observable<any> {
-    return this.http.post(`${this.baseUrl}/AddPatient`, patient);
+    return this.http.post(`${this.baseUrl}/patients`, patient);
   }
 
-  updatePatient(id: number, patient: Patient): Observable<any> {
-    return this.http.put(`${this.baseUrl}/UpdatePatient/${id}`, patient);
+  getAllPatients(): Observable<Patient[]> {
+    return this.http.get<Patient[]>(`${this.baseUrl}/all-patients`);
+  }
+  getPatientById(id: number): Observable<Patient> {
+    return this.http.get<Patient>(`${this.baseUrl}/patients/${id}`);
   }
 
-  deletePatient(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/DeletePatient/${id}`);
+  searchPatientByPhone(phone: string): Observable<Patient> {
+    return this.http.get<Patient>(`${this.baseUrl}/search-patient/${phone}`);
   }
 
-  // 📅 Appointments
-  getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.baseUrl}/GetAllAppointments`);
+  editPatient(patient: Patient, patientId: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/patients/${patientId}`, patient);
   }
 
+  // 📅 Appointment APIs
   scheduleAppointment(appointment: Appointment): Observable<any> {
-    return this.http.post(`${this.baseUrl}/ScheduleAppointment`, appointment);
+    return this.http.post(`${this.baseUrl}/appointments`, appointment);
   }
 
-  updateAppointment(id: number, appointment: Appointment): Observable<any> {
-    return this.http.put(`${this.baseUrl}/UpdateAppointment/${id}`, appointment);
+  getAppointmentsByPatientId(patientId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/appointments/${patientId}`);
   }
 
-  deleteAppointment(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/DeleteAppointment/${id}`);
+  editAppointment(appointment: Appointment): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update-appointment`, appointment);
   }
 
-  // 💳 Billing
-  getBills(): Observable<Billing[]> {
-    return this.http.get<Billing[]>(`${this.baseUrl}/GetAllBills`);
+  deleteAppointment(appointmentId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete-appointment/${appointmentId}`);
   }
 
-  generateBill(bill: Billing): Observable<any> {
-    return this.http.post(`${this.baseUrl}/GenerateBill`, bill);
+  getBills(): Observable<ConsultationBill[]> {
+    return this.http.get<ConsultationBill[]>(`${this.baseUrl}/receptionist/bills`);
   }
+
+  getBillById(billId: number): Observable<ConsultationBill> {
+    return this.http.get<ConsultationBill>(`${this.baseUrl}/receptionist/bills/${billId}`);
+  }
+
+  generateBill(appointmentId: number): Observable<ConsultationBill> {
+    return this.http.post<ConsultationBill>(`${this.baseUrl}/billings`, { appointmentId });
+  }
+  searchPatientsByRegisterNumber(registerNumber: string): Observable<Patient[]> {
+    return this.http.get<Patient[]>(`${this.baseUrl}/patients/search`, {
+      params: { registerNumber }
+    });
+  }
+
+  generateBillForPatient(patientId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/billings/${patientId}`);
+  }
+  getDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>(`${environment.apiUrl}/admin/departments`);
+  }
+
+  getDoctorsByDepartment(departmentId: number): Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(`${this.baseUrl}/doctors/by-department/${departmentId}`);
+  }
+
+
 }

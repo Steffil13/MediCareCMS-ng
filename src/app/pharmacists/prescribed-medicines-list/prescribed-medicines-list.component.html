@@ -1,0 +1,24 @@
+<table *ngIf="!loading && prescribedMedicines.length > 0" border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Prescription ID</th>
+      <th>Medicine Name</th>
+      <th>Dosage</th>
+      <th>Duration</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let prescription of prescribedMedicines">
+      <tr *ngFor="let pm of prescription.medicines || []">
+        <td>{{prescription.prescriptionId}}</td>
+        <td>{{ pm.medicineName }}</td>
+        <td>{{ pm.dosage }}</td>
+        <td>{{ pm.duration }}</td>
+        <td>
+          <button (click)="onAssign(pm.pMedicineId)">Assign</button>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

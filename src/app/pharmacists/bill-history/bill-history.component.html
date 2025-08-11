@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h3>Pharmacist Bill History</h3>
+
+  <div *ngIf="loading">Loading...</div>
+
+  <table *ngIf="!loading" class="table table-bordered table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Bill No</th>
+        <th>Patient Name</th>
+        <th>Doctor Name</th>
+        <th>Total Amount</th>
+        <th>Issued Date</th>
+        <th>Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bill of billHistory">
+        <td>{{ bill.labBillNumber }}</td>
+        <td>{{ bill.patientName }}</td>
+        <td>{{ bill.doctorName }}</td>
+        <td>{{ bill.totalAmount | currency }}</td>
+        <td>{{ bill.issuedDate | date: 'short' }}</td>
+        <td>
+          <span [class.text-success]="bill.isPaid" [class.text-danger]="!bill.isPaid">
+            {{ bill.isPaid ? 'Yes' : 'No' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DoctorService } from 'src/app/shared/Service/doctor.service';
+import { DoctorService } from 'src/app/shared/service/doctor.service';
 
 @Component({
   selector: 'app-appointments',

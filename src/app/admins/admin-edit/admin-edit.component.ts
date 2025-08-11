@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminService } from 'src/app/shared/Service/admin.service';
+import { AdminService } from 'src/app/shared/service/admin.service';
 import { Department } from 'src/app/shared/model/admin/department';
 import { Location } from '@angular/common';
 @Component({

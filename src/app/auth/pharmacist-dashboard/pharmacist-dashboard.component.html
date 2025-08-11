@@ -1,1 +1,17 @@
-<p>pharmacist-dashboard works!</p>
+<div class="dashboard-container">
+  <h2>Pharmacist Dashboard</h2>
+  
+  <button (click)="viewPrescriptions()">View All Prescriptions</button>
+
+  <!-- Patient History Button -->
+  <button (click)="viewPatientHistory()" style="margin-left: 10px;">Patient History</button>
+  
+  <!-- Add Medicine Button -->
+  <button (click)="addMedicine()" style="margin-left: 10px;">Add Medicine</button>
+
+  <!-- List of Medicines Button -->
+  <button (click)="viewMedicines()" style="margin-left: 10px;">List of Medicines</button>
+
+  <!-- Bill History Button -->
+  <button (click)="viewBillHistory()" style="margin-left: 10px;">Bill History</button>
+</div>

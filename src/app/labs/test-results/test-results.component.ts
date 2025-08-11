@@ -1,68 +1,34 @@
 import { Component, OnInit } from '@angular/core';
+import { TestResultHistory } from 'src/app/shared/model/labtech/AssignedLabTest';
 import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.service';
-import { TestResult } from 'src/app/shared/model/labtech/labtech';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-test-results',
-  templateUrl: './test-results.component.html'
+  templateUrl: './test-results.component.html',
+  styleUrls: ['./test-results.component.scss']
 })
 export class TestResultsComponent implements OnInit {
-  testResults: TestResult[] = [];
-  filteredResults: TestResult[] = [];
-  selectedTest?: TestResult;
-  updateForm: FormGroup;
-  showUpdateForm: boolean = false;
+  testResults: TestResultHistory[] = [];
+  loading = true;
+  errorMessage = '';
 
-  searchPatientName: string = '';
+  constructor(private labTechService: LabTechnicianService) {}
 
-  constructor(private service: LabTechnicianService, private fb: FormBuilder) {
-    this.updateForm = this.fb.group({
-      resultValue: [''],
-      resultStatus: [false],
-      remarks: ['']
+  ngOnInit(): void {
+    this.loadTestResults();
+  }
+
+  loadTestResults(): void {
+    this.labTechService.getTestResultsHistory().subscribe({
+      next: (data) => {
+        console.log('Test results history:', data);
+        this.testResults = data;
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load test results history';
+        this.loading = false;
+      }
     });
-  }
-
-  ngOnInit() {
-    this.fetchResults();
-  }
-
-  fetchResults() {
-    this.service.getAllTestResults().subscribe(data => {
-      this.testResults = data;
-      this.filteredResults = data;
-    });
-  }
-
-  filterResults() {
-    const searchTerm = this.searchPatientName.trim().toLowerCase();
-    if (!searchTerm) {
-      this.filteredResults = this.testResults;
-      return;
-    }
-    this.filteredResults = this.testResults.filter(result =>
-      result.patientName?.toLowerCase().includes(searchTerm)
-    );
-  }
-
-  editTest(test: TestResult) {
-    this.selectedTest = test;
-    this.showUpdateForm = true;
-    this.updateForm.patchValue({
-      resultValue: test.resultValue,
-      resultStatus: test.resultStatus,
-      remarks: test.remarks
-    });
-  }
-
-  submitUpdate() {
-    if (this.selectedTest) {
-      this.service.updateTestResult(this.selectedTest.registerNumber, this.updateForm.value).subscribe(() => {
-        alert('Test result updated!');
-        this.showUpdateForm = false;
-        this.fetchResults();
-      });
-    }
   }
 }

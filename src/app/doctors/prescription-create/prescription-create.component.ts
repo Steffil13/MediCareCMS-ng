@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { DoctorService } from 'src/app/shared/Service/doctor.service';
+import { DoctorService } from 'src/app/shared/service/doctor.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

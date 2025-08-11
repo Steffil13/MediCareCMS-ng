@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Department } from 'src/app/shared/model/admin/department';
 import { User } from 'src/app/shared/model/admin/user.model';
-import { AdminService } from 'src/app/shared/Service/admin.service';
+import { AdminService } from 'src/app/shared/service/admin.service';
 import { Location } from '@angular/common';
 
 @Component({

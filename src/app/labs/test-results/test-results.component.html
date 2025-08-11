@@ -1,112 +1,36 @@
-<div class="container-fluid py-4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+<div class="container">
+  <h2>Test Results History</h2>
 
-  <!-- Back Button -->
-  <div class="mb-4">
-    <button class="btn shadow-sm"
-      routerLink="/labdashboard"
-      style="background-color: #30045E; color: white; border-radius: 10px; padding: 10px 18px; font-weight: 500; border: none; transition: background 0.3s;">
-      &larr; Back to Dashboard
-    </button>
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <table *ngIf="!loading && testResults.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th>RegisterNumber</th>
+        <th>Patient Name</th>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Remarks</th>
+        <th>Status</th>
+        <th>Record Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of testResults">
+        <td>{{ result.registerNumber }}</td>
+        <td>{{ result.patientName }}</td>
+        <td>{{ result.testName }}</td>
+        <td>{{ result.resultValue }}</td>
+        <td>{{ result.remarks }}</td>
+        <td>{{ result.resultStatus ? 'Positive' : 'Negative' }}</td>
+
+        <td>{{ result.recordDate | date: 'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && testResults.length === 0">
+    No test results found.
   </div>
-
-  <!-- Page Title -->
-  <div class="text-center mb-5">
-    <h1 class="fw-bold" style="color: #30045E; font-size: 2.4rem; letter-spacing: 0.5px;">MediCare+</h1>
-    <p style="color: #6c757d; font-size: 1.05rem;">View and manage all tested lab results with ease</p>
-    <div style="height: 4px; width: 70px; background-color: #30045E; margin: 14px auto; border-radius: 2px;"></div>
-  </div>
-
-  <!-- Search Bar -->
-  <div class="mb-4 d-flex justify-content-center">
-    <input
-      type="text"
-      class="form-control w-50 shadow-sm"
-      placeholder="🔍 Search by Patient Name"
-      [(ngModel)]="searchPatientName"
-      (ngModelChange)="filterResults()"
-      style="border-radius: 12px; border: 1px solid #30045E; padding: 12px 16px; font-size: 1rem;"
-    />
-  </div>
-
-  <!-- Table -->
-  <div class="table-responsive shadow rounded" style="border-radius: 12px; overflow: hidden;">
-    <table class="table table-hover align-middle mb-0">
-      <thead style="background-color: #30045E; color: white; font-size: 0.95rem;">
-        <tr>
-          <th>Register Number</th>
-          <th>Patient Name</th>
-          <th>Lab Name</th>
-          <th>Result</th>
-          <th>Status</th>
-          <th>Remarks</th>
-          <th>Recorded On</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="filteredResults.length > 0; else noData">
-        <tr *ngFor="let result of filteredResults"
-            style="transition: background 0.3s;"
-            onmouseover="this.style.background='#f2f4f7'"
-            onmouseout="this.style.background='white'">
-          <td class="fw-semibold">{{ result.registerNumber }}</td>
-          <td>{{ result.patientName }}</td>
-          <td>{{ result.labName }}</td>
-          <td class="fw-semibold">{{ result.resultValue || 'N/A' }}</td>
-          <td>
-            <span class="badge px-3 py-2 shadow-sm"
-              [ngStyle]="{
-                'background-color': result.resultStatus ? '#dc3545' : '#198754',
-                'color': 'white',
-                'border-radius': '6px'
-              }">
-              {{ result.resultStatus ? 'Positive' : 'Negative' }}
-            </span>
-          </td>
-          <td>{{ result.remarks || '-' }}</td>
-          <td>{{ result.date | date: 'short' }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- No Data -->
-  <ng-template #noData>
-    <div class="alert text-center mt-3 shadow-sm"
-      style="font-size: 1.05rem; background-color: #f8d7da; color: #842029; border-radius: 8px;">
-      No test results available.
-    </div>
-  </ng-template>
-
-  <!-- Update Form -->
-  <div *ngIf="showUpdateForm" class="mt-5 p-4 shadow-lg"
-       style="background-color: #ffffff; border-radius: 12px; max-width: 650px; margin: auto;">
-    <h4 class="mb-4 fw-bold" style="color: #30045E;">Update Test Result</h4>
-    <form [formGroup]="updateForm" (ngSubmit)="submitUpdate()">
-      <div class="mb-3">
-        <label class="fw-semibold" style="color: #6c757d;">Result Value</label>
-        <input type="text" class="form-control shadow-sm" formControlName="resultValue"
-          style="border: 1px solid #30045E; border-radius: 10px; padding: 10px;" />
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" formControlName="resultStatus" id="resultStatus" />
-        <label class="form-check-label fw-semibold" style="color: #6c757d;" for="resultStatus">Positive Result</label>
-      </div>
-      <div class="mb-3">
-        <label class="fw-semibold" style="color: #6c757d;">Remarks</label>
-        <textarea class="form-control shadow-sm" formControlName="remarks"
-          style="border: 1px solid #30045E; border-radius: 10px; padding: 10px;"></textarea>
-      </div>
-      <div class="d-flex">
-        <button type="submit" class="btn shadow-sm me-2"
-          style="background-color: #30045E; color: white; border-radius: 10px; padding: 10px 18px; transition: 0.3s;">
-          Submit
-        </button>
-        <button type="button" class="btn btn-secondary shadow-sm"
-          style="border-radius: 10px; padding: 10px 18px;"
-          (click)="showUpdateForm = false">
-          Cancel
-        </button>
-      </div>
-    </form>
-  </div>
-
 </div>

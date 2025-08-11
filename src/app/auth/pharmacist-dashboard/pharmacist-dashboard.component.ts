@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacist-dashboard',
-  templateUrl: './pharmacist-dashboard.component.html',
-  styleUrls: ['./pharmacist-dashboard.component.scss']
+  templateUrl: './pharmacist-dashboard.component.html'
 })
-export class PharmacistDashboardComponent implements OnInit {
+export class PharmacistDashboardComponent {
+  constructor(private router: Router) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  viewPrescriptions() {
+    this.router.navigate(['/pharmacist/prescriptions']);
   }
 
+  viewPatientHistory() {
+    this.router.navigate(['/pharmacist/patient-history']);
+  }
+
+  addMedicine() {
+    this.router.navigate(['/pharmacist/add-medicine']);
+  }
+
+  viewMedicines() {
+    this.router.navigate(['/pharmacist/medicines']);
+  }
+
+  viewBillHistory() {
+    this.router.navigate(['/pharmacist/bill-history']);
+  }
 }

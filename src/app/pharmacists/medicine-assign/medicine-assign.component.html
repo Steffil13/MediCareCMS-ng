@@ -1,0 +1,20 @@
+<!-- medicine-assign.component.html -->
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="prescribedMedicine?.medicines?.length">
+  <p>
+    <strong>Medicine Name:</strong>
+    {{ prescribedMedicine?.medicines?.[0]?.medicineName }}
+  </p>
+  <p>
+    <strong>Dosage:</strong>
+    {{ prescribedMedicine?.medicines?.[0]?.dosage }}
+  </p>
+  <p>
+    <strong>Duration:</strong>
+    {{ prescribedMedicine?.medicines?.[0]?.duration }}
+  </p>
+</div>
+
+<button (click)="onAssignClick()">Assign</button>

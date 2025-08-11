@@ -1,0 +1,105 @@
+/* Full-page background for this component */
+.medicare-bg {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #03033a, silver);
+    /* Navy to silver */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Logo styling */
+img[alt="EMS Logo"] {
+    display: block;
+    margin: 0 auto;
+    max-width: 260px;
+    /* smaller width */
+    width: 60px;
+    height: auto;
+    border-radius: 10px;
+    /* optional rounding */
+    margin-bottom: 1rem;
+    max-height: 150px;
+    /* adjust as needed */
+    width: auto;
+    margin-bottom: 0.1rem;
+    display: block;
+    //   filter: drop-shadow(0 2px 6px rgba(3,3,58,0.3));
+    //   background: rgba(255,255,255,0.4);
+    // padding: 8px;
+}
+
+/* Headings */
+h2 {
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.brand-title {
+    color: #12126a;
+    font-size: 1.5rem;
+}
+
+/* Form container */
+// .login-box {
+//     //   background: rgba(255,255,255,0.96);
+//     //   border-radius: 1rem;
+//     // max-width: 900px;
+//     // padding: 2rem;
+//     //   box-shadow: 0 4px 20px rgba(3,3,58,0.2);
+// }
+.login-box {
+  max-width: 600px; /* change to desired width */
+  width: 100%;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 2px;
+  
+}
+.login-button{
+    margin-left: 100px;
+    margin-right: 100px;
+    text-align: center;
+}
+/* Inputs */
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+        border-color: #12126a;
+        box-shadow: 0 0 6px rgba(18, 18, 106, 0.4);
+    }
+}
+
+/* Button */
+.btn-primary {
+    background-color: #12126a;
+    border-color: #12126a;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #3a3b78;
+        border-color: #3a3b78;
+    }
+}
+
+/* Error messages */
+.validation-error {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    text-align: left;
+}

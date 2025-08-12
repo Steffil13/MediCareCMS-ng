@@ -8,10 +8,10 @@
       <input
         type="text"
         [(ngModel)]="searchTerm"
-        placeholder="Search by phone"
+        placeholder="Search by register number, name, or phone"
+        (ngModelChange)="onSearch()" 
       />
-      <button (click)="onSearch()">🔍 Search</button>
-      <button (click)="getAllPatients()">📋 View All</button>
+      <!-- <button type="button" (click)="getAllPatients()">📋 View All</button> -->
     </div>
 
     <!-- Add Patient -->

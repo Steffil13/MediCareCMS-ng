@@ -13,8 +13,8 @@ import { ReceptionistService } from 'src/app/shared/service/receptionist.service
   styleUrls: ['./patient.component.scss']
 })
 export class PatientComponent implements OnInit {
-
   patients: Patient[] = [];
+  allPatients: Patient[] = []; // store original list for frontend search
   searchTerm = '';
   loading = false;
   errorMessage = '';
@@ -26,99 +26,70 @@ export class PatientComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadPatients();
+    this.getAllPatients();
   }
 
-
-  // ✅ Load all patients (you may need a real API method for this)
+  /** ✅ Load all patients once */
   getAllPatients(): void {
     this.loading = true;
     this.errorMessage = '';
 
-    // If API doesn't have getAllPatients, replace with your real call
-    this.receptionistService.getAllPatients()
-      .subscribe({
-        next: (data) => {
-          console.log("data", data);
-          
-          this.patients = data;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.errorMessage = 'Failed to load patients';
-          console.error(err);
-          this.loading = false;
-        }
-      });
+    this.receptionistService.getAllPatients().subscribe({
+      next: (data) => {
+        this.allPatients = data || [];
+        this.patients = [...this.allPatients];
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load patients';
+        console.error(err);
+        this.loading = false;
+      }
+    });
   }
 
-  loadPatients(): void {
-    this.loading = true;
-    this.errorMessage = '';
-    // You don’t seem to have a `getAllPatients` method in the service yet,
-    // so you could either add it to your API, or load them based on criteria
-    this.receptionistService.searchPatientByPhone('') // adjust this call
-      .subscribe({
-        next: (patient) => {
-          // If your API returns a single patient for search, wrap it in an array
-          this.patients = patient ? [patient] : [];
-          this.loading = false;
-        },
-        error: (err) => {
-          this.errorMessage = 'Failed to load patients';
-          console.error(err);
-          this.loading = false;
-        }
-      });
-  }
-
+  /** ✅ Frontend search by phone, register number, or name */
   onSearch(): void {
-    if (!this.searchTerm.trim()) {
-      this.loadPatients();
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.patients = [...this.allPatients];
       return;
     }
-    this.receptionistService.searchPatientByPhone(this.searchTerm)
-      .subscribe({
-        next: (patient) => {
-          this.patients = patient ? [patient] : [];
-        },
-        error: (err) => {
-          this.errorMessage = 'No patient found';
-          this.patients = [];
-          console.error(err);
-        }
-      });
+
+    this.patients = this.allPatients.filter((p) =>
+      p.contact?.toLowerCase().includes(term) ||
+      p.registerNumber?.toLowerCase().includes(term) ||
+      `${p.firstName} ${p.lastName}`.toLowerCase().includes(term)
+    );
+
+    if (!this.patients.length) {
+      this.errorMessage = 'No patients found';
+    } else {
+      this.errorMessage = '';
+    }
   }
-  // ✅ Calculate age from date of birth
+
+  /** ✅ Calculate age from DOB */
   calculateAge(dob: string | Date): number {
-  if (!dob) return 0;
+    if (!dob) return 0;
 
-  let birthDate: Date;
-
-  if (typeof dob === 'string') {
-    birthDate = new Date(dob);
-  } else {
-    birthDate = dob;
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   }
 
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age;
-}
-
+  /** ✅ Navigate to add patient form */
   onAddPatient(): void {
-  // Example navigation to add-patient form
-  this.router.navigate(['add'], { relativeTo: this.route });
-;
-}
+    this.router.navigate(['add'], { relativeTo: this.route });
+  }
 
-onEditPatient(patient: Patient): void {
-  // Navigate to edit form with patient ID
-  this.router.navigate([`edit/${patient.patientId}`],{ relativeTo: this.route } );
-}
-
+  /** ✅ Navigate to edit patient form */
+  onEditPatient(patient: Patient): void {
+    this.router.navigate([`edit/${patient.patientId}`], { relativeTo: this.route });
+  }
 }

@@ -31,7 +31,8 @@ import { RouterModule } from '@angular/router';
     MedicineAddComponent,
     MedicineListComponent,
     PatientHistoryComponent,
-    BillHistoryComponent
+    BillHistoryComponent,
+    
   ],
   imports: [
     BrowserModule,

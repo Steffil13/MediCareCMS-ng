@@ -75,6 +75,7 @@ export class UpdateTestResultComponent implements OnInit {
 
     this.labTechnicianService.getTestResultById(plabTestId).subscribe({
       next: details => {
+        console.log('Loaded lab test details:', details);
         // Map response properties (adjust if your API returns different shape)
         this.prescriptionId = details.prescriptionId;
         this.labTechnicianId = details.labTechnicianId;

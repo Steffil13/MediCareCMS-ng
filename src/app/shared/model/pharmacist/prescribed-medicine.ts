@@ -5,6 +5,7 @@ export class Medicine {
   dosage?: string;
   duration?: string;
   pMedicineId: number;
+  isIssued?: boolean;
 
   constructor(
     medicineId: number = 0,
@@ -20,6 +21,7 @@ export class Medicine {
     this.medicineName = medicineName;
     this.dosage = dosage;
     this.duration = duration;
+    
   }
 }
 

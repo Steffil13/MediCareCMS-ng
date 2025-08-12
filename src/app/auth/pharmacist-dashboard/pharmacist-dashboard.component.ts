@@ -9,12 +9,13 @@ export class PharmacistDashboardComponent {
   constructor(private router: Router) {}
 
   viewPrescriptions() {
-    this.router.navigate(['/pharmacist/prescriptions']);
+  this.router.navigate(['/pharmacist/prescribed-medicines']);  // Correct path in your routes
   }
 
   viewPatientHistory() {
-    this.router.navigate(['/pharmacist/patient-history']);
-  }
+  this.router.navigate(['/patient-history']);
+}
+
 
   addMedicine() {
     this.router.navigate(['/pharmacist/add-medicine']);

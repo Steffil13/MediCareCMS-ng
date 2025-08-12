@@ -1,0 +1,21 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th>labId</th>
+
+            <th>Test Name</th>
+            <th>Normal Range</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let test of labTests">
+            <td>{{ test.labId }}</td>
+
+            <td>{{ test.labName }}</td>
+            <td>{{ test.normalRange }}</td>
+            <td>{{ test.price }}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,7 +1,4 @@
 <div class="container mt-4">
-  <button class="btn btn-secondary mb-3" (click)="router.navigate(['/labtechnician'])">
-    &larr; Back to Dashboard
-  </button>
 
   <h2 class="mb-4">Lab Bill Details</h2>
 
@@ -53,6 +50,9 @@
       </tbody>
     </table>
 
-    <button class="btn btn-primary" (click)="printBill()">Print Bill</button>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" (click)="printBill()">Print Bill</button>
+      <a routerLink="/labdashboard" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
   </div>
 </div>

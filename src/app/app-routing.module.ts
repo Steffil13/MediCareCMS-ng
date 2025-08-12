@@ -16,6 +16,7 @@ import { MedicineAddComponent } from './pharmacists/medicine-add/medicine-add.co
 import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list.component';
 import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
 import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
+import { LabtestListComponent } from './labs/lab-list/lab-list.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [
@@ -32,6 +33,8 @@ const routes: Routes = [
   { path: 'update-test-result/:plabTestId', component: UpdateTestResultComponent },
   { path: 'generate-labbill/:prescriptionId', component: LabBillComponent },
   { path: 'labtechnician/bill/:billId', component: LabBillComponent },
+  { path: 'alllabtests', component: LabtestListComponent },
+
 
   //{ path: '', redirectTo: '/labdashboard', pathMatch: 'full' }
 
@@ -45,6 +48,7 @@ const routes: Routes = [
   { path: 'pharmacist/medicines', component: MedicineListComponent },
   { path: 'patient-history', component: PatientHistoryComponent },
   { path: 'pharmacist/bill-history', component: BillHistoryComponent },
+
 
 
 

@@ -1,32 +1,45 @@
 <div class="container mt-4">
-  <h3>Pharmacist Bill History</h3>
+  <h2>Pharmacy Bill History</h2>
 
-  <div *ngIf="loading">Loading...</div>
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center">
+    <p>Loading bills...</p>
+  </div>
 
-  <table *ngIf="!loading" class="table table-bordered table-striped mt-3">
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table of bills -->
+  <table *ngIf="!loading && bills.length > 0" class="table table-bordered table-striped">
     <thead>
       <tr>
-        <th>Bill No</th>
-        <th>Patient Name</th>
-        <th>Doctor Name</th>
+        <th>Bill ID</th>
+        <th>DoctorName</th>
+        <th>PatientName</th>
         <th>Total Amount</th>
         <th>Issued Date</th>
-        <th>Paid</th>
+        <th>Issued</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let bill of billHistory">
-        <td>{{ bill.labBillNumber }}</td>
-        <td>{{ bill.patientName }}</td>
+      <tr *ngFor="let bill of bills">
+        <td>{{ bill.pharmacyBillId }}</td>
         <td>{{ bill.doctorName }}</td>
-        <td>{{ bill.totalAmount | currency }}</td>
-        <td>{{ bill.issuedDate | date: 'short' }}</td>
+        <td>{{ bill.patientName }}</td>
+        <td>{{ bill.totalAmount | currency:'INR' }}</td>
+        <td>{{ bill.issuedDate | date:'short' }}</td>
         <td>
-          <span [class.text-success]="bill.isPaid" [class.text-danger]="!bill.isPaid">
-            {{ bill.isPaid ? 'Yes' : 'No' }}
+          <span [class.text-success]="bill.isIssued" [class.text-danger]="!bill.isIssued">
+            {{ bill.isIssued ? 'Yes' : 'No' }}
           </span>
         </td>
       </tr>
     </tbody>
   </table>
+  <!-- No data message -->
+  <div *ngIf="!loading && bills.length === 0" class="text-muted">
+    No pharmacy bills found.
+  </div>
 </div>

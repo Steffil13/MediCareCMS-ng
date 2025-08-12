@@ -5,6 +5,7 @@ import { PrescribedMedicine } from '../model/pharmacist/prescribed-medicine';
 import { PharmacyBillViewModel } from '../model/pharmacist/pharmacy-bill-view-model';
 import { MedicineViewModel } from '../model/pharmacist/medicine-view-model';
 import { BillHistory } from '../model/labtech/labbill';
+import { PharmacyBill } from '../model/pharmacist/medicine';
 
 export interface Medicine {
   id?: number;
@@ -22,11 +23,6 @@ export interface Prescription {
   date: string;
 }
 
-export interface PharmacyBill {
-  patientId: number;
-  prescriptionId: number;
-  amount: number;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +59,8 @@ export class PharmacistService {
     return this.http.get(`${this.apiUrl}/history/${patientId}`);
   }
 
-  getBillHistory(): Observable<BillHistory[]> {
-    return this.http.get<BillHistory[]>(`${this.apiUrl}/bill-history`);
+  getAllBills(): Observable<PharmacyBill[]> {
+    return this.http.get<PharmacyBill[]>(`${this.apiUrl}/bill-history`);
   }
 
   issueMedicine(prescribedMedicineId: number): Observable<any> {

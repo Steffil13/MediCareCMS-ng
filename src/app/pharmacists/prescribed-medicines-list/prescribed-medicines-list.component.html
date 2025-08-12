@@ -10,15 +10,23 @@
   </thead>
   <tbody>
     <ng-container *ngFor="let prescription of prescribedMedicines">
-      <tr *ngFor="let pm of prescription.medicines || []">
-        <td>{{prescription.prescriptionId}}</td>
+      <tr *ngFor="let pm of prescription.medicines">
+        <td>{{ prescription.prescriptionId }}</td>
         <td>{{ pm.medicineName }}</td>
         <td>{{ pm.dosage }}</td>
         <td>{{ pm.duration }}</td>
         <td>
-          <button (click)="onAssign(pm.pMedicineId)">Assign</button>
+          <button (click)="onAssign(prescription.prescriptionId)">Assign</button>
         </td>
       </tr>
     </ng-container>
   </tbody>
 </table>
+
+<div *ngIf="!loading && prescribedMedicines.length === 0">
+  No pending medicines to assign.
+</div>
+
+<div *ngIf="error" style="color:red">
+  {{ error }}
+</div>

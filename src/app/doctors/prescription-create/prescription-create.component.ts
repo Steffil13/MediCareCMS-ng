@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+// import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from 'src/app/shared/service/doctor.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-prescription-create',
   templateUrl: './prescription-create.component.html',
+  styleUrls: ['./prescription-create.component.scss']
 })
 export class PrescriptionCreateComponent implements OnInit {
 
@@ -24,14 +26,18 @@ export class PrescriptionCreateComponent implements OnInit {
   availableMedicines: any[] = [];
 
   // Lab tests
-  labTests = [{ labId: null as number | null}];
+  labTests = [{ labId: null as number | null }];
   availableLabTests: any[] = [];
+
+  // Regex for dosage/duration: at least 1 letter, 1 number, allowed letters+numbers+spaces
+  private dosageDurationRegex = /^(?=.*[0-9])(?=.*[A-Za-z])[A-Za-z0-9\s]+$/;
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private doctorService: DoctorService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -45,8 +51,6 @@ export class PrescriptionCreateComponent implements OnInit {
     this.prescription.appointmentId = +this.route.snapshot.params['appointmentId'] || 0;
 
     // Load dropdown data
-    console.log("lab tests:", this.availableLabTests);
-
     this.loadAvailableMedicines();
     this.loadAvailableLabTests();
   }
@@ -54,12 +58,10 @@ export class PrescriptionCreateComponent implements OnInit {
   // 🔹 Load medicines for dropdown
   loadAvailableMedicines() {
     this.http.get<any[]>(`${environment.apiUrl}/PharmacistControllers/all-medicines`).subscribe({
-
       next: (res) => {
-        console.log('Medicines loaded:', res);  // <-- Add this line
+        console.log('Medicines loaded:', res);
         this.availableMedicines = res;
       },
-
       error: () => this.toastr.error('Failed to load medicines')
     });
   }
@@ -68,7 +70,7 @@ export class PrescriptionCreateComponent implements OnInit {
   loadAvailableLabTests() {
     this.http.get<any[]>(`${environment.apiUrl}/LabTechnician/all-lab-tests`).subscribe({
       next: (res) => {
-        console.log('Test loaded:', res);  // <-- Add this line
+        console.log('Test loaded:', res);
         this.availableLabTests = res;
       },
       error: () => this.toastr.error('Failed to load lab tests')
@@ -87,7 +89,7 @@ export class PrescriptionCreateComponent implements OnInit {
   }
 
   addLabTestRow() {
-    this.labTests.push({ labId: null});
+    this.labTests.push({ labId: null });
   }
 
   removeLabTestRow(index: number) {
@@ -98,46 +100,57 @@ export class PrescriptionCreateComponent implements OnInit {
 
   // 🔹 Submit
   async submitConsultation() {
-  try {
-    // Step 1️⃣ Create Prescription
-    const prescriptionRes: any = await this.http
-      .post(`${environment.apiUrl}/doctor/add-prescription`, this.prescription)
-      .toPromise();
+    // ✅ Validation for dosage and duration
+    for (const [index, med] of this.medicines.entries()) {
+      if (!this.dosageDurationRegex.test(med.dosage)) {
+        this.toastr.warning(`Medicine #${index + 1}: Dosage must contain both letters and numbers`, 'Invalid Dosage');
+        return;
+      }
+      if (!this.dosageDurationRegex.test(med.duration)) {
+        this.toastr.warning(`Medicine #${index + 1}: Duration must contain both letters and numbers`, 'Invalid Duration');
+        return;
+      }
+    }
 
-    const prescriptionId = prescriptionRes.data.prescriptionId;
-    console.log("preid:", prescriptionId);
-
-    // Step 2️⃣ Add Medicines
-    for (const med of this.medicines) {
-      console.log('Sending medicine data:', { prescriptionId, ...med });
-      await this.http
-        .post(`${environment.apiUrl}/doctor/add-medicine`, {
-          prescriptionId,
-          ...med
-        })
+    try {
+      // Step 1️⃣ Create Prescription
+      const prescriptionRes: any = await this.http
+        .post(`${environment.apiUrl}/doctor/add-prescription`, this.prescription)
         .toPromise();
+
+      const prescriptionId = prescriptionRes.data.prescriptionId;
+      console.log("Prescription ID:", prescriptionId);
+
+      // Step 2️⃣ Add Medicines
+      for (const med of this.medicines) {
+        console.log('Sending medicine data:', { prescriptionId, ...med });
+        await this.http
+          .post(`${environment.apiUrl}/doctor/add-medicine`, { prescriptionId, ...med })
+          .toPromise();
+      }
+
+      // Step 3️⃣ Add Lab Tests
+      for (const lab of this.labTests) {
+        const labId = lab.labId ?? 0;
+        const selectedLab = this.availableLabTests.find(t => t.labId === labId || t.testId === labId);
+
+        console.log('Sending lab test data:', { prescriptionId, labId, labName: selectedLab?.labName });
+
+        await this.http.post(`${environment.apiUrl}/doctor/add-labtest`, {
+          prescriptionId,
+          labId,
+          labName: selectedLab?.labName || '',
+          remarks: ''
+        }).toPromise();
+      }
+
+      this.toastr.success('Consultation completed successfully!');
+    } catch (err) {
+      console.error('Consultation failed', err);
+      this.toastr.error('Consultation failed');
     }
-
-    // Step 3️⃣ Add Lab Tests
-    for (const lab of this.labTests) {
-      const labId = lab.labId ?? 0; // fallback to 0 if null
-      const selectedLab = this.availableLabTests.find(t => t.labId === labId || t.testId === labId);
-
-      console.log('Sending lab test data:', { prescriptionId, labId, labName: selectedLab?.labName });
-
-      await this.http.post(`${environment.apiUrl}/doctor/add-labtest`, {
-        prescriptionId,
-        labId,
-        labName: selectedLab?.labName || '',
-        remarks: '' // or add this property to your form if needed
-      }).toPromise();
-    }
-
-    this.toastr.success('Consultation completed successfully!');
-  } catch (err) {
-    console.error('Consultation failed', err);
-    this.toastr.error('Consultation failed');
   }
-}
-
+  cancel(): void {
+    this.router.navigate(['/doctor/prescribe'])
+  }
 }

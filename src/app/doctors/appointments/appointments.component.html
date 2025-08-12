@@ -1,28 +1,38 @@
-<div class="container mt-4">
-  <h2 class="mb-4">Scheduled Appointments</h2>
+<app-navigation-bar></app-navigation-bar>
 
-  <div class="row g-3" *ngIf="appointments.length > 0; else noData">
+<div class="appointments-container">
+  <!-- <h2 class="mb-4">Scheduled Appointments</h2> -->
+
+  <div class="row g-4" *ngIf="appointments.length > 0; else noData">
     <div class="col-md-4" *ngFor="let appt of appointments">
-      <div class="card shadow-sm border-0 h-100">
-        <div class="card-header bg-primary text-white">
+      <div class="card appointment-card h-100">
+        
+        <!-- Card Header -->
+        <div class="card-header">
           Token #{{ appt.tokenNumber }}
         </div>
+
+        <!-- Card Body -->
         <div class="card-body">
           <h5 class="card-title">{{ appt.patientName }}</h5>
           <p class="mb-1"><strong>Date:</strong> {{ appt.appointmentDate | date: "dd-MM-yyyy" }}</p>
           <p class="mb-1"><strong>Time:</strong> {{ appt.appointmentTime }}</p>
           <p class="mb-1"><strong>Appointment Number:</strong> {{ appt.appointmentNumber }}</p>
         </div>
-        <div class="card-footer bg-light">
-          <button class="btn btn-success btn-sm w-100"
+
+        <!-- Card Footer with Navy Button -->
+        <div class="card-footer">
+          <button class="btn btn-navy btn-sm w-100"
                   (click)="consultPatient(appt)">
             <i class="bi bi-chat-dots-fill me-1"></i> Consult
           </button>
         </div>
+
       </div>
     </div>
   </div>
 
+  <!-- No Data Message -->
   <ng-template #noData>
     <div class="alert alert-info text-center">
       No appointments scheduled.

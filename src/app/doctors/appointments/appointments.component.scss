@@ -1,0 +1,110 @@
+/* Full-page matching dashboard background */
+.appointments-container {
+  padding: 20px;
+  min-height: 100vh;
+  background: linear-gradient(to top, #03033a, silver);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    margin-bottom: 2rem;
+  }
+}
+
+/* Card theme - dark glass effect */
+.card {
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: fadeIn 0.4s ease-in;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  .card-header {
+    background-color: #12126a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .card-body {
+    padding: 1.2rem;
+  }
+
+  .card-title {
+    font-weight: 600;
+    color: #ffda79; /* Gold accent */
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+  }
+
+  .card-footer {
+    background: rgba(18, 18, 106, 0.9);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 0.75rem;
+  }
+}
+
+/* Navy button */
+.btn-navy {
+  font-weight: 500;
+  border-radius: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  background-color: #12126a;
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+
+  i {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background-color: #3a3b78;
+  }
+}
+
+/* No data alert */
+.alert-info {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: 500;
+  border-radius: 0.4rem;
+}
+
+/* Fade-in animation for cards */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  .card-body {
+    text-align: center;
+  }
+  .btn {
+    font-size: 0.9rem;
+  }
+}

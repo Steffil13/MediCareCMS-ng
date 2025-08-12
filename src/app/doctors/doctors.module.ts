@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DoctorDashboardComponent } from '../auth/doctor-dashboard/doctor-dashboard.component';
 import { DoctorRoutingModule } from './doctors-routing.module';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/nav/shared/shared.module';
 
 @NgModule({
   declarations: [

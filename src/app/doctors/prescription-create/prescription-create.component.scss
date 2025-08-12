@@ -1,0 +1,140 @@
+/* 🌌 Page Background & Container */
+.page-content,
+.container {
+  background: linear-gradient(to top, #03033a, silver);
+  color: #e0e0e0;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 800px; /* keeps form nicely centered */
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* 📝 Heading */
+h2 {
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* 🏷 Labels */
+.form-label {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* ✏ Inputs & Selects */
+.form-control,
+.form-select {
+  background-color: rgba(255,255,255,0.9);
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  color: #000;
+
+  &:focus {
+    border-color: #12126a;
+    box-shadow: 0 0 5px rgba(18, 18, 106, 0.5);
+  }
+}
+
+/* ❗ Validation States */
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+.invalid-feedback,
+.text-danger {
+  font-size: 0.875rem;
+}
+
+/* ☑ Radio & Checkbox Styling */
+.form-check-input:checked {
+  background-color: #12126a;
+  border-color: #12126a;
+}
+
+.form-check-label {
+  color: #fff;
+  margin-left: 0.3rem;
+}
+
+/* 🔘 Primary Button */
+.btn-primary {
+  background-color: #12126a;
+  border-color: #12126a;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: #3a3b78;
+    border-color: #3a3b78;
+  }
+}
+
+/* 🔘 Secondary Button */
+.btn-secondary {
+  background-color: #12126a;
+  border-color: #12126a;
+  border-radius: 0.5rem;
+
+  &:hover {
+    background-color: #3a3b78;
+  }
+}
+
+/* ↩ Back button top spacing */
+.container > .mb-3 > .btn {
+  min-width: 100px;
+}
+
+/* ↔ Save / Cancel button spacing */
+button + button {
+  margin-left: 0.5rem;
+}
+
+/* 💰 Doctor Fee Fields */
+[formControlName='doctorFee'] {
+  background-color: #f5f5f5;
+  color: #444;
+  font-weight: bold;
+}
+
+/* ✅ Active Checkbox label */
+#isActive + .form-check-label {
+  color: #fff;
+}
+
+.table {
+    background-color: rgba(5, 6, 73, 0.9); // navy with transparency
+    color: #fff;
+    border-radius: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    box-shadow: 0 0 15px rgba(10, 20, 70, 0.7);
+
+
+    thead {
+        background-color: #12126a; // dark blue header matching btn-light-navy bg
+        color: #fff;
+    }
+
+    tbody tr {
+        background-color: transparent; // transparent instead of solid blue
+
+        &:hover {
+            background-color: rgba(134, 135, 230, 0.3); // semi-transparent navy on hover
+            color: #fff;
+        }
+    }
+
+
+    th,
+    td {
+        vertical-align: middle;
+        border-color: transparent;
+    }
+}
+

@@ -2,28 +2,50 @@
   padding: 20px;
   background: linear-gradient(to top, #03033a, silver);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Buttons wrapper */
 .dashboard-buttons {
-  margin-top: 140px; /* same spacing as .button-container */
+  margin-top: 5rem; /* replaces 140px for better scaling */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
+  max-width: 900px; /* keeps aligned center on big screens */
+  width: 100%;
 }
 
+/* Button style */
 .dashboard-buttons button {
-  background-color: #12126a; /* same as btn-light-navy */
+  background-color: #12126a; /* navy */
   color: #fff;
   border: none;
   padding: 1rem 2.5rem;
   font-size: 1.25rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  flex: 0 0 calc(50% - 15px); /* two buttons per row */
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  flex: 0 0 calc(50% - 15px); /* two per row desktop */
 }
 
+/* Hover / active effect */
 .dashboard-buttons button:hover {
-  background-color: #3a3b78; /* lighter navy on hover */
+  background-color: #3a3b78;
+}
+.dashboard-buttons button:active {
+  transform: scale(0.98);
+}
+
+/* Mobile responsive: single-column layout */
+@media (max-width: 600px) {
+  .dashboard-buttons button {
+    flex: 1 1 100%; /* one per row */
+    font-size: 1.1rem;
+  }
+  .dashboard-buttons {
+    gap: 15px; /* reduce gap on smaller devices */
+  }
 }

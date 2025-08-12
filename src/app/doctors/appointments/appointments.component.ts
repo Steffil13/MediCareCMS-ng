@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SharedModule } from 'src/app/shared/nav/shared/shared.module';
 import { DoctorService } from 'src/app/shared/service/doctor.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedModule],
   templateUrl: './appointments.component.html',
   styleUrls: ['./appointments.component.scss']
 })
@@ -20,6 +22,7 @@ export class DoctorAppointmentsComponent implements OnInit {
     private route: ActivatedRoute, 
     private doctorService: DoctorService, 
     private http: HttpClient,
+    private location: Location,
     private router: Router
   ) { }
 
@@ -49,6 +52,9 @@ export class DoctorAppointmentsComponent implements OnInit {
     console.log("Consulting patient:", appt);
     // You can add navigation or API call here
     this.router.navigate(['/consult-prescription', appt.appointmentId]);
+  }
+   goBack(): void {
+    this.location.back();
   }
 }
 

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from 'src/app/shared/service/admin.service';
 import { Department } from 'src/app/shared/model/admin/department';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-admin-edit',
   templateUrl: './admin-edit.component.html',
@@ -24,11 +26,11 @@ export class AdminEditComponent implements OnInit {
     private fb: FormBuilder,
     private adminService: AdminService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
-    // Get params
     this.route.params.subscribe(params => {
       this.role = params['role'];
       this.userId = +params['id'];
@@ -41,18 +43,30 @@ export class AdminEditComponent implements OnInit {
           this.roles = list;
           const match = list.find(r => r.roleName.toLowerCase() === this.role.toLowerCase());
           this.selectedRoleId = match ? match.roleId : null;
+          if (!this.selectedRoleId) {
+            this.toastr.error(`Role ID not found for '${this.role}'. Please check roles list.`, 'Error');
+          }
+        },
+        error: err => {
+          console.error(err);
+          this.toastr.error('Failed to load roles from server.', 'Error');
         }
       });
 
-      // Load departments if Doctor
       if (this.role === 'Doctor') {
         this.loadDepartments();
       }
 
       // Load user details
       if (this.userId) {
-        this.adminService.getUserById(this.userId).subscribe(user => {
-          this.userForm.patchValue(user);
+        this.adminService.getUserById(this.userId).subscribe({
+          next: user => {
+            this.userForm.patchValue(user);
+          },
+          error: err => {
+            console.error(err);
+            this.toastr.error('Failed to load user details.', 'Error');
+          }
         });
       }
     });
@@ -106,7 +120,6 @@ export class AdminEditComponent implements OnInit {
         doctorFee: [null]
       });
 
-      // Auto-update doctor fee when department changes
       this.userForm.get('departmentId')?.valueChanges.subscribe(deptId => {
         const dept = this.departments.find(d => d.departmentId === +deptId);
         this.userForm.patchValue({ doctorFee: dept ? dept.doctorFee : null }, { emitEvent: false });
@@ -118,7 +131,11 @@ export class AdminEditComponent implements OnInit {
 
   loadDepartments() {
     this.adminService.getDepartments().subscribe({
-      next: depts => (this.departments = depts)
+      next: depts => (this.departments = depts),
+      error: err => {
+        console.error(err);
+        this.toastr.error('Failed to load departments.', 'Error');
+      }
     });
   }
 
@@ -130,6 +147,7 @@ export class AdminEditComponent implements OnInit {
   onSubmit() {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
+      this.toastr.warning('Please fill all required fields correctly.', 'Warning');
       return;
     }
 
@@ -143,13 +161,13 @@ export class AdminEditComponent implements OnInit {
     this.adminService.updateStaff(this.userId, payload).subscribe({
       next: () => {
         this.submitting = false;
-        alert('User updated successfully');
+        this.toastr.success('User updated successfully.', 'Success');
         this.router.navigate(['/admin/list', this.role]);
       },
       error: err => {
         this.submitting = false;
         console.error(err);
-        alert('Failed to update user');
+        this.toastr.error('Failed to update user.', 'Error');
       }
     });
   }
@@ -157,12 +175,8 @@ export class AdminEditComponent implements OnInit {
   cancel() {
     this.router.navigate(['/admin/list', this.role]);
   }
-  goBack(): void {
-    // Use Location service to go back in browser history
-    this.location.back();
 
-    // Or alternatively, navigate explicitly to dashboard route
-    // this.router.navigate(['/admin/dashboard']);
+  goBack(): void {
+    this.location.back();
   }
 }
-

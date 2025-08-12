@@ -33,7 +33,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MedicineAddComponent,
     MedicineListComponent,
     PatientHistoryComponent,
-    BillHistoryComponent
+    BillHistoryComponent,
+    
   ],
   imports: [
     BrowserModule,

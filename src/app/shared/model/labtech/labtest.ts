@@ -1,5 +1,7 @@
 export interface LabTest {
-  id: number;
-  LabName: string;
-  price: number;
+  labId: number;
+  labName?: string;
+  normalRange?: string;
+  price?: number;
+  Availability?: boolean;
 }

@@ -1,26 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { BillHistory } from 'src/app/shared/model/labtech/labbill';
+import { PharmacyBill } from 'src/app/shared/model/pharmacist/medicine';
 import { PharmacistService } from 'src/app/shared/service/pharmacist.service';
+
 
 @Component({
   selector: 'app-bill-history',
-  templateUrl: './bill-history.component.html'
+  templateUrl: './bill-history.component.html',
+  styleUrls: ['./bill-history.component.scss']
 })
 export class BillHistoryComponent implements OnInit {
-  billHistory: BillHistory[] = [];
+  bills: PharmacyBill[] = [];
   loading = true;
+  errorMessage = '';
 
   constructor(private pharmacistService: PharmacistService) {}
 
   ngOnInit(): void {
-    this.pharmacistService.getBillHistory().subscribe({
+    this.loadBills();
+  }
+
+  loadBills(): void {
+    this.loading = true;
+    this.errorMessage = '';
+    this.pharmacistService.getAllBills().subscribe({
       next: (data) => {
-        console.log('Bill history:', data);
-        this.billHistory = data;
+        console.log("pharmabill data", data);
+        this.bills = data;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error fetching bill history', err);
+        console.error('Error loading bills', err);
+        this.errorMessage = 'Failed to load pharmacy bills.';
         this.loading = false;
       }
     });

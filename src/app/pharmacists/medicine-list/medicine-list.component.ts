@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PharmacistService } from 'src/app/shared/service/pharmacist.service';
 import { MedicineViewModel } from 'src/app/shared/model/pharmacist/medicine-view-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-medicine-list',
@@ -12,7 +13,10 @@ export class MedicineListComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private pharmacistService: PharmacistService) {}
+  constructor(
+    private pharmacistService: PharmacistService,
+    private router: Router  // Inject Router here
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -27,5 +31,9 @@ export class MedicineListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  goBack() {
+    this.router.navigate(['/pharmacistdashboard']);
   }
 }

@@ -11,6 +11,7 @@ import { LabBillComponent } from './lab-bill/lab-bill.component';
 import { UpdateTestResultComponent } from './update-lab-result/update-lab-result.component';
 import { SharedModule } from '../shared/nav/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { LabtestListComponent } from './lab-list/lab-list.component';
 
 
 
@@ -22,6 +23,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     TestResultsComponent,
     UpdateTestResultComponent,
     LabBillComponent,
+    LabtestListComponent
+    
   
   ],
   imports: [

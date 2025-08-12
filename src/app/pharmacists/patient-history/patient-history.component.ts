@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';  // <-- import Router
 import { PharmacistService } from 'src/app/shared/service/pharmacist.service';
 
 @Component({
@@ -13,7 +14,10 @@ export class PatientHistoryComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private pharmacistService: PharmacistService) {}
+  constructor(
+    private pharmacistService: PharmacistService,
+    private router: Router  // <-- inject Router
+  ) {}
 
   ngOnInit() {
     this.loadAllHistories();
@@ -23,6 +27,7 @@ export class PatientHistoryComponent implements OnInit {
     this.loading = true;
     this.pharmacistService.getAllPatientHistories().subscribe({
       next: (data) => {
+        console.log('Patient histories:', data);
         this.allHistories = data;
         this.filteredHistories = data;
         this.loading = false;
@@ -37,7 +42,6 @@ export class PatientHistoryComponent implements OnInit {
   searchHistory() {
     const id = Number(this.searchPatientId);
     if (!id || isNaN(id) || id <= 0) {
-      // Show all if input is empty or invalid
       this.filteredHistories = this.allHistories;
       this.error = '';
       return;
@@ -50,5 +54,9 @@ export class PatientHistoryComponent implements OnInit {
     } else {
       this.error = '';
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/pharmacistdashboard']);  // Adjust this path if your dashboard route is different
   }
 }

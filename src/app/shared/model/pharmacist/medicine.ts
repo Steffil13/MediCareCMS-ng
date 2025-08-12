@@ -7,3 +7,11 @@ export class Medicine {
   availability: boolean = false;
 }
 
+export interface PharmacyBill {
+  pharmacyBillId: number;
+  patientName: string;
+  doctorName: string;
+  totalAmount: number;
+  issuedDate: string; // ISO format date
+  isIssued: boolean;
+}

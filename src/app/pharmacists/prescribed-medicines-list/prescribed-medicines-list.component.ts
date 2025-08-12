@@ -29,6 +29,7 @@ export class PrescribedMedicinesListComponent implements OnInit {
         console.log('Prescribed medicines:', data);
         // Only show medicines not yet issued
         this.prescribedMedicines = data.filter(pm => !pm.isIssued);
+        //this.prescribedMedicines = data
         this.loading = false;
       },
       error: () => {
@@ -40,6 +41,8 @@ export class PrescribedMedicinesListComponent implements OnInit {
 
   onAssign(pmId: number) {
     // Navigate to assign-medicine page
+    console.log('Assigning medicine for PM ID:', pmId);
+    
     this.router.navigate(['/pharmacist/assign-medicine', pmId]).then(() => {
       // After navigation, you could issue medicine directly if required
       this.pharmacistService.issueMedicine(pmId).subscribe({

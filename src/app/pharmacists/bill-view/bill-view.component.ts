@@ -21,7 +21,6 @@ export class BillViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // **Use lowercase 'id' matching your route**
     this.pmId = Number(this.route.snapshot.paramMap.get('id'));
     console.log('Bill View pmId:', this.pmId);
     this.loadBill();
@@ -31,6 +30,7 @@ export class BillViewComponent implements OnInit {
     this.loading = true;
     this.pharmacistService.getPharmacyBillByPrescribedMedicineId(this.pmId).subscribe({
       next: (data) => {
+        console.log("data", data);
         this.bill = data;
         this.loading = false;
       },
@@ -47,5 +47,9 @@ export class BillViewComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/pharmacist/prescribed-medicines']);
+  }
+
+  goBack() {
+    this.router.navigate(['/pharmacistdashboard']);  // Adjust route if needed
   }
 }

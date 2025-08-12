@@ -67,4 +67,8 @@ export class MedicineAddComponent {
       });
     }
   }
+
+  goBack() {
+    this.router.navigate(['/pharmacistdashboard']);
+  }
 }

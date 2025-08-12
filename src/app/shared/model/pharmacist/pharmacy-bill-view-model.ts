@@ -19,3 +19,4 @@ export class PharmacyBillViewModel {
     this.pharmacyBillId = pharmacyBillId;
   }
 }
+

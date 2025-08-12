@@ -65,11 +65,7 @@ const routes: Routes = [
       import('./auth/auth.module')
         .then(em => em.AuthModule)
   },
-  // {
-  //   path: 'doctor',
-  //   loadChildren: () => import('./doctors/doctors.module').then(m => m.DoctorModule),
-  //   canActivate: [AuthGuard]
-  // },
+  
    //wildcard Route --NotFound
    { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' },
    {

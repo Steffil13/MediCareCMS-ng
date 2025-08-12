@@ -17,6 +17,7 @@ import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list
 import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
 import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
 import { LabtestListComponent } from './labs/lab-list/lab-list.component';
+import { BillComponent } from './receptionists/bill/bill.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [

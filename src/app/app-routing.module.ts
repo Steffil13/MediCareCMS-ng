@@ -16,6 +16,7 @@ import { MedicineAddComponent } from './pharmacists/medicine-add/medicine-add.co
 import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list.component';
 import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
 import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
+import { BillComponent } from './receptionists/bill/bill.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [
@@ -70,7 +71,11 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
    //wildcard Route --NotFound
-   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' }
+   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' },
+   {
+    path: 'billing',
+    component: BillComponent
+  }
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ export class Appointment {
   doctorId!: number;
   appointmentNumber?: string;
   patientName?: string;
-  appointmentDate!: Date |null;
+  appointmentDate!: string | Date | null;
   appointmentTime!: string;
   tokenNumber!: number;
   isConsulted?: boolean;

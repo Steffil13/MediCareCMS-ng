@@ -1,160 +1,254 @@
 .appointment-container {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 1.5rem 2rem;
-  background: #f9fafb;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9fafa;
   border-radius: 8px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
 
-  h3 {
+  h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    color: #0a775f;
+    margin-bottom: 25px;
+    color: #064635;
   }
 
-  .alert {
-    padding: 0.8rem 1rem;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-    font-weight: 500;
-    &.alert-danger {
-      background-color: #ffe6e6;
-      color: #d93025;
-      border: 1px solid #d93025;
-    }
-    &.alert-success {
-      background-color: #e6f4ea;
-      color: #188038;
-      border: 1px solid #188038;
-    }
-  }
-
-  form {
+  .search-section {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
 
-    > div {
-      flex: 1 1 30%;
-      display: flex;
-      flex-direction: column;
+    label {
+      font-weight: 600;
+      flex: 0 0 130px;
+      color: #064635;
+    }
 
-      label {
-        margin-bottom: 0.4rem;
-        font-weight: 600;
-        color: #0a775f;
-      }
+    input[type='text'] {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1.8px solid #c7d5d2;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
 
-      input {
-        padding: 0.5rem 0.7rem;
-        border: 1.5px solid #cbd5e1;
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-
-        &:focus {
-          outline: none;
-          border-color: #0a775f;
-          box-shadow: 0 0 5px rgba(10, 119, 95, 0.5);
-        }
+      &:focus {
+        border-color: #0a775f;
+        outline: none;
       }
     }
 
     button {
-      flex: 1 1 100%;
-      padding: 0.6rem 1rem;
-      font-weight: 600;
       background-color: #0a775f;
-      color: #fff;
+      color: white;
       border: none;
+      padding: 9px 16px;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: 600;
       transition: background-color 0.3s ease;
-      margin-top: 1rem;
-      max-width: 250px;
 
       &:hover {
-        background-color: #095f4c;
+        background-color: #095e4c;
       }
+    }
 
-      &:nth-child(2) {
-        background-color: #d1d5db;
-        color: #444;
-        max-width: 130px;
-        margin-left: 1rem;
+    .error {
+      width: 100%;
+      margin-top: 5px;
+      color: #cc0000;
+      font-weight: 600;
+    }
+  }
 
-        &:hover {
-          background-color: #a3a8af;
+  .patient-list {
+    margin-bottom: 25px;
+
+    h3 {
+      color: #064635;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      border: 1px solid #d4e2df;
+      border-radius: 6px;
+      max-height: 180px;
+      overflow-y: auto;
+      background: white;
+
+      li {
+        padding: 10px 12px;
+        border-bottom: 1px solid #d4e2df;
+        cursor: pointer;
+        transition: background-color 0.25s ease;
+
+        &:hover,
+        &.selected {
+          background-color: #0a775f;
+          color: white;
+          font-weight: 600;
+        }
+
+        &:last-child {
+          border-bottom: none;
         }
       }
     }
   }
 
-  .loading {
-    text-align: center;
-    font-style: italic;
-    color: #666;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  .appointment-form {
+    background: white;
+    padding: 20px;
     border-radius: 8px;
-    overflow: hidden;
+    border: 1px solid #d4e2df;
+    margin-bottom: 30px;
 
-    thead {
-      background-color: #0a775f;
-      color: #fff;
+    h3 {
+      margin-bottom: 20px;
+      color: #064635;
+    }
 
-      th {
-        padding: 0.85rem 1rem;
-        text-align: left;
+    .form-group {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #064635;
+      }
+
+      select,
+      input[type='date'],
+      input[type='text'] {
+        padding: 8px 10px;
+        font-size: 1rem;
+        border: 1.8px solid #c7d5d2;
+        border-radius: 5px;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #0a775f;
+          outline: none;
+        }
       }
     }
 
-    tbody {
-      tr {
-        border-bottom: 1px solid #e2e8f0;
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+
+      button {
+        flex: 1;
+        padding: 10px 0;
+        border-radius: 7px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
         transition: background-color 0.3s ease;
 
-        &:hover {
-          background-color: #f0fdf9;
+        &.btn-primary {
+          background-color: #0a775f;
+          color: white;
+
+          &:hover {
+            background-color: #095e4c;
+          }
         }
 
-        td {
-          padding: 0.8rem 1rem;
+        &.btn-secondary {
+          background-color: #c7d5d2;
+          color: #064635;
 
-          button {
-            background-color: #0a775f;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.3rem 0.7rem;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-right: 0.5rem;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-              background-color: #095f4c;
-            }
+          &:hover {
+            background-color: #a3b8af;
           }
         }
       }
     }
+
+    .success {
+      margin-top: 15px;
+      color: #0a775f;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .error {
+      margin-top: 15px;
+      color: #cc0000;
+      font-weight: 700;
+      text-align: center;
+    }
   }
 
-  .no-appointments {
-    text-align: center;
-    font-style: italic;
-    color: #777;
-    margin-top: 2rem;
+  .appointments-list {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #d4e2df;
+    padding: 20px;
+
+    h3 {
+      color: #064635;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+
+      th,
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #d4e2df;
+        text-align: left;
+      }
+
+      th {
+        background-color: #e5f1ec;
+        font-weight: 700;
+        color: #064635;
+      }
+
+      tbody tr:hover {
+        background-color: #f0f7f4;
+      }
+
+      .btn-edit,
+      .btn-delete {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.25s ease;
+      }
+
+      .btn-edit {
+        background-color: #0a775f;
+        color: white;
+        margin-right: 8px;
+
+        &:hover {
+          background-color: #095e4c;
+        }
+      }
+
+      .btn-delete {
+        background-color: #cc0000;
+        color: white;
+
+        &:hover {
+          background-color: #a30000;
+        }
+      }
+    }
   }
 }

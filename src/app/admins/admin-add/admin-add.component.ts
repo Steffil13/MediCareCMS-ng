@@ -4,10 +4,10 @@ import {
   AbstractControl, ValidationErrors
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdminService } from 'src/app/shared/service/admin.service';
 import { Department } from 'src/app/shared/model/admin/department';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { AdminService } from 'src/app/shared/service/admin.service';
 
 @Component({
   selector: 'app-admin-add',

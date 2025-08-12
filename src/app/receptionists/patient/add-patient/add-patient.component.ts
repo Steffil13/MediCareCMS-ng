@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Patient } from 'src/app/shared/model/receptionist/patient';
-import { ReceptionistService } from 'src/app/shared/Service/receptionist.service';
+import { ReceptionistService } from 'src/app/shared/service/receptionist.service';
 
 @Component({
   selector: 'app-add-patient',

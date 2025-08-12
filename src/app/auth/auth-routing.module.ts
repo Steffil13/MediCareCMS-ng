@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   { path: 'admin', component: AdminDashboardComponent },
   {path: 'doctor', component:DoctorDashboardComponent, canActivate:[AuthGuard], data:{role: '5'}},
+  //{path: 'appointments', component: DoctorAppointmentsComponent },
   {path: 'appointments/:doctorId', component: DoctorAppointmentsComponent},
   {path: 'consult-prescription/:appointmentId', component: PrescriptionCreateComponent},
   //{path: 'notfound', component: NotfoundComponent}

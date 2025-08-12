@@ -42,7 +42,8 @@ export class PrescriptionCreateComponent implements OnInit {
 
   ngOnInit() {
     // ✅ Get doctorId from localStorage
-    const storedDoctorId = localStorage.getItem('doctorId');
+        this.prescription.doctorId = Number(localStorage.getItem('DOC_ID'));
+    const storedDoctorId = localStorage.getItem('DOC_ID');
     if (storedDoctorId) {
       this.prescription.doctorId = parseInt(storedDoctorId, 10);
     }
@@ -151,6 +152,6 @@ export class PrescriptionCreateComponent implements OnInit {
     }
   }
   cancel(): void {
-    this.router.navigate(['/doctor/prescribe'])
+    this.router.navigate(['/appointments', this.prescription.doctorId])
   }
 }

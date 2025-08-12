@@ -1,106 +1,36 @@
-<app-navigation-bar></app-navigation-bar>
+<div class="container">
+  <h2>Test Results History</h2>
 
-<div class="page-content lab-results-page container-fluid py-4">
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
 
-  <!-- Back Button -->
-  <div class="mb-3">
-    <button class="btn shadow-sm text-white btn-back" routerLink="/labdashboard">
-      &larr; Back to Dashboard
-    </button>
+  <table *ngIf="!loading && testResults.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th>RegisterNumber</th>
+        <th>Patient Name</th>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Remarks</th>
+        <th>Status</th>
+        <th>Record Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of testResults">
+        <td>{{ result.registerNumber }}</td>
+        <td>{{ result.patientName }}</td>
+        <td>{{ result.testName }}</td>
+        <td>{{ result.resultValue }}</td>
+        <td>{{ result.remarks }}</td>
+        <td>{{ result.resultStatus ? 'Positive' : 'Negative' }}</td>
+
+        <td>{{ result.recordDate | date: 'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && testResults.length === 0">
+    No test results found.
   </div>
-
-  <!-- Search Bar -->
-  <div class="mb-4 d-flex justify-content-center search-bar">
-    <input
-      type="text"
-      class="form-control w-50 shadow-sm search-bar"
-      placeholder=" Search by Patient Name"
-      [(ngModel)]="searchPatientName"
-      (ngModelChange)="filterResults()"
-    />
-  </div>
-
-  <!-- Table -->
-  <div class="center-container">
-    <div class="center-narrow table-responsive shadow rounded table-container">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="results-table-header">
-          <tr>
-            <th>Register Number</th>
-            <th>Patient Name</th>
-            <th>Lab Name</th>
-            <th>Result</th>
-            <th>Status</th>
-            <th>Remarks</th>
-            <th>Recorded On</th>
-          </tr>
-        </thead>
-        <tbody *ngIf="filteredResults.length > 0; else noData">
-          <tr *ngFor="let result of filteredResults" class="result-row">
-            <td class="fw-semibold">{{ result.registerNumber }}</td>
-            <td>{{ result.patientName }}</td>
-            <td>{{ result.labName }}</td>
-            <td class="fw-semibold">{{ result.resultValue || 'N/A' }}</td>
-            <td>
-              <span
-                class="badge px-3 py-2 shadow-sm status-badge"
-                [ngClass]="result.resultStatus ? 'positive' : 'negative'"
-              >
-                {{ result.resultStatus ? 'Positive' : 'Negative' }}
-              </span>
-            </td>
-            <td>{{ result.remarks || '-' }}</td>
-            <td>{{ result.date | date: 'short' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- No Data -->
-  <ng-template #noData>
-    <div class="alert alert-info text-center w-100 shadow-sm no-data-alert">
-      No test results available.
-    </div>
-  </ng-template>
-
-  <!-- Update Form -->
-  <div *ngIf="showUpdateForm" class="mt-5 p-4 shadow-lg update-form-container">
-    <h4 class="mb-4 fw-bold update-form-title">Update Test Result</h4>
-    <form [formGroup]="updateForm" (ngSubmit)="submitUpdate()">
-      
-      <div class="mb-3">
-        <label class="fw-semibold form-label-custom">Result Value</label>
-        <input type="text" class="form-control shadow-sm form-control-custom" formControlName="resultValue" />
-      </div>
-
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" formControlName="resultStatus" id="resultStatus" />
-        <label class="form-check-label fw-semibold checkbox-label" for="resultStatus">
-          Positive Result
-        </label>
-      </div>
-
-      <div class="mb-3">
-        <label class="fw-semibold form-label-custom">Remarks</label>
-        <textarea class="form-control shadow-sm form-control-custom" formControlName="remarks"></textarea>
-      </div>
-
-      <div class="d-flex">
-        <button type="submit" class="btn shadow-sm me-2 submit-btn" [disabled]="updateForm.invalid">
-          Submit
-        </button>
-        <button type="button" class="btn btn-secondary shadow-sm cancel-btn" (click)="showUpdateForm = false">
-          Cancel
-        </button>
-      </div>
-
-    </form>
-  </div>
-
-  <!-- Pagination -->
-  <!-- <div class="footer-pagination">
-    <pagination-controls (pageChange)="page = $event" class="custom-page"></pagination-controls>
-  </div> -->
-
 </div>

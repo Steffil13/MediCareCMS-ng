@@ -4,6 +4,8 @@ import { Department } from 'src/app/shared/model/admin/department';
 import { User } from 'src/app/shared/model/admin/user.model';
 import { AdminService } from 'src/app/shared/service/admin.service';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-list',
@@ -11,36 +13,34 @@ import { Location } from '@angular/common';
   styleUrls: ['./admin-list.component.scss']
 })
 export class AdminListComponent implements OnInit {
-
   role: string = '';
   users: User[] = [];
-  filteredUsers: User[] = [];   // ✅ filtered list for search
-  searchTerm: string = '';      // ✅ search input binding
+  filteredUsers: User[] = [];
+  searchTerm: string = '';
   departments: Department[] = [];
-  page : number=1;
-  pageSize : number = 4;
+  page: number = 1;
+  pageSize: number = 4;
 
   showDepartments: boolean = false;
   showAddDepartmentForm: boolean = false;
 
   newDepartment: Department = {
-    departmentId: 0,  // Backend will assign real IDs
+    departmentId: 0,
     departmentName: '',
     doctorFee: 0
   };
 
-  // Track per-user password visibility status
   passwordVisibility: { [userId: number]: boolean } = {};
 
   constructor(
     private adminService: AdminService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
-    // React to role changes from route parameters
     this.route.params.subscribe(params => {
       const roleParam = params['role'] || '';
       if (roleParam !== this.role) {
@@ -58,29 +58,20 @@ export class AdminListComponent implements OnInit {
     });
   }
 
-  /**
-   * Load users filtered by the current role.
-   * Initialize filteredUsers for search feature.
-   */
   loadUsers(): void {
     this.adminService.getAllUsers().subscribe({
       next: data => {
-        console.log("data:", data);
         const list = this.role ? data.filter(user => user.roleName === this.role) : data;
         this.users = list;
-        this.filteredUsers = list; // ✅ initialize search list
-        console.log("users:", this.users);
+        this.filteredUsers = list;
       },
       error: err => {
         console.error('Error loading users:', err);
-        alert('Failed to load users.');
+        this.toastr.error('Failed to load users.', 'Error');
       }
     });
   }
 
-  /**
-   * Search filter function
-   */
   onSearchChange(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredUsers = this.users.filter(u =>
@@ -91,9 +82,6 @@ export class AdminListComponent implements OnInit {
     );
   }
 
-  /**
-   * Load departments (only for Doctor role).
-   */
   loadDepartments(): void {
     this.adminService.getDepartments().subscribe({
       next: data => {
@@ -101,7 +89,7 @@ export class AdminListComponent implements OnInit {
       },
       error: err => {
         console.error('Error loading departments:', err);
-        alert('Failed to load departments.');
+        this.toastr.error('Failed to load departments.', 'Error');
       }
     });
   }
@@ -124,11 +112,11 @@ export class AdminListComponent implements OnInit {
 
   saveDepartment(): void {
     if (!this.newDepartment.departmentName.trim()) {
-      alert('Please enter a valid department name.');
+      this.toastr.warning('Please enter a valid department name.', 'Warning');
       return;
     }
     if (this.newDepartment.doctorFee <= 0) {
-      alert('Please enter a valid doctor fee greater than zero.');
+      this.toastr.warning('Please enter a valid doctor fee greater than zero.', 'Warning');
       return;
     }
 
@@ -136,10 +124,11 @@ export class AdminListComponent implements OnInit {
       next: createdDepartment => {
         this.departments.push(createdDepartment);
         this.showAddDepartmentForm = false;
+        this.toastr.success('Department added successfully.', 'Success');
       },
       error: err => {
         console.error('Error adding department:', err);
-        alert('Failed to add department. Please try again.');
+        this.toastr.error('Failed to add department. Please try again.', 'Error');
       }
     });
   }
@@ -155,10 +144,11 @@ export class AdminListComponent implements OnInit {
     this.adminService.deleteDepartment(id).subscribe({
       next: () => {
         this.departments = this.departments.filter(dept => dept.departmentId !== id);
+        this.toastr.success('Department deleted successfully.', 'Success');
       },
       error: err => {
         console.error('Error deleting department:', err);
-        alert('Failed to delete department. Please try again.');
+        this.toastr.error('Failed to delete department. Please try again.', 'Error');
       }
     });
   }
@@ -173,10 +163,13 @@ export class AdminListComponent implements OnInit {
 
   deactivateUser(id: number): void {
     this.adminService.deactivateStaff(id).subscribe({
-      next: () => this.loadUsers(),
+      next: () => {
+        this.loadUsers();
+        this.toastr.success('User deactivated successfully.', 'Success');
+      },
       error: err => {
         console.error('Error deactivating user:', err);
-        alert('Failed to deactivate user. Please try again.');
+        this.toastr.error('Failed to deactivate user. Please try again.', 'Error');
       }
     });
   }
@@ -202,17 +195,27 @@ export class AdminListComponent implements OnInit {
   }
 
   softDeleteStaff(userId: number) {
-    if (confirm('Are you sure you want to deactivate this staff?')) {
-      this.adminService.deactivateStaff(userId).subscribe({
-        next: () => {
-          alert('Staff deactivated successfully.');
-          this.loadUsers();
-        },
-        error: err => {
-          console.error('Failed to deactivate staff', err);
-          alert('Failed to deactivate staff. Please try again.');
-        }
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to deactivate this staff?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, deactivate',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.adminService.deactivateStaff(userId).subscribe({
+          next: () => {
+            this.toastr.success('Staff deactivated successfully.', 'Success');
+            this.loadUsers();
+          },
+          error: err => {
+            console.error('Failed to deactivate staff', err);
+            this.toastr.error('Failed to deactivate staff. Please try again.', 'Error');
+          }
+        });
+      }
+    });
   }
+
 }

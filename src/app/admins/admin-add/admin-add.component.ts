@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from 'src/app/shared/service/admin.service';
 import { Department } from 'src/app/shared/model/admin/department';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-add',
@@ -20,9 +21,8 @@ export class AdminAddComponent implements OnInit {
   departments: Department[] = [];
   roles: { roleId: number; roleName: string }[] = [];
   selectedRoleId: number | null = null;
-  existingContacts: string[] = []; // store existing numbers for local duplicate check
+  existingContacts: string[] = [];
 
-  // Blood group dropdown list
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   constructor(
@@ -30,8 +30,8 @@ export class AdminAddComponent implements OnInit {
     private fb: FormBuilder,
     private adminService: AdminService,
     private router: Router,
-    private location: Location
-
+    private location: Location,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +39,6 @@ export class AdminAddComponent implements OnInit {
       this.role = params['role'];
       this.buildFormForRole(this.role);
 
-      // Load existing contacts once
       this.adminService.getAllStaff().subscribe({
         next: staffList => {
           this.existingContacts = staffList.map(s => (s.contact || '').trim());
@@ -47,10 +46,10 @@ export class AdminAddComponent implements OnInit {
         },
         error: err => {
           console.error('Failed to load staff list', err);
+          this.toastr.error('Failed to load staff list from server.', 'Error');
         }
       });
 
-      // Fetch roles & match
       this.adminService.getRoles().subscribe({
         next: data => {
           this.roles = data;
@@ -60,12 +59,12 @@ export class AdminAddComponent implements OnInit {
           this.selectedRoleId = matchedRole ? matchedRole.roleId : null;
 
           if (!this.selectedRoleId) {
-            alert(`Role ID not found for '${this.role}'. Please check Roles table.`);
+            this.toastr.error(`Role ID not found for '${this.role}'. Please check Roles table.`, 'Error');
           }
         },
         error: err => {
           console.error('Failed to load roles', err);
-          alert('Failed to load roles from server.');
+          this.toastr.error('Failed to load roles from server.', 'Error');
         }
       });
 
@@ -75,7 +74,6 @@ export class AdminAddComponent implements OnInit {
     });
   }
 
-  /** ======= LOCAL Duplicate Contact Validator (No API) ======= **/
   contactExistsLocalValidator = (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) return null;
     const entered = control.value.trim();
@@ -83,7 +81,6 @@ export class AdminAddComponent implements OnInit {
     return isDuplicate ? { contactExists: true } : null;
   };
 
-  /** ======= Sync Validators ======= **/
   phoneValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;
     const digitsOnly = control.value.replace(/\D/g, '');
@@ -114,7 +111,6 @@ export class AdminAddComponent implements OnInit {
     return null;
   }
 
-  /** ======= Build Form ======= **/
   buildFormForRole(role: string): void {
     const baseControls = {
       firstName: ['', Validators.required],
@@ -126,7 +122,7 @@ export class AdminAddComponent implements OnInit {
       ],
       addresss: ['', this.addressValidator], // match backend "Addresss"
       bloodGroup: ['', Validators.required],
-      dob: ['', this.dobValidator], // match backend "Dob"
+      dob: ['', this.dobValidator],
       isActive: [true],
       gender: ['', Validators.required]
     };
@@ -138,7 +134,6 @@ export class AdminAddComponent implements OnInit {
         doctorFee: [null, [Validators.required, Validators.min(0)]]
       });
 
-      // Auto-fill doctorFee on department change
       this.userForm.get('departmentId')?.valueChanges.subscribe(deptId => {
         if (!this.departments.length) return;
         const selectedDept = this.departments.find(d => d.departmentId === +deptId);
@@ -152,7 +147,6 @@ export class AdminAddComponent implements OnInit {
     }
   }
 
-  /** ======= Load Departments ======= **/
   loadDepartments(): void {
     this.adminService.getDepartments().subscribe({
       next: data => {
@@ -161,7 +155,7 @@ export class AdminAddComponent implements OnInit {
       },
       error: err => {
         console.error('Failed to load departments', err);
-        alert('Failed to load departments from server.');
+        this.toastr.error('Failed to load departments from server.', 'Error');
       }
     });
   }
@@ -170,20 +164,19 @@ export class AdminAddComponent implements OnInit {
     return this.userForm.controls;
   }
 
-  /** ======= Submit ======= **/
   onSubmit(): void {
     const invalidControls = Object.keys(this.userForm.controls)
       .filter(c => this.userForm.get(c)?.invalid);
     console.log('Invalid Controls:', invalidControls);
 
     if (!this.selectedRoleId) {
-      alert(`Invalid role: '${this.role}'. Please ensure it exists in Roles table.`);
+      this.toastr.error(`Invalid role: '${this.role}'. Please ensure it exists in Roles table.`, 'Error');
       return;
     }
 
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
-      alert('Please fill all required fields correctly.');
+      this.toastr.warning('Please fill all required fields correctly.', 'Warning');
       return;
     }
 
@@ -204,17 +197,18 @@ export class AdminAddComponent implements OnInit {
     this.adminService.createStaff(userInput).subscribe({
       next: createdUser => {
         this.submitting = false;
-        alert(
-          `User added successfully!\nUsername: ${createdUser.username}\nPassword: ${
+        this.toastr.success(
+          `User added successfully! Username: ${createdUser.username} Password: ${
             createdUser.password ? createdUser.password : 'Sent to user email'
-          }`
+          }`,
+          'Success'
         );
         this.router.navigate(['/admin/list', this.role]);
       },
       error: err => {
         this.submitting = false;
         console.error('Error adding user:', err);
-        alert('Failed to add user. Please try again.');
+        this.toastr.error('Failed to add user. Please try again.', 'Error');
       }
     });
   }
@@ -222,11 +216,8 @@ export class AdminAddComponent implements OnInit {
   cancel(): void {
     this.router.navigate(['/admin/list', this.role]);
   }
-  goBack(): void {
-    // Use Location service to go back in browser history
-    this.location.back();
 
-    // Or alternatively, navigate explicitly to dashboard route
-    // this.router.navigate(['/admin/dashboard']);
+  goBack(): void {
+    this.location.back();
   }
 }

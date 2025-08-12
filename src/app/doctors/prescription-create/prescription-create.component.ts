@@ -98,57 +98,46 @@ export class PrescriptionCreateComponent implements OnInit {
 
   // 🔹 Submit
   async submitConsultation() {
-    try {
-      // Step 1️⃣ Create Prescription
-      const prescriptionRes: any = await this.http
-        .post(`${environment.apiUrl}/doctor/add-prescription`, this.prescription)
+  try {
+    // Step 1️⃣ Create Prescription
+    const prescriptionRes: any = await this.http
+      .post(`${environment.apiUrl}/doctor/add-prescription`, this.prescription)
+      .toPromise();
+
+    const prescriptionId = prescriptionRes.data.prescriptionId;
+    console.log("preid:", prescriptionId);
+
+    // Step 2️⃣ Add Medicines
+    for (const med of this.medicines) {
+      console.log('Sending medicine data:', { prescriptionId, ...med });
+      await this.http
+        .post(`${environment.apiUrl}/doctor/add-medicine`, {
+          prescriptionId,
+          ...med
+        })
         .toPromise();
-
-      const prescriptionId = prescriptionRes.data.prescriptionId;
-      console.log("preid:", prescriptionId);
-
-
-      // Step 2️⃣ Add Medicines
-      for (const med of this.medicines) {
-        console.log('Sending medicine data:', { prescriptionId, ...med });
-        await this.http
-          .post(`${environment.apiUrl}/doctor/add-medicine`, {
-
-            prescriptionId,
-            ...med
-          })
-          .toPromise();
-      }
-
-      // 3️⃣ Add Lab Tests
-      for (const lab of this.labTests) {
-        console.log('Sending lab test data:', { prescriptionId, ...lab });
-        const selectedLab = this.availableLabTests.find(t => t.labId === Number(lab.labId));
-        console.log("selectedLab", selectedLab);
-        console.log("selectedLabName", selectedLab.labName);
-        
-        await this.http
-          .post(`${environment.apiUrl}/doctor/add-labtest`, {
-
-            prescriptionId,
-            labId: selectedLab.labId
-          })
-          .toPromise();
-        // const selectedLab = this.availableLabTests.find(t => t.testId === lab.labId);
-        // const labId = lab.labId ?? 0;  // fallback to 0 if null
-
-        // await this.http.post(`${environment.apiUrl}/doctor/add-labtest`, {
-        //   prescriptionId,
-        //   labId: labId,
-        //   labName: selectedLab ? selectedLab.labName : '',
-        //   remarks: lab.remarks
-        // }).toPromise();
-      }
-
-      this.toastr.success('Consultation completed successfully!');
-    } catch (err) {
-      console.error('Consultation failed', err);
-      this.toastr.error('Consultation failed');
     }
+
+    // Step 3️⃣ Add Lab Tests
+    for (const lab of this.labTests) {
+      const labId = lab.labId ?? 0; // fallback to 0 if null
+      const selectedLab = this.availableLabTests.find(t => t.labId === labId || t.testId === labId);
+
+      console.log('Sending lab test data:', { prescriptionId, labId, labName: selectedLab?.labName });
+
+      await this.http.post(`${environment.apiUrl}/doctor/add-labtest`, {
+        prescriptionId,
+        labId,
+        labName: selectedLab?.labName || '',
+        remarks: '' // or add this property to your form if needed
+      }).toPromise();
+    }
+
+    this.toastr.success('Consultation completed successfully!');
+  } catch (err) {
+    console.error('Consultation failed', err);
+    this.toastr.error('Consultation failed');
   }
+}
+
 }

@@ -74,7 +74,11 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
    //wildcard Route --NotFound
-   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' }
+   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' },
+   {
+    path: 'billing',
+    component: BillComponent
+  }
 ];
 
 @NgModule({

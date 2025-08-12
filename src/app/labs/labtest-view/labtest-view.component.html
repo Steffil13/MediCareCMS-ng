@@ -1,68 +1,64 @@
-<div class="container-fluid py-4" style="font-family: 'Segoe UI', sans-serif;">
+<app-navigation-bar></app-navigation-bar>
 
-  <!-- Header -->
-  <div class="text-center mb-4">
-    <h2 class="mb-1" style="color: #30045E; font-weight: 800; letter-spacing: 1px;">medicare+</h2>
-    <p class="mb-0" style="font-size: 1.2rem; font-weight: 500; color: #444;">your health</p>
-    <p style="font-size: 1rem; color: #666;">our promise</p>
-    <hr style="border-top: 3px solid #30045E; width: 60px; margin: 10px auto;">
-  </div>
+<div class="page-content medicare-labtests container-fluid py-4">
 
   <!-- Back Button -->
   <div class="mb-3">
-    <button class="btn shadow-sm text-white"
-      routerLink="/labdashboard"
-      style="background-color: #30045E; border-radius: 8px; padding: 8px 16px; font-weight: 500;">
+    <button class="btn shadow-sm text-white btn-back" routerLink="/labdashboard">
       &larr; Back to Dashboard
     </button>
   </div>
 
-  <!-- Title -->
-  <h4 class="text-center mb-4" style="font-weight: 700; text-transform: capitalize; color: #30045E; font-size: 1.5rem;">
+  <!-- Page Title -->
+  <h4 class="page-title text-center mb-4">
     Prescribed Lab Tests
   </h4>
 
-  <!-- Table -->
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover text-center align-middle w-100 shadow-sm"
-           style="border: 2px solid #30045E; border-radius: 10px; overflow: hidden;">
-      <thead style="background-color: #30045E; color: white; font-size: 1.05rem;">
-        <tr>
-          <th>Lab Name</th>
-          <th>Doctor Name</th>
-          <th>Patient Name</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="labTests.length > 0; else noData" style="background-color: #fdfdfd;">
-        <tr *ngFor="let test of labTests">
-          <td style="font-size: 1rem; font-weight: 500;">{{ test.labName }}</td>
-          <td>{{ test.doctorName }}</td>
-          <td>{{ test.patientName }}</td>
-          <td>
-            <span class="badge px-3 py-2 shadow-sm"
-              [ngClass]="test.isCompleted ? 'bg-success' : 'bg-warning text-dark'">
-              {{ test.isCompleted ? 'Completed' : 'Pending' }}
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-sm text-white shadow-sm"
-              (click)="assignLabTest(test)"
-              style="background-color: #30045E; border-radius: 6px; padding: 6px 12px; font-weight: 500;">
-              Assign
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Table Container -->
+  <div class="center-container">
+    <div class="center-narrow table-responsive">
+      <table class="table table-bordered table-hover text-center align-middle shadow-sm">
+        <thead>
+          <tr>
+            <th>Lab Name</th>
+            <th>Doctor Name</th>
+            <th>Patient Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="labTests.length > 0; else noData">
+          <tr *ngFor="let test of labTests | paginate: { itemsPerPage: pageSize, currentPage: page }">
+            <td class="lab-name">{{ test.labName }}</td>
+            <td>{{ test.doctorName }}</td>
+            <td>{{ test.patientName }}</td>
+            <td>
+              <span class="badge px-3 py-2 shadow-sm"
+                    [ngClass]="test.isCompleted ? 'bg-success' : 'bg-secondary text-dark'">
+                {{ test.isCompleted ? 'Completed' : 'Pending' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm text-white shadow-sm assign-btn" (click)="assignLabTest(test)">
+                Assign
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- No Data -->
+  <!-- No Data State -->
   <ng-template #noData>
-    <div class="alert alert-info text-center w-100 shadow-sm" style="font-size: 1.1rem;">
+    <div class="alert alert-info text-center w-100 shadow-sm no-data">
       No lab tests assigned.
     </div>
   </ng-template>
+
+  <!-- Pagination Footer -->
+  <div class="footer-pagination">
+    <pagination-controls (pageChange)="page = $event" class="custom-page"></pagination-controls>
+  </div>
 
 </div>

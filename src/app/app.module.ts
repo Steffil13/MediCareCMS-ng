@@ -19,6 +19,8 @@ import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list
 import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
 import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/nav/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { RouterModule } from '@angular/router';
       preventDuplicates: true
     }),
     RouterModule.forRoot([]), // keep your routes here
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule,
+    NgxPaginationModule
   ],
   providers: [
     {

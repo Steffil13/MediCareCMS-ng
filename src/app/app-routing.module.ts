@@ -8,6 +8,7 @@ import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.compon
 import { TestResultsComponent } from './labs/test-results/test-results.component';
 import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
 import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
+import { BillComponent } from './receptionists/bill/bill.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [
@@ -47,7 +48,11 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
    //wildcard Route --NotFound
-   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' }
+   { path: '**', redirectTo: 'auth/notfound', pathMatch: 'full' },
+   {
+    path: 'billing',
+    component: BillComponent
+  }
 ];
 
 @NgModule({

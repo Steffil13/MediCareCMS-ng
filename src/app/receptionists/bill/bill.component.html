@@ -1,1 +1,23 @@
-<p>bill works!</p>
+<div *ngIf="loading">Loading appointment details...</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+<div *ngIf="appointmentDetails">
+  <h2>Bill for Appointment {{ appointmentDetails.appointmentNumber }}</h2>
+
+  <!-- <p>Appointment ID: {{ appointmentDetails.appointmentId }}</p> -->
+  <p>Appointment Number: {{ appointmentDetails.appointmentNumber }}</p>
+  
+  <p>Patient Name: {{ appointmentDetails.patient.firstName }} {{ appointmentDetails.patient.lastName }}</p>
+  <p>Register Number: {{ appointmentDetails.patient.registerNumber }}</p>
+  
+  <p>Doctor Name: {{ appointmentDetails.doctor.firstName }} {{ appointmentDetails.doctor.lastName }}</p>
+  <!-- <p>Department ID: {{ appointmentDetails.doctor.departmentId }}</p> -->
+  
+  <p>Appointment Date: {{ appointmentDetails.appointmentDate | date:'mediumDate' }}</p>
+  <p>Appointment Time: {{ appointmentDetails.appointmentTime }}</p>
+
+  <p>Total Fee: {{ appointmentDetails.doctor.doctorFee | currency:'INR' }}</p>
+
+  <button (click)="generateBill()">Generate Bill</button>
+</div>
+

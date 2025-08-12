@@ -71,9 +71,10 @@ export class ReceptionistService {
     });
   }
 
-  generateBillForPatient(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/billings`);
-  }
+  generateBillForPatient(billing: ConsultationBill): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/billings`, billing);
+}
+
   getDepartments(): Observable<Department[]> {
     return this.http.get<Department[]>(`${environment.apiUrl}/admin/departments`);
   }

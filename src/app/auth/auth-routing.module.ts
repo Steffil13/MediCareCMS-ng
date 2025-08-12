@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: '', component: ReceptionistDashboardComponent },
       { path: 'patients', loadChildren: () => import('../receptionists/patient/patient.module').then(m => m.PatientModule) },
       { path: 'appointments', loadChildren: () => import('../receptionists/appointment/appointment.module').then(m => m.AppointmentModule) },
-      { path: 'bills', loadChildren: () => import('../receptionists/bill/bill.module').then(m => m.BillModule) }
+      { path: 'billing', loadChildren: () => import('../receptionists/bill/bill.module').then(m => m.BillModule) }
     ]
   }
 ];

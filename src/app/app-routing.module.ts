@@ -8,6 +8,14 @@ import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.compon
 import { TestResultsComponent } from './labs/test-results/test-results.component';
 import { UpdateTestResultComponent } from './labs/update-lab-result/update-lab-result.component';
 import { LabBillComponent } from './labs/lab-bill/lab-bill.component';
+import { MedicineAssignComponent } from './pharmacists/medicine-assign/medicine-assign.component';
+import { BillViewComponent } from './pharmacists/bill-view/bill-view.component';
+import { PharmacistDashboardComponent } from './auth/pharmacist-dashboard/pharmacist-dashboard.component';
+import { PrescribedMedicinesListComponent } from './pharmacists/prescribed-medicines-list/prescribed-medicines-list.component';
+import { MedicineAddComponent } from './pharmacists/medicine-add/medicine-add.component';
+import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list.component';
+import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
+import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
 //import { PharmacistComponent } from './pharmacists/pharmacist.component';
 
 const routes: Routes = [
@@ -23,11 +31,26 @@ const routes: Routes = [
   { path: 'testresults', component: TestResultsComponent },
   { path: 'update-test-result/:plabTestId', component: UpdateTestResultComponent },
   { path: 'generate-labbill/:prescriptionId', component: LabBillComponent },
+  { path: 'labtechnician/bill/:billId', component: LabBillComponent },
 
   //{ path: '', redirectTo: '/labdashboard', pathMatch: 'full' }
 
-  //{ path: 'pharmacist', component: PharmacistComponent },
-  //Employees Route-- redirect to Login
+  //pharmacist routes
+  { path: 'pharmacist', redirectTo: 'pharmacist/dashboard', pathMatch: 'full' },
+  { path: 'pharmacistdashboard', component: PharmacistDashboardComponent },
+  { path: 'pharmacist/prescribed-medicines', component: PrescribedMedicinesListComponent },
+  { path: 'pharmacist/assign-medicine/:id', component: MedicineAssignComponent },
+  { path: 'pharmacist/bill/:id', component: BillViewComponent },
+  { path: 'pharmacist/add-medicine', component: MedicineAddComponent },
+  { path: 'pharmacist/medicines', component: MedicineListComponent },
+  { path: 'patient-history', component: PatientHistoryComponent },
+  { path: 'pharmacist/bill-history', component: BillHistoryComponent },
+
+
+
+
+
+
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   //parent : Lazy loading the employee module
   {

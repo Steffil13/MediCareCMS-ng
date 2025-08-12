@@ -1,76 +1,47 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { LabBill, LabBillViewModel } from 'src/app/shared/model/labtech/labbill';
-import { LabTest } from 'src/app/shared/model/labtech/labtest';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.service';
-
-// Import models and service
-
 
 @Component({
   selector: 'app-lab-bill',
   templateUrl: './lab-bill.component.html',
 })
 export class LabBillComponent implements OnInit {
-  billModel!: LabBillViewModel;
-  generatedBill?: LabBill;
-  errorMessage?: string;
+  bill: any;
+  loading = false;
+  errorMessage = '';
 
-  constructor(private route: ActivatedRoute, private labService: LabTechnicianService) {}
+  constructor(
+    private route: ActivatedRoute,
+    public router: Router,
+    private labTechnicianService: LabTechnicianService
+  ) {}
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const prescriptionId = +params['prescriptionId'];
-      if (prescriptionId) {
-        this.loadLabTestsAndGenerateBill(prescriptionId);
-      } else {
-        this.errorMessage = 'Prescription ID is missing in the URL.';
-      }
-    });
+  ngOnInit(): void {
+    const billId = Number(this.route.snapshot.paramMap.get('billId'));
+    if (billId) {
+      this.loadBill(billId);
+    } else {
+      this.errorMessage = 'Invalid Bill ID.';
+    }
   }
 
-  loadLabTestsAndGenerateBill(prescriptionId: number) {
-    this.labService.getLabTestsByPrescription(prescriptionId).subscribe({
-      next: (labTests: LabTest[]) => {
-        if (labTests.length === 0) {
-          this.errorMessage = 'No lab tests found for this prescription.';
-          return;
-        }
-
-        const totalAmount = labTests.reduce((sum, test) => sum + test.price, 0);
-
-        this.labService.getPrescriptionDetails(prescriptionId).subscribe({
-          next: (details: { patientId: any; doctorId: any; labTechnicianId: any; }) => {
-            this.billModel = {
-              prescriptionId,
-              patientId: details.patientId,
-              doctorId: details.doctorId,
-              labTechnicianId: details.labTechnicianId,
-              totalAmount,
-            };
-
-            this.generateLabBill();
-          },
-          error: () => {
-            this.errorMessage = 'Failed to load prescription details.';
-          },
-        });
+  loadBill(billId: number): void {
+    this.loading = true;
+    this.labTechnicianService.getBillById(billId).subscribe({
+      next: (data) => {
+        this.bill = data;
+        this.loading = false;
       },
-      error: () => {
-        this.errorMessage = 'Failed to load lab tests.';
+      error: (err) => {
+        this.errorMessage = 'Could not fetch bill details.';
+        this.loading = false;
+        console.error('Failed to load bill:', err);
       },
     });
   }
 
-  generateLabBill() {
-    this.labService.generateLabBill(this.billModel).subscribe({
-      next: (bill: any) => {
-        this.generatedBill = bill;
-        this.errorMessage = undefined;
-      },
-      error: () => {
-        this.errorMessage = 'Failed to generate lab bill.';
-      },
-    });
+  printBill(): void {
+    window.print();
   }
 }

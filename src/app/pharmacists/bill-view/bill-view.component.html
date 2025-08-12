@@ -1,0 +1,14 @@
+<div *ngIf="loading">Loading bill...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="bill">
+  <h3>Pharmacy Bill</h3>
+  <p><strong>Bill ID:</strong> {{ bill.pharmacyBillId }}</p>
+  <p><strong>Prescription ID:</strong> {{ bill.prescriptionId }}</p>
+  <p><strong>Medicine ID:</strong> {{ bill.pmedicineId }}</p>
+  <p><strong>Pharmacist ID:</strong> {{ bill.pharmacistId }}</p>
+  <p><strong>Total Amount:</strong> {{ bill.totalAmount | currency }}</p>
+
+  <button (click)="printBill()">Print</button>
+  <button (click)="cancel()">Cancel</button>
+</div>

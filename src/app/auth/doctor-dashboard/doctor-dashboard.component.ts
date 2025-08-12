@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Appointment } from 'src/app/shared/model/receptionist/appointment';
-import { AuthService } from 'src/app/shared/Service/auth.service';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-doctor-dashboard',

@@ -1,0 +1,40 @@
+<div>
+  <label>Enter Patient ID to filter:</label>
+  <input
+    type="text"
+    [(ngModel)]="searchPatientId"
+    (input)="searchHistory()"
+    placeholder="Patient ID"
+  />
+</div>
+
+<div *ngIf="loading" class="loading">Loading patient histories...</div>
+<div *ngIf="error" style="color:red; margin-top: 10px;">{{ error }}</div>
+
+<table
+  *ngIf="filteredHistories.length > 0"
+  border="1"
+  cellpadding="8"
+  style="margin-top: 20px; width: 100%; border-collapse: collapse;"
+>
+  <thead>
+    <tr>
+      <th>History ID</th>
+      <th>Patient ID</th>
+      <th>Appointment ID</th>
+      <th>Prescription ID</th>
+      <th>Medicine Name</th>
+      <th>Lab Test Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let h of filteredHistories">
+      <td>{{ h.historyId }}</td>
+      <td>{{ h.patientId }}</td>
+      <td>{{ h.appointmentId }}</td>
+      <td>{{ h.prescriptionId }}</td>
+      <td>{{ h.medicineName }}</td>
+      <td>{{ h.labTestName }}</td>
+    </tr>
+  </tbody>
+</table>

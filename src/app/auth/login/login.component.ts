@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 //import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/shared/Service/auth.service';
+import { AuthService } from 'src/app/shared/service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("ACCESS_ROLE", response.roleId.toString());
           localStorage.setItem("JWT_TOKEN", response.token);
           localStorage.setItem("DOC_ID", response.doctorId);
+          localStorage.setItem("PHARMACIST_ID", response.pharmacistId);
 
           if (response.roleId == 1) {
             console.log("Admin Login");

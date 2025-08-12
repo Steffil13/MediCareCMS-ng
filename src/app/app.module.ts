@@ -10,6 +10,14 @@ import { PrescriptionCreateComponent } from './doctors/prescription-create/presc
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { LabDashboardComponent } from './auth/lab-dashboard/lab-dashboard.component';
+import { BillViewComponent } from './pharmacists/bill-view/bill-view.component';
+import { CommonModule } from '@angular/common';
+import { PrescribedMedicinesListComponent } from './pharmacists/prescribed-medicines-list/prescribed-medicines-list.component';
+import { MedicineAssignComponent } from './pharmacists/medicine-assign/medicine-assign.component';
+import { MedicineAddComponent } from './pharmacists/medicine-add/medicine-add.component';
+import { MedicineListComponent } from './pharmacists/medicine-list/medicine-list.component';
+import { PatientHistoryComponent } from './pharmacists/patient-history/patient-history.component';
+import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/nav/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -18,13 +26,23 @@ import { NgxPaginationModule } from 'ngx-pagination';
   declarations: [
     AppComponent,
     LabDashboardComponent,
-    PrescriptionCreateComponent
+    PrescriptionCreateComponent,
+    PrescribedMedicinesListComponent,
+    BillViewComponent,
+    MedicineAssignComponent,
+    MedicineAddComponent,
+    MedicineListComponent,
+    PatientHistoryComponent,
+    BillHistoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    
+    CommonModule,
     AuthModule,
+    ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule, // ✅ Required for Toastr
     ToastrModule.forRoot({

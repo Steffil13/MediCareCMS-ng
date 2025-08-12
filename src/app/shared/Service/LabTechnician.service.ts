@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LabBillViewModel, TestResult, } from '../model/labtech/labtech';
-import { LabBill } from '../model/labtech/labbill';
 import { LabTest } from '../model/labtech/labtest';
+import { TestResultHistory } from '../model/labtech/AssignedLabTest';
+import { LabBill } from '../model/labtech/labbill';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,7 @@ export class LabTechnicianService {
     return this.http.get<TestResult[]>(`${this.apiUrl}/alllabtests`);
   }
 
+
   getLabTestsByPrescription(prescriptionId: number): Observable<LabTest[]> {
     return this.http.get<LabTest[]>(`${this.apiUrl}/labtests/by-prescription/${prescriptionId}`);
   }
@@ -48,21 +50,23 @@ export class LabTechnicianService {
     );
   }
 
-  generateLabBill(billModel: LabBillViewModel): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/generate-lab-bill`, billModel);
-}
-
+    generateLabBill(billModel: LabBillViewModel): Observable<LabBill> {
+    return this.http.post<LabBill>(`${this.apiUrl}/generate-lab-bill`, billModel);
+  }
 
   getBillById(billId: number) {
     return this.http.get(`${this.apiUrl}/bill/${billId}`);
   }
 
+   getTestResultsHistory(): Observable<TestResultHistory[]> {
+    return this.http.get<TestResultHistory[]>(`${this.apiUrl}/history`);
+  }
 
   updateTestResult(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-test-result/${id}`, data);
   }
   getTestResultById(pLabTestId: number) {
-    return this.http.get<any>(`${this.apiUrl}/labtechnician/testresult/${pLabTestId}`);
+    return this.http.get<any>(`${this.apiUrl}/lab-test/${pLabTestId}`);
   }
 
 

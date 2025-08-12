@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { DoctorService } from 'src/app/shared/Service/doctor.service';
+import { DoctorService } from 'src/app/shared/service/doctor.service';
 
 @Component({
   selector: 'app-prescribed-medicine',

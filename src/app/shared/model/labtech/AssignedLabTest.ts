@@ -10,3 +10,14 @@ export class Labtest {
   static plabTestId: any;
 }
 
+export class TestResultHistory {
+  testResultId: number = 0;
+  patientName: string = "";
+  testName: string = "";
+  resultValue: string = "";
+  remarks: string = "";
+  recordDate: string = "";
+  registerNumber:string="";
+  
+resultStatus: boolean = false; // Assuming status is a boolean indicating pass/fail
+}

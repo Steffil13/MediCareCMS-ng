@@ -8,7 +8,10 @@ import { TestResultsComponent } from './test-results/test-results.component';
 import { UpdateTestResultComponent } from './update-lab-result/update-lab-result.component';
 import { LabBillComponent } from './lab-bill/lab-bill.component';
 import { LabtestListComponent } from './lab-list/lab-list.component';
+import { NaviComponent } from './navi/navi.component';
 import { SharedModule } from '../shared/nav/shared/shared.module';
+
+
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { SharedModule } from '../shared/nav/shared/shared.module';
     TestResultsComponent,
     UpdateTestResultComponent,
     LabBillComponent,
-    LabtestListComponent
+    LabtestListComponent,
+    NaviComponent
+    
+  
   ],
   imports: [
     CommonModule,

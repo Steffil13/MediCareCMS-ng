@@ -21,6 +21,7 @@ import { BillHistoryComponent } from './pharmacists/bill-history/bill-history.co
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/nav/shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NavComponent } from './pharmacists/nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MedicineListComponent,
     PatientHistoryComponent,
     BillHistoryComponent,
+    NavComponent,
     
   ],
   imports: [

@@ -11,6 +11,7 @@ describe('PrescribedMedicinesListComponent', () => {
       declarations: [ PrescribedMedicinesListComponent ]
     })
     .compileComponents();
+    
 
     fixture = TestBed.createComponent(PrescribedMedicinesListComponent);
     component = fixture.componentInstance;
@@ -20,4 +21,5 @@ describe('PrescribedMedicinesListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });

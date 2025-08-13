@@ -1,36 +1,52 @@
-<div class="container">
-  <h2>Test Results History</h2>
+<app-navi></app-navi>
 
-  <div *ngIf="loading">Loading...</div>
-  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+<div class="page-content container py-4">
+  <h2 class="section-title text-center mb-4">Test Results History</h2>
 
-  <table *ngIf="!loading && testResults.length > 0" class="table table-striped">
-    <thead>
-      <tr>
-        <th>RegisterNumber</th>
-        <th>Patient Name</th>
-        <th>Test Name</th>
-        <th>Result</th>
-        <th>Remarks</th>
-        <th>Status</th>
-        <th>Record Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let result of testResults">
-        <td>{{ result.registerNumber }}</td>
-        <td>{{ result.patientName }}</td>
-        <td>{{ result.testName }}</td>
-        <td>{{ result.resultValue }}</td>
-        <td>{{ result.remarks }}</td>
-        <td>{{ result.resultStatus ? 'Positive' : 'Negative' }}</td>
+  <div *ngIf="loading" class="loading-text text-center mb-3">Loading...</div>
+  <div *ngIf="errorMessage" class="error-text text-center mb-3">{{ errorMessage }}</div>
 
-        <td>{{ result.recordDate | date: 'short' }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!loading && testResults.length === 0">
-    No test results found.
+  <div class="table-responsive" *ngIf="!loading && testResults.length > 0; else noDataTemplate">
+    <table class="table styled-table table-striped text-center align-middle">
+      <thead>
+        <tr>
+          <th>Register Number</th>
+          <th>Patient Name</th>
+          <th>Test Name</th>
+          <th>Result</th>
+          <th>Remarks</th>
+          <th>Status</th>
+          <th>Record Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let result of testResults">
+          <td>{{ result.registerNumber }}</td>
+          <td>{{ result.patientName }}</td>
+          <td>{{ result.testName }}</td>
+          <td>{{ result.resultValue }}</td>
+          <td>{{ result.remarks }}</td>
+          <td>{{ result.resultStatus ? 'Positive' : 'Negative' }}</td>
+          <td>{{ result.recordDate | date: 'short' }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" (click)="printResult(result)">
+              🖨️ Print
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+  <ng-template #noDataTemplate>
+    <div class="no-data text-center">No test results found.</div>
+  </ng-template>
+</div>
+
+<!-- Back to Dashboard button -->
+<div class="back-button-container text-center mt-3">
+  <button class="btn btn-back" (click)="goBackToDashboard()">
+    &larr; Back to Dashboard
+  </button>
 </div>

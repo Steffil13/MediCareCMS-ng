@@ -1,16 +1,56 @@
-<div *ngIf="loading">Loading bill...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+<app-nav></app-nav>
 
-<div *ngIf="bill">
-  <h3>Pharmacy Bill</h3>
-  <p><strong>Bill ID:</strong> {{ bill.pharmacyBillId }}</p>
-  <p><strong>Prescription ID:</strong> {{ bill.prescriptionId }}</p>
-  <p><strong>Medicine ID:</strong> {{ bill.pmedicineId }}</p>
-  <p><strong>Pharmacist ID:</strong> {{ bill.pharmacistId }}</p>
-  <p><strong>Total Amount:</strong> {{ bill.totalAmount | currency }}</p>
+<div *ngIf="loading" class="loading-text">Loading bill...</div>
+<div *ngIf="error" class="error-text">{{ error }}</div>
 
-  <button (click)="printBill()">Print</button>
-  <button (click)="cancel()">Cancel</button>
-  
-  <button (click)="goBack()" style="margin-top: 10px;">Back to Dashboard</button>
+<div *ngIf="bill" class="bill-container">
+  <!-- Header with Logo and Clinic Name -->
+  <div class="bill-header">
+    <img src="assets/logo.png" alt="Medicare Logo" class="bill-logo" />
+    <div class="clinic-info">
+      <h1>Medicare</h1>
+      <p class="clinic-tagline">Your Health Our Promise</p>
+      <p class="clinic-address">123 Health St, Wellness City, Country</p>
+      <p class="clinic-contact">Phone: +123 456 7890 | Email: info@medicare.com</p>
+    </div>
+  </div>
+
+  <!-- Divider Line -->
+  <hr class="divider" />
+
+  <!-- Bill Title -->
+  <h2 class="bill-title">Pharmacy Bill</h2>
+
+  <!-- Bill Details -->
+  <div class="bill-details">
+    <div><span class="label">Bill ID:</span> {{ bill.pharmacyBillId }}</div>
+    <div><span class="label">Doctor Name:</span> {{ bill.doctorName }}</div>
+    <div><span class="label">Patient Name:</span> {{ bill.patientName }}</div>
+    <div><span class="label">Issued Date:</span> {{ bill.issuedDate | date:'medium' }}</div>
+    <div><span class="label">Total Amount:</span> {{ bill.totalAmount | currency }}</div>
+  </div>
+
+  <!-- Medicines List -->
+  <div class="bill-medicines" *ngIf="bill.medicines && bill.medicines.length">
+    &nbsp;
+    &nbsp;
+
+    &nbsp;
+
+    &nbsp;
+
+    &nbsp;
+
+    <h3>Medicines Issued</h3>
+    <ul>
+      <li *ngFor="let med of bill.medicines">{{ med }}</li>
+    </ul>
+  </div>
+
+  <!-- Buttons Section -->
+  <div class="bill-buttons">
+    <button class="btn btn-print" (click)="printBill()">Print</button>
+    <button class="btn btn-cancel" (click)="cancel()">Cancel</button>
+    <button class="btn btn-back" (click)="goBack()">Back to Dashboard</button>
+  </div>
 </div>

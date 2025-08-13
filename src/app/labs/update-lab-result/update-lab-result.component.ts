@@ -4,6 +4,7 @@ import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { LabBill } from 'src/app/shared/model/labtech/labbill';
 import { LabBillViewModel } from 'src/app/shared/model/labtech/labtech';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-result',
@@ -24,7 +25,8 @@ export class UpdateTestResultComponent implements OnInit {
     private fb: FormBuilder,
     private labTechnicianService: LabTechnicianService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -70,24 +72,20 @@ export class UpdateTestResultComponent implements OnInit {
 
   loadLabTestDetails(plabTestId: number) {
     if (!plabTestId) {
-      alert('Invalid Lab Test ID.');
+      this.toastr.error('Invalid Lab Test ID', 'Error');
       return;
     }
 
     this.labTechnicianService.getTestResultById(plabTestId).subscribe({
       next: details => {
-        console.log('Loaded lab test details:', details);
-        // Map response properties (adjust if your API returns different shape)
         this.prescriptionId = details.prescriptionId;
         this.labTechnicianId = details.labTechnicianId;
         this.patientId = details.patientId;
         this.doctorId = details.doctorId;
         this.testPrice = details.price;
-
-        console.log('Loaded lab test details:', details);
       },
       error: () => {
-        alert('Failed to load lab test details.');
+        this.toastr.error('Failed to load lab test details', 'Error');
       }
     });
   }
@@ -98,15 +96,13 @@ export class UpdateTestResultComponent implements OnInit {
 
   onSubmit() {
     if (this.updateForm.invalid || !this.pLabTestId) {
-      alert('No test selected to update or form invalid.');
+      this.toastr.warning('No test selected to update or form invalid', 'Validation');
       return;
     }
 
-    console.log('Updating test result for LabTestId:', this.pLabTestId);
-
     this.labTechnicianService.updateTestResult(this.pLabTestId, this.updateForm.value).subscribe({
       next: () => {
-        alert('Test result updated successfully.');
+        this.toastr.success('Test result updated successfully', 'Success');
 
         const billModel: LabBillViewModel = {
           prescriptionId: this.prescriptionId,
@@ -116,21 +112,19 @@ export class UpdateTestResultComponent implements OnInit {
           totalAmount: this.calculateTotalAmount(),
         };
 
-        console.log('Lab bill model:', billModel);
-
         this.labTechnicianService.generateLabBill(billModel).subscribe({
           next: (bill: LabBill) => {
-            alert(`Lab bill generated successfully. Bill Number: ${bill.labBillNumber}`);
+            this.toastr.success(`Lab bill generated successfully. Bill Number: ${bill.labBillNumber}`, 'Success');
             this.router.navigate(['/labtechnician/bill', bill.labBillId]);
           },
           error: err => {
-            alert('Failed to generate lab bill.');
+            this.toastr.error('Failed to generate lab bill', 'Error');
             console.error('GenerateLabBill error:', err);
           }
         });
       },
       error: err => {
-        alert('Update failed!');
+        this.toastr.error('Failed to update test result', 'Error');
         console.error('UpdateTestResult error:', err);
       }
     });

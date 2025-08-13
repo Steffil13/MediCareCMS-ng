@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PharmacistService } from 'src/app/shared/service/pharmacist.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medicine-add',
@@ -19,8 +20,8 @@ export class MedicineAddComponent {
     private router: Router
   ) {
     const now = new Date();
-    this.today = now.toISOString().split('T')[0];
-    this.expiryMinDate = this.today; // default
+    this.today = now.toISOString().split('T')[0]; // ✅ today's date in YYYY-MM-DD
+    this.expiryMinDate = this.today;
 
     this.medicineForm = this.fb.group({
       medicineName: ['', Validators.required],
@@ -35,7 +36,7 @@ export class MedicineAddComponent {
   updateExpiryMinDate() {
     const mDate = this.medicineForm.get('manufactureDate')?.value;
     if (mDate) {
-      this.expiryMinDate = mDate;
+      this.expiryMinDate = mDate; // expiry must be after manufacture date
       const expiryControl = this.medicineForm.get('expiryDate');
       if (expiryControl?.value && expiryControl.value <= mDate) {
         expiryControl.setValue('');
@@ -57,13 +58,31 @@ export class MedicineAddComponent {
     if (this.medicineForm.valid) {
       this.pharmacistService.addMedicine(this.medicineForm.value).subscribe({
         next: () => {
-          alert('Medicine added successfully!');
-          this.router.navigate(['/pharmacist/dashboard']);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Medicine added successfully',
+            timer: 2000,
+            showConfirmButton: false
+          });
+          setTimeout(() => {
+            this.router.navigate(['medicines']);
+          }, 2000);
         },
         error: (err) => {
-          alert('Failed to add medicine.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to add medicine'
+          });
           console.error(err);
         }
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Validation',
+        text: 'Please fill all required fields correctly'
       });
     }
   }

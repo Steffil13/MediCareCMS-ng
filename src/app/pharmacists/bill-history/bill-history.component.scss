@@ -1,0 +1,128 @@
+/* ====== Container ====== */
+.bill-history-container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(44, 50, 86, 0.15);
+}
+
+/* Section Title */
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #2c3256;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.section-title::after {
+  content: "";
+  width: 70px;
+  height: 4px;
+  background: #2c3256;
+  display: block;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* Loading & Error Text */
+.loading-text {
+  text-align: center;
+  font-weight: 600;
+  color: #2c3256;
+}
+.error-text {
+  text-align: center;
+  color: red;
+  font-weight: 600;
+}
+
+/* ====== Table Wrapper ====== */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Styled Table */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(44, 50, 86, 0.1);
+}
+.styled-table thead {
+  background: linear-gradient(135deg, #2c3256, #1a1f37);
+  color: #fff;
+}
+.styled-table th,
+.styled-table td {
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.styled-table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.styled-table tbody tr:nth-child(even) {
+  background: rgba(44, 50, 86, 0.03);
+}
+.styled-table tbody tr:hover {
+  background: rgba(44, 50, 86, 0.07);
+  transition: all 0.25s ease;
+}
+
+/* ====== Issued Status ====== */
+.status-pill {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.status-pill.issued {
+  background: rgba(44, 50, 86, 0.1);
+  color: #2c3256;
+}
+.status-pill.not-issued {
+  background: rgba(200, 50, 50, 0.1);
+  color: #c83232;
+}
+
+/* ====== No Data ====== */
+.no-data {
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 1rem;
+  font-style: italic;
+  color: #555;
+}
+
+/* ====== Back Button Container ====== */
+.back-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* ====== Back Button Style ====== */
+.back-btn {
+  min-width: 180px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(44, 50, 86, 0.25);
+  transition: background-color 0.25s ease;
+  border: none;
+  color: white;
+  background: linear-gradient(135deg, #2c3256, #1a1f37);
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #1a1f37;
+  box-shadow: 0 6px 18px rgba(44, 50, 86, 0.35);
+}

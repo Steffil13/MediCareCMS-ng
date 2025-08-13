@@ -1,45 +1,73 @@
-<div>
-  <button (click)="goBack()" class="btn btn-secondary mb-3">
-    ← Back to Dashboard
-  </button>
+<div class="dashboard-center-container">
+  <app-nav></app-nav>
 
-  <label>Enter Patient ID to filter:</label>
-  <input
-    type="text"
-    [(ngModel)]="searchPatientId"
-    (input)="searchHistory()"
-    placeholder="Patient ID"
-    class="form-control"
-  />
+  <h2 class="section-title">Patient History</h2>
+
+  <div class="filter-box centered-filter">
+    <label for="patientId">Enter Patient ID to filter:</label>
+    <input
+      id="patientId"
+      type="text"
+      [(ngModel)]="searchPatientId"
+      (input)="searchHistory()"
+      placeholder="Patient ID"
+      class="filter-input"
+    />
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading patient histories...</div>
+  <div *ngIf="error" class="error-text">{{ error }}</div>
+
+  <table *ngIf="paginatedHistories.length > 0" class="styled-table">
+    <thead>
+      <tr>
+        <th>History ID</th>
+        <th>Patient ID</th>
+        <th>Appointment ID</th>
+        <th>Prescription ID</th>
+        <th>Medicine Name</th>
+        <th>Lab Test Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of paginatedHistories">
+        <td>{{ h.historyId }}</td>
+        <td>{{ h.patientId }}</td>
+        <td>{{ h.appointmentId }}</td>
+        <td>{{ h.prescriptionId }}</td>
+        <td>{{ h.medicineName }}</td>
+        <td>{{ h.labTestName }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="paginatedHistories.length === 0 && !loading && !error" class="no-data">
+    No patient history found.
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-container" *ngIf="totalPages > 1">
+    <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+      &lt; Prev
+    </button>
+
+    <button
+      class="page-btn"
+      *ngFor="let page of pages"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+
+    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+      Next &gt;
+    </button>
+  </div>
 </div>
 
-<div *ngIf="loading" class="loading">Loading patient histories...</div>
-<div *ngIf="error" style="color:red; margin-top: 10px;">{{ error }}</div>
-
-<table
-  *ngIf="filteredHistories.length > 0"
-  border="1"
-  cellpadding="8"
-  style="margin-top: 20px; width: 100%; border-collapse: collapse;"
->
-  <thead>
-    <tr>
-      <th>History ID</th>
-      <th>Patient ID</th>
-      <th>Appointment ID</th>
-      <th>Prescription ID</th>
-      <th>Medicine Name</th>
-      <th>Lab Test Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let h of filteredHistories">
-      <td>{{ h.historyId }}</td>
-      <td>{{ h.patientId }}</td>
-      <td>{{ h.appointmentId }}</td>
-      <td>{{ h.prescriptionId }}</td>
-      <td>{{ h.medicineName }}</td>
-      <td>{{ h.labTestName }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="back-btn-fixed-container">
+  <button (click)="goBack()" class="btn-back">
+    ← Back to Dashboard
+  </button>
+</div>

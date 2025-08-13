@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lab-bill',
   templateUrl: './lab-bill.component.html',
+  styleUrls: ['./lab-bill.component.scss']
 })
 export class LabBillComponent implements OnInit {
   bill: any;
@@ -30,6 +32,7 @@ export class LabBillComponent implements OnInit {
     this.loading = true;
     this.labTechnicianService.getBillById(billId).subscribe({
       next: (data) => {
+        console.log("bill details", data);
         this.bill = data;
         this.loading = false;
       },
@@ -42,6 +45,18 @@ export class LabBillComponent implements OnInit {
   }
 
   printBill(): void {
-    window.print();
+    Swal.fire({
+      title: 'Do you want to print the bill?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Print',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#12126a', // navy theme color
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.print();
+      }
+    });
   }
 }

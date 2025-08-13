@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PharmacyBill } from 'src/app/shared/model/pharmacist/medicine';
 import { PharmacistService } from 'src/app/shared/service/pharmacist.service';
-
 
 @Component({
   selector: 'app-bill-history',
@@ -13,7 +13,7 @@ export class BillHistoryComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private pharmacistService: PharmacistService) {}
+  constructor(private pharmacistService: PharmacistService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadBills();
@@ -34,5 +34,9 @@ export class BillHistoryComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  goBackToDashboard(): void {
+    this.router.navigate(['/pharmacistdashboard']);
   }
 }

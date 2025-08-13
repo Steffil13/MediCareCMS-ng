@@ -70,3 +70,17 @@
 .page-content .btn-primary:hover {
   background-color: #3a3b78 !important;
 }
+/* Secondary Button (Cancel) */
+.page-content .btn-secondary {
+  background-color: #4133d6 !important; /* pink-red tone from your theme */
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.page-content .btn-secondary:hover {
+  background-color: #12126a !important;
+}
+

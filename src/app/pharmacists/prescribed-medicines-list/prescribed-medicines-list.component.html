@@ -1,4 +1,10 @@
-<table *ngIf="!loading && prescribedMedicines.length > 0" border="1" cellpadding="8">
+<app-nav></app-nav>
+
+<h2 class="section-title">Prescriptions to Prescribe</h2>
+
+<table 
+  class="styled-table"
+  *ngIf="!loading && prescribedMedicines.length > 0">
   <thead>
     <tr>
       <th>Prescription ID</th>
@@ -16,17 +22,26 @@
         <td>{{ pm.dosage }}</td>
         <td>{{ pm.duration }}</td>
         <td>
-          <button (click)="onAssign(prescription.prescriptionId)">Assign</button>
+          <button 
+            class="btn-light-navy" 
+            (click)="onAssign(prescription.prescriptionId)">
+            Prescribe
+          </button>
         </td>
       </tr>
     </ng-container>
   </tbody>
 </table>
 
-<div *ngIf="!loading && prescribedMedicines.length === 0">
+<div *ngIf="!loading && prescribedMedicines.length === 0" class="no-data">
   No pending medicines to assign.
 </div>
 
-<div *ngIf="error" style="color:red">
+<div *ngIf="error" class="error-text">
   {{ error }}
+</div>
+
+<!-- ✅ Back to Dashboard Button -->
+<div class="back-btn-container">
+  <button class="btn-back" (click)="goBack()">Back to Dashboard</button>
 </div>

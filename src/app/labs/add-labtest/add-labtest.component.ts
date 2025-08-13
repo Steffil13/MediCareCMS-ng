@@ -8,13 +8,10 @@ import { Router } from '@angular/router';
   selector: 'app-add-labtest',
   templateUrl: './add-labtest.component.html',
   styleUrls: ['./add-labtest.component.scss']
-
 })
 export class AddLabtestComponent {
   labTestForm: FormGroup;
   submitted = false;
-  successMessage = '';
-  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -41,23 +38,18 @@ export class AddLabtestComponent {
     this.labService.addLabTest(labTest).subscribe({
       next: () => {
         this.toastr.success('Lab test added successfully!');
-        this.successMessage = 'Lab test added successfully! Redirecting...';
-        this.errorMessage = '';
         this.labTestForm.reset();
         this.submitted = false;
-
-        // Redirect after 3 seconds to medicines list (adjust route as needed)
-        setTimeout(() => {
-          this.router.navigate(['alllabtests']);
-        }, 3000);
-
+        this.router.navigate(['alllabtests']);
       },
       error: (err: any) => {
-        this.errorMessage = 'Failed to add lab test.';
-        this.successMessage = '';
-        this.toastr.error(this.errorMessage);
+        this.toastr.error('Failed to add lab test.');
         console.error(err);
       }
     });
+  }
+
+  onCancel(): void {
+    this.router.navigate(['labdashboard']);
   }
 }

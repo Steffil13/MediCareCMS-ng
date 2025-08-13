@@ -1,45 +1,57 @@
-<div class="container mt-4">
-  <h2>Pharmacy Bill History</h2>
+<app-nav></app-nav>
+<div class="container mt-4 bill-history-container">
+
+  <h2 class="section-title">Pharmacy Bill History</h2>
 
   <!-- Loading state -->
-  <div *ngIf="loading" class="text-center">
-    <p>Loading bills...</p>
+  <div *ngIf="loading" class="loading-text">
+    Loading bills...
   </div>
 
   <!-- Error message -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
+  <div *ngIf="errorMessage" class="error-text">
     {{ errorMessage }}
   </div>
 
   <!-- Table of bills -->
-  <table *ngIf="!loading && bills.length > 0" class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th>Bill ID</th>
-        <th>DoctorName</th>
-        <th>PatientName</th>
-        <th>Total Amount</th>
-        <th>Issued Date</th>
-        <th>Issued</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let bill of bills">
-        <td>{{ bill.pharmacyBillId }}</td>
-        <td>{{ bill.doctorName }}</td>
-        <td>{{ bill.patientName }}</td>
-        <td>{{ bill.totalAmount | currency:'INR' }}</td>
-        <td>{{ bill.issuedDate | date:'short' }}</td>
-        <td>
-          <span [class.text-success]="bill.isIssued" [class.text-danger]="!bill.isIssued">
-            {{ bill.isIssued ? 'Yes' : 'No' }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper" *ngIf="!loading && bills.length > 0">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Bill ID</th>
+          <th>Doctor Name</th>
+          <th>Patient Name</th>
+          <th>Total Amount</th>
+          <th>Issued Date</th>
+          <th>Issued</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bill of bills">
+          <td>{{ bill.pharmacyBillId }}</td>
+          <td>{{ bill.doctorName }}</td>
+          <td>{{ bill.patientName }}</td>
+          <td>{{ bill.totalAmount | currency:'INR' }}</td>
+          <td>{{ bill.issuedDate | date:'short' }}</td>
+          <td>
+            <span class="status-pill" [class.issued]="bill.isIssued" [class.not-issued]="!bill.isIssued">
+              {{ bill.isIssued ? 'Yes' : 'No' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- No data message -->
-  <div *ngIf="!loading && bills.length === 0" class="text-muted">
+  <div *ngIf="!loading && bills.length === 0" class="no-data">
     No pharmacy bills found.
+  </div>
+
+  <!-- Back to Dashboard Button at bottom center -->
+  <div class="back-btn-container">
+    <button class="btn btn-primary back-btn" (click)="goBackToDashboard()">
+      &larr; Back to Dashboard
+    </button>
   </div>
 </div>

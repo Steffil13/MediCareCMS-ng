@@ -11,8 +11,15 @@ export class PatientHistoryComponent implements OnInit {
   searchPatientId: string = '';
   allHistories: any[] = [];
   filteredHistories: any[] = [];
+  paginatedHistories: any[] = [];
   loading = false;
   error = '';
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 10;  // number of records per page
+  totalPages = 0;
+  pages: number[] = [];
 
   constructor(
     private pharmacistService: PharmacistService,
@@ -30,6 +37,8 @@ export class PatientHistoryComponent implements OnInit {
         console.log('Patient histories:', data);
         this.allHistories = data;
         this.filteredHistories = data;
+        this.currentPage = 1;
+        this.calculatePagination();
         this.loading = false;
       },
       error: () => {
@@ -44,6 +53,8 @@ export class PatientHistoryComponent implements OnInit {
     if (!id || isNaN(id) || id <= 0) {
       this.filteredHistories = this.allHistories;
       this.error = '';
+      this.currentPage = 1;
+      this.calculatePagination();
       return;
     }
 
@@ -54,6 +65,26 @@ export class PatientHistoryComponent implements OnInit {
     } else {
       this.error = '';
     }
+
+    this.currentPage = 1;
+    this.calculatePagination();
+  }
+
+  calculatePagination() {
+    this.totalPages = Math.ceil(this.filteredHistories.length / this.pageSize);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.updatePaginatedHistories();
+  }
+
+  updatePaginatedHistories() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedHistories = this.filteredHistories.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updatePaginatedHistories();
   }
 
   goBack() {

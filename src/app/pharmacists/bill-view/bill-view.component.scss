@@ -1,0 +1,148 @@
+.bill-container {
+  max-width: 600px;
+  background: #fff;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(44, 50, 86, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3256;
+}
+
+.bill-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.bill-logo {
+  height: 80px;
+  width: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(44, 50, 86, 0.15);
+}
+
+.clinic-info h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #2c3256;
+}
+
+.clinic-tagline {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5075;
+  margin: 3px 0;
+}
+
+.clinic-address,
+.clinic-contact {
+  font-size: 0.85rem;
+  color: #5a6180;
+  margin: 1px 0;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #2c3256bb, transparent);
+  margin: 1rem 0 1.5rem 0;
+}
+
+.bill-title {
+  text-align: center;
+  color: #2c3256;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+
+.bill-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  font-size: 1rem;
+}
+
+.bill-details .label {
+  font-weight: 700;
+  min-width: 130px;
+  display: inline-block;
+}
+
+.bill-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  min-width: 110px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(44, 50, 86, 0.2);
+}
+
+.btn-print {
+  background: #2c3256;
+}
+
+.btn-print:hover {
+  background: #1a1f37;
+  box-shadow: 0 6px 14px rgba(44, 50, 86, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-cancel {
+  background: #c94e4e;
+}
+
+.btn-cancel:hover {
+  background: #9e3e3e;
+  box-shadow: 0 6px 14px rgba(201, 78, 78, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-back {
+  background: #556ca3;
+}
+
+.btn-back:hover {
+  background: #3c4a74;
+  box-shadow: 0 6px 14px rgba(85, 108, 163, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 480px) {
+  .bill-container {
+    padding: 1.5rem 1.5rem;
+    max-width: 95%;
+  }
+  .bill-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .bill-logo {
+    height: 60px;
+    width: 60px;
+  }
+  .bill-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

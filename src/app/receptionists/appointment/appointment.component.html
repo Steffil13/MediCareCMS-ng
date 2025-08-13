@@ -1,12 +1,17 @@
-<div class="appointment-container">
+<div class="appointment-container page-content">
   <h2>Appointment Scheduling</h2>
 
   <!-- Search Patient -->
-  <div class="search-section">
-    <label for="registerNumber">Register Number:</label>
-    <input type="text" id="registerNumber" [(ngModel)]="registerNumber" placeholder="Enter register number"
+  <div class="search-section form-group">
+    <label for="registerNumber" class="form-label">Register Number:</label>
+    <input 
+      type="text" 
+      id="registerNumber"
+      [(ngModel)]="registerNumber"
+      class="form-control"
+      placeholder="Enter register number"
       (keyup.enter)="searchPatients()" />
-    <button (click)="searchPatients()">Search</button>
+    <button type="button" class="btn-primary" (click)="searchPatients()">Search</button>
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
   </div>
 
@@ -14,8 +19,9 @@
   <div *ngIf="searchedPatients.length > 0" class="patient-list">
     <h3>Select Patient</h3>
     <ul>
-      <li *ngFor="let patient of searchedPatients" (click)="selectPatient(patient)"
-        [class.selected]="selectedPatient?.patientId === patient.patientId">
+      <li *ngFor="let patient of searchedPatients" 
+          (click)="selectPatient(patient)"
+          [class.selected]="selectedPatient?.patientId === patient.patientId">
         {{ patient.firstName }} {{ patient.lastName }} (ID: {{ patient.patientId }})
       </li>
     </ul>
@@ -26,8 +32,13 @@
     <h3>Schedule Appointment for {{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</h3>
 
     <div class="form-group">
-      <label for="department">Department:</label>
-      <select id="department" [(ngModel)]="selectedDepartmentId" (change)="onDepartmentChange()" name="department"
+      <label for="department" class="form-label">Department:</label>
+      <select 
+        id="department" 
+        class="form-select"
+        [(ngModel)]="selectedDepartmentId" 
+        (change)="onDepartmentChange()" 
+        name="department"
         required>
         <option [value]="null" disabled selected>Select Department</option>
         <option *ngFor="let dept of departments" [value]="dept.departmentId">
@@ -37,8 +48,13 @@
     </div>
 
     <div class="form-group">
-      <label for="doctor">Doctor:</label>
-      <select id="doctor" [(ngModel)]="newAppointment.doctorId" name="doctor" required>
+      <label for="doctor" class="form-label">Doctor:</label>
+      <select 
+        id="doctor" 
+        class="form-select"
+        [(ngModel)]="newAppointment.doctorId" 
+        name="doctor" 
+        required>
         <option [value]="0" disabled selected>Select Doctor</option>
         <option *ngFor="let doc of doctors" [value]="doc.doctorId">
           Dr. {{ doc.doctorName }}
@@ -47,13 +63,25 @@
     </div>
 
     <div class="form-group">
-      <label for="appointmentDate">Date:</label>
-      <input type="date" [(ngModel)]="newAppointment.appointmentDate" name="appointmentDate" [min]="todayString" required />
+      <label for="appointmentDate" class="form-label">Date:</label>
+      <input 
+        type="date" 
+        id="appointmentDate"
+        class="form-control appointment-date"
+        [(ngModel)]="newAppointment.appointmentDate" 
+        name="appointmentDate" 
+        [min]="todayString" 
+        required />
     </div>
 
     <div class="form-group">
-      <label for="appointmentTime">Time:</label>
-      <select id="appointmentTime" [(ngModel)]="newAppointment.appointmentTime" name="appointmentTime" required>
+      <label for="appointmentTime" class="form-label">Time:</label>
+      <select 
+        id="appointmentTime" 
+        class="form-select appointment-time"
+        [(ngModel)]="newAppointment.appointmentTime" 
+        name="appointmentTime" 
+        required>
         <option value="" disabled selected>Select Time</option>
         <option *ngFor="let time of availableTimes" [value]="time" [disabled]="isTimeSlotBooked(time)">
           {{ time }}

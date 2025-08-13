@@ -40,7 +40,13 @@
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
             "allowedCommonJsDependencies": [
-              "sweetalert2"
+              "sweetalert2",
+              "canvg",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "jspdf",
+              "html2canvas"
             ]
           },
           "configurations": {

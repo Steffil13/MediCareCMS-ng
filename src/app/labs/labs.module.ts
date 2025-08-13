@@ -9,6 +9,7 @@ import { UpdateTestResultComponent } from './update-lab-result/update-lab-result
 import { LabBillComponent } from './lab-bill/lab-bill.component';
 import { LabtestListComponent } from './lab-list/lab-list.component';
 import { NaviComponent } from './navi/navi.component';
+import { SharedModule } from '../shared/nav/shared/shared.module';
 
 
 

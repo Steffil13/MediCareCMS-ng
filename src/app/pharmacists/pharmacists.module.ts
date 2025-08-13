@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 
+
 import { PharmacistsRoutingModule } from './pharmacists-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MedicineAssignComponent } from './medicine-assign/medicine-assign.component';
@@ -11,6 +12,7 @@ import { MedicineListComponent } from './medicine-list/medicine-list.component';
 import { CommonModule } from '@angular/common';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
 import { BillHistoryComponent } from './bill-history/bill-history.component';
+import { NavComponent } from './nav/nav.component';
 
 
 @NgModule({
@@ -22,7 +24,8 @@ import { BillHistoryComponent } from './bill-history/bill-history.component';
     MedicineAddComponent, 
     MedicineListComponent,
     PatientHistoryComponent,
-    BillHistoryComponent
+    BillHistoryComponent,
+    NavComponent
   ],
   imports: [
     CommonModule,

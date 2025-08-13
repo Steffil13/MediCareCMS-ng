@@ -1,8 +1,9 @@
-<!-- medicine-assign.component.html -->
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+<app-nav></app-nav>
 
-<div *ngIf="prescribedMedicine?.medicines?.length">
+<div *ngIf="loading" class="loading-text">Loading...</div>
+<div *ngIf="error" class="error-text">{{ error }}</div>
+
+<div *ngIf="prescribedMedicine?.medicines?.length" class="medicine-card">
   <p>
     <strong>Medicine Name:</strong>
     {{ prescribedMedicine?.medicines?.[0]?.medicineName }}
@@ -17,5 +18,7 @@
   </p>
 </div>
 
-<button (click)="onAssignClick()">Assign</button>
-
+<div class="btn-container">
+  <button (click)="onAssignClick()" class="btn-assign">Assign</button>
+  <button (click)="onCancelClick()" class="btn-cancel">Cancel</button>
+</div>

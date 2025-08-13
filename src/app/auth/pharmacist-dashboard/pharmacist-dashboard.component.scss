@@ -1,0 +1,52 @@
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* center all rows horizontally */
+    gap: 2rem; /* more space between rows for a cleaner look */
+    margin-top: 3rem;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center; /* center buttons in a row */
+    gap: 2.5rem; /* space between buttons */
+}
+
+.button-row.single-center {
+    justify-content: center;
+}
+
+.btn-light-navy {
+    background-color: #2c3256;
+    color: #fff;
+    padding: 0.85em 2.2em;
+    border: none;
+    border-radius: 10px; /* slightly rounder corners */
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.5px; /* makes text look cleaner */
+    box-shadow: 0 4px 12px rgba(44, 50, 86, 0.2);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-width: 200px; /* makes buttons consistent width */
+    text-align: center;
+}
+
+.btn-light-navy:hover {
+    background-color: #1a1f37;
+    box-shadow: 0 6px 18px rgba(44, 50, 86, 0.3);
+    transform: translateY(-3px) scale(1.03); /* lift effect */
+}
+
+.btn-light-navy:active {
+    transform: translateY(0) scale(0.98); /* press effect */
+}
+
+.dashboard-title {
+    text-align: center;
+    color: #2c3256;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}

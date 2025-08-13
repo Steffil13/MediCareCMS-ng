@@ -1,21 +1,37 @@
-<table class="table table-striped">
-    <thead>
-        <tr>
+<app-navi></app-navi>
 
-            <th>labId</th>
+<div class="page-content">
+  <div class="center-container">
+    <div class="center-narrow table-responsive">
+        <h2 class="section-title text-center mb-4">Lab Test</h2>
 
+
+      <table class="table styled-table">
+        <thead>
+          <tr>
+            <th>Lab ID</th>
             <th>Test Name</th>
             <th>Normal Range</th>
             <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let test of labTests">
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let test of labTests">
             <td>{{ test.labId }}</td>
-
             <td>{{ test.labName }}</td>
             <td>{{ test.normalRange }}</td>
-            <td>{{ test.price }}</td>
-        </tr>
-    </tbody>
-</table>
+            <td>{{ test.price | currency:'INR' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- Back to Dashboard Button at bottom center -->
+  <div class="back-button-container">
+    <button class="btn btn-back" (click)="goBackToDashboard()">
+      &larr; Back to Dashboard
+    </button>
+  </div>
+</div>

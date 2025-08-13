@@ -1,11 +1,11 @@
-// src/app/lab-technician/labtest-list/labtest-list.component.ts
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LabTest } from 'src/app/shared/model/labtech/labtest';
 import { LabTechnicianService } from 'src/app/shared/service/LabTechnician.service';
 
 @Component({
   selector: 'app-lab-list',
-  templateUrl: './lab-list.component.html',   // Make sure this file exists in the same folder
+  templateUrl: './lab-list.component.html',
   styleUrls: ['./lab-list.component.scss']
 })
 export class LabtestListComponent implements OnInit {
@@ -13,7 +13,7 @@ export class LabtestListComponent implements OnInit {
   loading = false;
   error = '';
 
-  constructor(private labService: LabTechnicianService) {}
+  constructor(private labService: LabTechnicianService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadLabTests();
@@ -33,5 +33,9 @@ export class LabtestListComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  goBackToDashboard(): void {
+    this.router.navigate(['/labdashboard']);  // Change route as needed
   }
 }

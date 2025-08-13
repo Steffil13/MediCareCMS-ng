@@ -12,15 +12,22 @@
       <!-- Result Value -->
       <div class="mb-3">
         <label for="resultValue" class="form-label">Result Value</label>
-        <input id="resultValue" type="text" class="form-control" formControlName="resultValue" required [ngClass]="{
-            'is-invalid':
-              updateForm.get('resultValue')?.invalid &&
-              (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
-          }" />
-        <div *ngIf="
-            updateForm.get('resultValue')?.invalid &&
-            (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
-          " class="invalid-feedback">
+        <input
+          id="resultValue"
+          type="text"
+          class="form-control"
+          formControlName="resultValue"
+          required
+          [ngClass]="{
+            'is-invalid': updateForm.get('resultValue')?.invalid &&
+                          (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)
+          }"
+          placeholder="Enter result value"
+        />
+        <div
+          *ngIf="updateForm.get('resultValue')?.invalid && (updateForm.get('resultValue')?.touched || updateForm.get('resultValue')?.dirty)"
+          class="invalid-feedback"
+        >
           Result Value is required.
         </div>
       </div>
@@ -28,7 +35,7 @@
       <!-- Status -->
       <div class="mb-3">
         <label for="resultStatus" class="form-label">Status</label>
-        <select id="resultStatus" class="form-select" formControlName="resultStatus">
+        <select id="resultStatus" class="form-select" formControlName="resultStatus" aria-label="Select test result status">
           <option [ngValue]="true">Positive</option>
           <option [ngValue]="false">Negative</option>
         </select>
@@ -37,21 +44,21 @@
       <!-- Remarks -->
       <div class="mb-3">
         <label for="remarks" class="form-label">Remarks</label>
-        <textarea id="remarks" class="form-control" formControlName="remarks" rows="3"></textarea>
+        <textarea id="remarks" class="form-control" formControlName="remarks" rows="3" placeholder="Additional remarks (optional)"></textarea>
       </div>
 
       <!-- Record Date -->
-      <div class="mb-3">
+      <div class="mb-4">
         <label for="recordDate" class="form-label">Record Date</label>
         <input id="recordDate" type="date" class="form-control" formControlName="recordDate" />
       </div>
 
       <!-- Buttons -->
-      <div class="d-flex justify-content-start">
-        <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid">
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn btn-primary flex-grow-1" [disabled]="updateForm.invalid">
           Assign Result
-        </button>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="btn btn-secondary ms-2" routerLink="/labdashboard">
+        </button>
+        <button type="button" class="btn btn-secondary flex-grow-1" routerLink="/labdashboard">
           Cancel
         </button>
       </div>

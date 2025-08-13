@@ -33,6 +33,10 @@ export class PrescribedMedicine {
   duration?: string;
   isIssued?: boolean;
   medicines?: Medicine[];
+  doctorFirstName: any;
+  doctorLastName: any;
+  patientFirstName: any;
+  patientLastName: any;
 
   constructor(
     pMedicineId: number = 0,

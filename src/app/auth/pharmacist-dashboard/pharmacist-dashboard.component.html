@@ -1,17 +1,19 @@
-<div class="dashboard-container">
-  <h2>Pharmacist Dashboard</h2>
-  
-  <button (click)="viewPrescriptions()">View All Prescriptions</button>
+<app-navigation-bar></app-navigation-bar>
 
-  <!-- Patient History Button -->
-  <button (click)="viewPatientHistory()" style="margin-left: 10px;">Patient History</button>
-  
-  <!-- Add Medicine Button -->
-  <button (click)="addMedicine()" style="margin-left: 10px;">Add Medicine</button>
+<div class="dashboard-container page-content">
+  <h2 class="dashboard-title">Pharmacist Dashboard</h2>
 
-  <!-- List of Medicines Button -->
-  <button (click)="viewMedicines()" style="margin-left: 10px;">List of Medicines</button>
-
-  <!-- Bill History Button -->
-  <button (click)="viewBillHistory()" style="margin-left: 10px;">Bill History</button>
+  <div class="button-container">
+  <div class="button-row">
+    <button class="btn btn-light-navy" (click)="viewPrescriptions()">View All Prescriptions</button>
+    <button class="btn btn-light-navy" (click)="viewPatientHistory()">Patient History</button>
+  </div>
+  <div class="button-row">
+    <button class="btn btn-light-navy" (click)="addMedicine()">Add Medicine</button>
+    <button class="btn btn-light-navy" (click)="viewMedicines()">List of Medicines</button>
+  </div>
+  <div class="button-row single-center">
+    <button class="btn btn-light-navy" (click)="viewBillHistory()">Bill History</button>
+  </div>
 </div>
+

@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pharmacist-dashboard',
-  templateUrl: './pharmacist-dashboard.component.html'
+  templateUrl: './pharmacist-dashboard.component.html',
+  styleUrls: ['./pharmacist-dashboard.component.scss']
 })
 export class PharmacistDashboardComponent {
   constructor(private router: Router) {}

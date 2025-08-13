@@ -1,0 +1,107 @@
+/* ====== Table Wrapper (Centers & Resizes Table) ====== */
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* ====== Styled Table ====== */
+.styled-table {
+    width: auto;
+    min-width: 850px; /* keep enough readable width */
+    max-width: 95%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(44, 50, 86, 0.15);
+    text-align: left;
+}
+
+/* Table Header */
+.styled-table thead {
+    background: linear-gradient(135deg, #2c3256, #1a1f37);
+    color: #fff;
+}
+.styled-table th, 
+.styled-table td {
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    white-space: nowrap; /* prevents awkward wrapping */
+}
+.styled-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Body Rows */
+.styled-table tbody td {
+    border-bottom: 1px solid #ececec;
+}
+.styled-table tbody tr:nth-child(even) {
+    background-color: rgba(44, 50, 86, 0.02);
+}
+.styled-table tbody tr:hover {
+    background-color: rgba(44, 50, 86, 0.07);
+    transition: background 0.25s ease;
+}
+
+/* ====== Section Title ====== */
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3256;
+    margin: 1rem 0;
+    position: relative;
+    letter-spacing: 0.5px;
+}
+.section-title::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #2c3256;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+
+/* ====== Messages ====== */
+.loading-text, .no-data, .error-text {
+    text-align: center;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+.no-data {
+    font-style: italic;
+    color: #555;
+}
+.error-text {
+    color: red;
+}
+
+/* ====== Back Button ====== */
+.back-btn-container {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+.btn-back {
+    background: linear-gradient(135deg, #2c3256, #1a1f37);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0px 4px 12px rgba(44, 50, 86, 0.25);
+    transition: all 0.25s ease;
+}
+.btn-back:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0px 6px 18px rgba(44, 50, 86, 0.35);
+}
+.btn-back:active {
+    transform: scale(0.97);
+}

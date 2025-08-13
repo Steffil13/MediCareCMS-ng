@@ -1,0 +1,129 @@
+/* Main bill container */
+.bill-container {
+  max-width: 800px;
+  background: #ffffff;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(44, 50, 86, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+  color: #2c3256;
+}
+
+/* Header with logo */
+.bill-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.bill-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+.clinic-info h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+.tagline {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5075;
+}
+.clinic-info p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  color: #5a6180;
+}
+
+/* Divider */
+.divider {
+  border: none;
+  height: 1px;
+  margin: 1rem 0;
+  background: linear-gradient(to right, transparent, #2c3256bb, transparent);
+}
+
+/* Bill Title */
+.bill-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* Table Styling */
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+.bill-table th {
+  background: #f4f4f8;
+  padding: 10px;
+  width: 30%;
+  font-weight: 600;
+  text-align: left;
+  border: 1px solid #e0e0e0;
+}
+.bill-table td {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Status Badges */
+.status-paid {
+  color: #2e7d32;
+  font-weight: 600;
+}
+.status-unpaid {
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* Buttons */
+.bill-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn-print {
+  background: #2c3256;
+  color: #fff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn-print:hover {
+  background: #1a1f37;
+  transform: translateY(-2px);
+}
+.btn-back {
+  background: #6c757d;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-back:hover {
+  background: #5a6268;
+}
+
+/* Loading & Error */
+.loading-text {
+  text-align: center;
+  color: #2c3256;
+  font-weight: 600;
+}
+.error-text {
+  text-align: center;
+  color: red;
+  font-weight: 600;
+}

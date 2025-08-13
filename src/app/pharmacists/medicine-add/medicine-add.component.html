@@ -1,68 +1,79 @@
-<div class="container mt-4">
-  <h3>Add New Medicine</h3>
+<app-nav></app-nav>
+
+<div class="container mt-4 add-medicine-container">
+  <h3 class="section-title">Add New Medicine</h3>
+  
   <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+    <!-- Medicine Name -->
     <div class="mb-3">
       <label for="medicineName" class="form-label">Medicine Name</label>
-      <input id="medicineName" type="text" formControlName="medicineName" class="form-control" />
-      <div *ngIf="medicineForm.get('medicineName')?.invalid && medicineForm.get('medicineName')?.touched" class="text-danger">
+      <input id="medicineName" type="text" formControlName="medicineName" class="form-control themed-input" />
+      <div *ngIf="medicineForm.get('medicineName')?.invalid && medicineForm.get('medicineName')?.touched" class="error-text">
         Medicine Name is required.
       </div>
     </div>
 
+    <!-- Quantity -->
     <div class="mb-3">
       <label for="quantity" class="form-label">Quantity</label>
-      <input id="quantity" type="number" formControlName="quantity" class="form-control" />
-      <div *ngIf="medicineForm.get('quantity')?.invalid && medicineForm.get('quantity')?.touched" class="text-danger">
+      <input id="quantity" type="number" formControlName="quantity" class="form-control themed-input" />
+      <div *ngIf="medicineForm.get('quantity')?.invalid && medicineForm.get('quantity')?.touched" class="error-text">
         Quantity must be at least 1.
       </div>
     </div>
 
+    <!-- Price -->
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
-      <input id="price" type="number" step="0.01" formControlName="price" class="form-control" />
-      <div *ngIf="medicineForm.get('price')?.invalid && medicineForm.get('price')?.touched" class="text-danger">
+      <input id="price" type="number" step="0.01" formControlName="price" class="form-control themed-input" />
+      <div *ngIf="medicineForm.get('price')?.invalid && medicineForm.get('price')?.touched" class="error-text">
         Price must be positive.
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="manufactureDate" class="form-label">Manufacture Date</label>
-      <input 
-        id="manufactureDate" 
-        type="date" 
-        formControlName="manufactureDate" 
-        class="form-control"
-        [attr.min]="today"
-        (change)="updateExpiryMinDate()"
-      />
-      <div *ngIf="medicineForm.get('manufactureDate')?.invalid && medicineForm.get('manufactureDate')?.touched" class="text-danger">
-        Manufacture Date is required.
-      </div>
-    </div>
+    <!-- Manufacture Date -->
+   <div class="mb-3">
+  <label for="manufactureDate" class="form-label">Manufacture Date</label>
+  <input 
+    id="manufactureDate"
+    type="date"
+    formControlName="manufactureDate"
+    class="form-control themed-input"
+    [attr.min]="'2000-01-01'" 
+    [attr.max]="today" 
+    (change)="updateExpiryMinDate()" />
+  <div *ngIf="medicineForm.get('manufactureDate')?.invalid && medicineForm.get('manufactureDate')?.touched" class="error-text">
+    Manufacture Date is required and cannot be in the future.
+  </div>
+</div>
 
+
+
+    <!-- Expiry Date -->
     <div class="mb-3">
       <label for="expiryDate" class="form-label">Expiry Date</label>
       <input 
-        id="expiryDate" 
-        type="date" 
-        formControlName="expiryDate" 
-        class="form-control"
-        [attr.min]="expiryMinDate"
-      />
-      <div *ngIf="medicineForm.get('expiryDate')?.invalid && medicineForm.get('expiryDate')?.touched" class="text-danger">
+        id="expiryDate"
+        type="date"
+        formControlName="expiryDate"
+        class="form-control themed-input"
+        [attr.min]="expiryMinDate" />
+      <div *ngIf="medicineForm.get('expiryDate')?.invalid && medicineForm.get('expiryDate')?.touched" class="error-text">
         Expiry Date is required.
       </div>
-      <div *ngIf="medicineForm.hasError('expiryBeforeManufacture') && medicineForm.get('expiryDate')?.touched" class="text-danger">
+      <div *ngIf="medicineForm.hasError('expiryBeforeManufacture') && medicineForm.get('expiryDate')?.touched" class="error-text">
         Expiry date must be after manufacture date.
       </div>
     </div>
 
+    <!-- Availability -->
     <div class="form-check mb-3">
       <input id="availability" type="checkbox" formControlName="availability" class="form-check-input" />
       <label for="availability" class="form-check-label">Available</label>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="medicineForm.invalid">Add Medicine</button>
-    <button type="button" class="btn btn-secondary ms-2" (click)="goBack()">Back to Dashboard</button>
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-primary themed-btn" [disabled]="medicineForm.invalid">Add Medicine</button>
+    <button type="button" class="btn btn-secondary themed-btn-outline ms-2" (click)="goBack()">Back to Dashboard</button>
   </form>
 </div>

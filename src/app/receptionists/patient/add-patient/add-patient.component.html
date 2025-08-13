@@ -1,119 +1,166 @@
-<form (ngSubmit)="onSubmit()" #patientForm="ngForm" novalidate>
+<app-navigation-bar></app-navigation-bar>
 
-    <div class="form-group mb-3">
-        <label>First Name</label>
-        <input type="text" [(ngModel)]="patient.firstName" name="firstName" #firstName="ngModel" required minlength="4"
-            class="form-control" />
-        <div *ngIf="(firstName.invalid && (firstName.dirty || firstName.touched)) || (submitted && firstName.invalid)"
-            class="text-danger">
-            <div *ngIf="firstName.errors?.['required']">First Name is required.</div>
-            <div *ngIf="firstName.errors?.['minlength']">First Name must be at least 4 characters.</div>
-        </div>
-    </div>
+<div class="page-content">
+    <div class="container mt-4">
+        <h2 class="text-center">Add Patient</h2>
 
-    <div class="form-group mb-3">
-        <label>Last Name</label>
-        <input type="text" [(ngModel)]="patient.lastName" name="lastName" #lastName="ngModel" required minlength="4"
-            class="form-control" />
-        <div *ngIf="(lastName.invalid && (lastName.dirty || lastName.touched)) || (submitted && lastName.invalid)"
-            class="text-danger">
-            <div *ngIf="lastName.errors?.['required']">Last Name is required.</div>
-            <div *ngIf="lastName.errors?.['minlength']">Last Name must be at least 4 characters.</div>
-        </div>
-    </div>
+        <form (ngSubmit)="onSubmit()" #patientForm="ngForm" novalidate>
 
-    <div class="form-group mb-3">
-        <label>Gender</label>
-        <select [(ngModel)]="patient.gender" name="gender" #gender="ngModel" required class="form-control">
-            <option value="" disabled>Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-        </select>
-        <div *ngIf="(gender.invalid && (gender.dirty || gender.touched)) || (submitted && gender.invalid)"
-            class="text-danger">
-            <div *ngIf="gender.errors?.['required']">Gender is required.</div>
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        <label>Date of Birth</label>
-        <input type="date" [(ngModel)]="patient.dob" name="dateOfBirth" #dob="ngModel" required (change)="checkDOB()"
-            class="form-control" />
-        <div *ngIf="(dob.invalid && (dob.dirty || dob.touched)) || (submitted && dob.invalid)" class="text-danger">
-            <div *ngIf="dob.errors?.['required']">Date of Birth is required.</div>
-        </div>
-        <div *ngIf="dobFutureError && submitted" class="text-danger">
-            Date of Birth cannot be in the future.
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        <label>Phone</label>
-        <input type="tel" [(ngModel)]="patient.contact" name="phone" #phone="ngModel" required pattern="^[6-9][0-9]{9}$"
-            (input)="validatePhone()" class="form-control" />
-        <div *ngIf="(phone.invalid && (phone.dirty || phone.touched)) || (submitted && phone.invalid)"
-            class="text-danger">
-            <div *ngIf="phone.errors?.['required']">Phone number is required.</div>
-            <div *ngIf="phone.errors?.['pattern']">Phone number must be 10 digits and start with 6,7,8, or 9.</div>
-        </div>
-    </div>
-
-    <div class="form-group mb-3">
-        <label>Emergency Number</label>
-        <input type="tel" [(ngModel)]="patient.emergencyNumber" name="emergencyNumber" #emergency="ngModel" required
-            pattern="^[6-9][0-9]{9}$" (input)="validateEmergency()" class="form-control" />
-        <div *ngIf="((emergency.invalid && (emergency.dirty || emergency.touched)) || emergencySameError) || (submitted && emergency.invalid)"
-            class="text-danger">
-            <div *ngIf="emergency.errors?.['required']">Emergency Number is required.</div>
-            <div *ngIf="emergency.errors?.['pattern']">Emergency number must be 10 digits and start with 6,7,8, or 9.
+            <!-- FIRST NAME -->
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First Name *</label>
+                <input type="text" id="firstName" [(ngModel)]="patient.firstName" name="firstName" #firstName="ngModel"
+                    required minlength="4" class="form-control"
+                    [class.is-invalid]="(firstName.invalid && (firstName.dirty || firstName.touched)) || (submitted && firstName.invalid)" />
+                <div class="invalid-feedback" *ngIf="firstName.errors?.['required']">
+                    First Name is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="firstName.errors?.['minlength']">
+                    Must be at least 4 characters.
+                </div>
             </div>
-            <div *ngIf="emergencySameError">Emergency number must be different from Phone number.</div>
-        </div>
-    </div>
 
-    <div class="form-group mb-3">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="patient.email" name="email" #email="ngModel" email class="form-control" />
-        <div *ngIf="(email.invalid && (email.dirty || email.touched)) || (submitted && email.invalid)"
-            class="text-danger">
-            <div *ngIf="email.errors?.['email']">Please enter a valid email address.</div>
-        </div>
-    </div>
+            <!-- LAST NAME -->
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name *</label>
+                <input type="text" id="lastName" [(ngModel)]="patient.lastName" name="lastName" #lastName="ngModel"
+                    required minlength="4" class="form-control"
+                    [class.is-invalid]="(lastName.invalid && (lastName.dirty || lastName.touched)) || (submitted && lastName.invalid)" />
+                <div class="invalid-feedback" *ngIf="lastName.errors?.['required']">
+                    Last Name is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="lastName.errors?.['minlength']">
+                    Must be at least 4 characters.
+                </div>
+            </div>
 
-    <div class="form-group mb-3">
-        <label>Address</label>
-        <textarea [(ngModel)]="patient.address" name="address" class="form-control" rows="3"></textarea>
-    </div>
+            <!-- GENDER -->
+            <div class="mb-3">
+                <label class="form-label d-block">Gender *</label>
 
-    <div class="form-group mb-3">
-        <label>Blood Group</label>
-        <select [(ngModel)]="patient.bloodGroup" name="bloodGroup" #bloodGroup="ngModel" required class="form-control">
-            <option value="" disabled>Select Blood Group</option>
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-            <option>O+</option>
-            <option>O-</option>
-        </select>
-        <div *ngIf="(bloodGroup.invalid && (bloodGroup.dirty || bloodGroup.touched)) || (submitted && bloodGroup.invalid)"
-            class="text-danger">
-            <div *ngIf="bloodGroup.errors?.['required']">Blood Group is required.</div>
-        </div>
-    </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderMale" name="gender" value="Male"
+                        [(ngModel)]="patient.gender" #gender="ngModel" required />
+                    <label class="form-check-label" for="genderMale">Male</label>
+                </div>
 
-    <div class="mt-3">
-        <button type="submit" class="btn btn-success">
-            {{ isSubmitting ? 'Saving...' : 'Add Patient' }}
-        </button>
-        <button type="button" class="btn btn-secondary ms-2" (click)="cancel()" >
-            Cancel
-        </button>
-    </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderFemale" name="gender" value="Female"
+                        [(ngModel)]="patient.gender" required />
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
 
-    <div class="mt-3 text-success" *ngIf="successMessage">{{ successMessage }}</div>
-    <div class="mt-3 text-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
-</form>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="genderOther" name="gender" value="Other"
+                        [(ngModel)]="patient.gender" required />
+                    <label class="form-check-label" for="genderOther">Other</label>
+                </div>
+
+                <!-- Always positioned after radios -->
+                <div class="invalid-feedback d-block"
+                    *ngIf="(gender.invalid && (gender.dirty || gender.touched)) || (submitted && gender.invalid)">
+                    Gender is required.
+                </div>
+            </div>
+
+
+
+            <!-- DOB -->
+            <div class="mb-3">
+                <label for="dob" class="form-label">Date of Birth *</label>
+                <input type="date" id="dob" [(ngModel)]="patient.dob" name="dateOfBirth" #dob="ngModel" required
+                    (change)="checkDOB()" class="form-control"
+                    [class.is-invalid]="(dob.invalid && (dob.dirty || dob.touched)) || (submitted && dob.invalid) || dobFutureError" />
+                <div class="invalid-feedback" *ngIf="dob.errors?.['required']">
+                    Date of Birth is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="dobFutureError">
+                    Date of Birth cannot be in the future.
+                </div>
+            </div>
+
+            <!-- PHONE -->
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone *</label>
+                <input type="tel" id="phone" [(ngModel)]="patient.contact" name="phone" #phone="ngModel" required
+                    pattern="^[6-9][0-9]{9}$" (input)="validatePhone()" class="form-control"
+                    [class.is-invalid]="(phone.invalid && (phone.dirty || phone.touched)) || (submitted && phone.invalid)" />
+                <div class="invalid-feedback" *ngIf="phone.errors?.['required']">
+                    Phone number is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="phone.errors?.['pattern']">
+                    Must be 10 digits starting with 6–9.
+                </div>
+            </div>
+
+            <!-- EMERGENCY NUMBER -->
+            <div class="mb-3">
+                <label for="emergency" class="form-label">Emergency Number *</label>
+                <input type="tel" id="emergency" [(ngModel)]="patient.emergencyNumber" name="emergencyNumber"
+                    #emergency="ngModel" required pattern="^[6-9][0-9]{9}$" (input)="validateEmergency()"
+                    class="form-control"
+                    [class.is-invalid]="((emergency.invalid && (emergency.dirty || emergency.touched)) || emergencySameError) || (submitted && emergency.invalid)" />
+                <div class="invalid-feedback" *ngIf="emergency.errors?.['required']">
+                    Emergency Number is required.
+                </div>
+                <div class="invalid-feedback" *ngIf="emergency.errors?.['pattern']">
+                    Must be 10 digits starting with 6–9.
+                </div>
+                <div class="invalid-feedback" *ngIf="emergencySameError">
+                    Must be different from Phone number.
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" [(ngModel)]="patient.email" name="email" #email="ngModel"
+                    class="form-control"
+                    [class.is-invalid]="(email.invalid && (email.dirty || email.touched)) || (submitted && email.invalid)" />
+                <div class="invalid-feedback">
+                    Please enter a valid email address.
+                </div>
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea id="address" [(ngModel)]="patient.address" name="address" rows="3"
+                    class="form-control"></textarea>
+            </div>
+
+            <!-- BLOOD GROUP -->
+            <div class="mb-3">
+                <label for="bloodGroup" class="form-label">Blood Group *</label>
+                <select id="bloodGroup" [(ngModel)]="patient.bloodGroup" name="bloodGroup" #bloodGroup="ngModel"
+                    required class="form-select"
+                    [class.is-invalid]="(bloodGroup.invalid && (bloodGroup.dirty || bloodGroup.touched)) || (submitted && bloodGroup.invalid)">
+                    <option value="" disabled>Select Blood Group</option>
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                </select>
+                <div class="invalid-feedback">
+                    Blood Group is required.
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+                {{ isSubmitting ? 'Saving...' : 'Add Patient' }}
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">
+                Cancel
+            </button>
+
+            <!-- MESSAGES -->
+            <div class="text-success mt-3" *ngIf="successMessage">{{ successMessage }}</div>
+            <div class="text-danger mt-3" *ngIf="errorMessage">{{ errorMessage }}</div>
+        </form>
+    </div>
+</div>

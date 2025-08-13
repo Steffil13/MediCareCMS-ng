@@ -83,5 +83,11 @@ export class ReceptionistService {
     return this.http.get<Doctor[]>(`${this.baseUrl}/doctors/by-department/${departmentId}`);
   }
 
+  getAppointmentsByDoctorAndDate(doctorId: number, date: string) {
+  // Make an API call to your backend endpoint which returns appointments for the doctor on that date
+  return this.http.get<Appointment[]>(`/api/appointments?doctorId=${doctorId}&date=${date}`);
+}
+
+
 
 }

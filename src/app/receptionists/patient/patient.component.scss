@@ -1,134 +1,78 @@
-.patient-container {
-  padding: 1.5rem;
-  max-width: 1100px;
-  margin: auto;
-  font-family: Arial, sans-serif;
+.page-content {
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(to top, #03033a, silver);
+}
 
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #333;
+.btn-light-navy {
+  background-color: #12126a;
+  color: white;
+  border: none;
+  &:hover {
+    background-color: #0f0f5a;
   }
+}
 
-  // Actions: Search + Add
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.btn {
+    background-color: #12126a !important; // dark navy
+    color: #fff !important; // white text for contrast
+    border: none;
+    border-radius: 0.5rem !important;
 
-    .search-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    &:hover {
+        background-color: #3a3b78 !important; // lighter navy on hover
+    }
+}
+.btn-back {
+    margin-left: 30px; // adjust as needed
+    margin-right: 20px;
 
-      input {
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        min-width: 220px;
-        transition: border-color 0.3s ease;
+}
 
-        &:focus {
-          border-color: #1976d2;
-          outline: none;
-        }
-      }
+.center-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-      button {
-        padding: 0.5rem 0.75rem;
-        border: none;
-        background-color: #1976d2;
+.center-narrow {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+    background-color: rgba(5, 6, 73, 0.9); // navy with transparency
+    color: #fff;
+    border-radius: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    box-shadow: 0 0 15px rgba(10, 20, 70, 0.7);
+
+
+    thead {
+        background-color: #12126a; // dark blue header matching btn-light-navy bg
         color: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+    }
+
+    tbody tr {
+        background-color: transparent; // transparent instead of solid blue
 
         &:hover {
-          background-color: #1565c0;
+            background-color: rgba(134, 135, 230, 0.3); // semi-transparent navy on hover
+            color: #fff;
         }
-      }
     }
 
-    .add-patient {
-      button {
-        padding: 0.5rem 1rem;
-        border: none;
-        background-color: #2e7d32;
-        color: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
 
-        &:hover {
-          background-color: #1b5e20;
-        }
-      }
+    th,
+    td {
+        vertical-align: middle;
+        border-color: transparent;
     }
-  }
+}
 
-  // Loading and error states
-  .loading {
-    text-align: center;
-    color: #1976d2;
-    font-weight: bold;
-    margin: 1rem 0;
-  }
-
-  .error {
-    text-align: center;
-    color: #d32f2f;
-    font-weight: bold;
-    margin: 1rem 0;
-  }
-
-  // Table styling
-  .patient-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-
-    th, td {
-      padding: 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f5f5f5;
-      font-weight: bold;
-      color: #555;
-    }
-
-    tr:hover {
-      background-color: #f9f9f9;
-    }
-
-    button {
-      padding: 0.35rem 0.65rem;
-      border: none;
-      background-color: #ffa000;
-      color: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #fb8c00;
-      }
-    }
-  }
-
-  // No data message
-  .no-data {
-    text-align: center;
-    font-style: italic;
-    color: #777;
-    margin-top: 1rem;
-  }
+.footer-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }

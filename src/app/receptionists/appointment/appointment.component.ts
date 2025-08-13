@@ -5,6 +5,7 @@ import { Department } from 'src/app/shared/model/admin/department';
 import { Doctor } from 'src/app/shared/model/admin/doctor';
 import { Appointment } from 'src/app/shared/model/receptionist/appointment';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointment',
@@ -40,7 +41,8 @@ export class AppointmentComponent implements OnInit {
 
   constructor(
     private receptionistService: ReceptionistService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -156,61 +158,87 @@ export class AppointmentComponent implements OnInit {
   }
 
   /** Schedules or edits an appointment */
-  scheduleAppointment() {
-    if (!this.selectedPatient) {
-      this.errorMessage = 'Please select a patient first.';
-      return;
-    }
-    if (!this.newAppointment.doctorId || !this.newAppointment.appointmentDate || !this.newAppointment.appointmentTime) {
-      this.errorMessage = 'Please fill all appointment fields.';
-      return;
-    }
-
-    this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
-
-    // Generate Appointment Number: APT + 4 digit random number
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    this.newAppointment.appointmentNumber = `APT${randomNum}`;
-
-    // Convert to ISO datetime
-    const dateObj = new Date(this.newAppointment.appointmentDate);
-    const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
-    dateObj.setHours(hours, minutes, 0, 0);
-    this.newAppointment.appointmentDate = dateObj.toISOString();
-
-    const payload: Appointment = {
-      ...this.newAppointment,
-      patientId: this.selectedPatient.patientId
-    };
-
-    if (this.isEditMode && this.editAppointmentId) {
-      payload.appointmentId = this.editAppointmentId;
-      this.receptionistService.editAppointment(payload).subscribe({
-        next: () => {
-          this.successMessage = 'Appointment updated successfully!';
-          this.loadAppointments();
-          this.resetAppointmentForm();
-        },
-        error: () => this.errorMessage = 'Failed to update appointment.'
-      });
-    } else {
-      this.receptionistService.scheduleAppointment(payload).subscribe({
-        next: (res: any) => {
-          this.successMessage = 'Appointment scheduled successfully!';
-          this.loadAppointments();
-          this.resetAppointmentForm();
-
-          // ✅ Ask user if they want to generate bill
-          if (confirm('Do you want to generate bill for this appointment?')) {
-            // Assuming backend returns appointmentId in response
-            const apptId = res?.appointmentId || payload.appointmentId;
-            this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
-          }
-        },
-        error: () => this.errorMessage = 'Failed to schedule appointment.'
-      });
-    }
+ scheduleAppointment() {
+  if (!this.selectedPatient) {
+    this.errorMessage = 'Please select a patient first.';
+    return;
   }
+  if (!this.newAppointment.doctorId || !this.newAppointment.appointmentDate || !this.newAppointment.appointmentTime) {
+    this.errorMessage = 'Please fill all appointment fields.';
+    return;
+  }
+
+  this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
+
+  // Simple token increment logic:
+  // Count how many appointments are already loaded for this doctor on selected date
+  const dateStr = typeof this.newAppointment.appointmentDate === 'string'
+    ? this.newAppointment.appointmentDate
+    : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+
+  const currentTokens = this.appointments.filter(appt =>
+  appt.doctorId === this.newAppointment.doctorId &&
+  appt.appointmentDate != null && // <-- check not null
+  (new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr)
+).length;
+console.log("ct", currentTokens);
+
+
+  // Assign next token number
+  this.newAppointment.tokenNumber = currentTokens + 1;
+  console.log("dddd", this.newAppointment.tokenNumber)
+
+  // Generate Appointment Number: APT + 4 digit random number
+  const randomNum = Math.floor(1000 + Math.random() * 9000);
+  this.newAppointment.appointmentNumber = `APT${randomNum}`;
+
+  // Convert to ISO datetime (include appointment time)
+  const dateObj = new Date(this.newAppointment.appointmentDate);
+  const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
+  dateObj.setHours(hours, minutes, 0, 0);
+  this.newAppointment.appointmentDate = dateObj.toISOString();
+
+  const payload: Appointment = {
+    ...this.newAppointment,
+    patientId: this.selectedPatient.patientId
+  };
+
+  if (this.isEditMode && this.editAppointmentId) {
+    payload.appointmentId = this.editAppointmentId;
+    this.receptionistService.editAppointment(payload).subscribe({
+      next: () => {
+        this.successMessage = 'Appointment updated successfully!';
+        this.loadAppointments();
+        this.resetAppointmentForm();
+      },
+      error: () => this.errorMessage = 'Failed to update appointment.'
+    });
+  } else {
+    this.receptionistService.scheduleAppointment(payload).subscribe({
+      next: (res: any) => {
+        this.successMessage = 'Appointment scheduled successfully!';
+        this.loadAppointments();
+        this.resetAppointmentForm();
+
+        // Show toastr with generate bill option
+        const apptId = res?.appointmentId || payload.appointmentId;
+
+        this.toastr.info('Appointment scheduled! Click here to generate bill.', 'Info', {
+          timeOut: 8000,
+          closeButton: true,
+          tapToDismiss: false,
+          extendedTimeOut: 0,
+          onActivateTick: true
+        }).onTap.subscribe(() => {
+          this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
+        });
+
+      },
+      error: () => this.errorMessage = 'Failed to schedule appointment.'
+    });
+  }
+}
+
 
   /** Enables edit mode for an appointment */
   editAppointment(appt: Appointment) {

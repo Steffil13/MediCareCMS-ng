@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['auth/admin']);
           } else if (response.roleId == 2) {
             console.log("Manager Login");
-            this.router.navigate(['auth/manager']);
+            this.router.navigate(['auth/receptionist']);
           } else if (response.roleId == 5) {
             console.log("Doctor Login");
             this.router.navigate(['auth/doctor']);

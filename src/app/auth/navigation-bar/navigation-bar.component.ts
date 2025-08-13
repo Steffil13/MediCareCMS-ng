@@ -17,6 +17,7 @@ export class NavigationBarComponent implements OnInit {
   //Call LogOut
   logout(): void {
     this.authService.logoutWithClearKeyValues();
+    
   }
 }
 

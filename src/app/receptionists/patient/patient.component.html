@@ -1,61 +1,82 @@
-<div class="patient-container">
-  <h2>Patient Management</h2>
+<app-navigation-bar></app-navigation-bar>
 
-  <!-- Actions Section -->
-  <div class="actions">
+<div class="page-content">
+  <div class="center-container mb-3">
     <!-- Search -->
-    <div class="search-bar">
+    <div class="col-sm-6 p-0">
       <input
-        type="text"
+        type="search"
+        placeholder="Search patient by name, phone, or register number"
+        class="form-control"
         [(ngModel)]="searchTerm"
-        placeholder="Search by register number, name, or phone"
-        (ngModelChange)="onSearch()" 
+        (ngModelChange)="onSearch()"
       />
-      <!-- <button type="button" (click)="getAllPatients()">📋 View All</button> -->
     </div>
 
     <!-- Add Patient -->
-    <div class="add-patient">
-      <button (click)="onAddPatient()">➕ Add Patient</button>
+    <div class="d-flex btn-back">
+      <button class="btn btn-light-navy" (click)="onAddPatient()">
+        <i class="fa fa-user-plus fa-lg"></i> Add Patient
+      </button>
+
+      <button class="btn btn-secondary btn-back ms-3" (click)="goBack()">
+        <i class="fa fa-arrow-left"></i>
+        Back
+      </button>
     </div>
   </div>
 
-  <!-- Status Messages -->
-  <div *ngIf="loading" class="loading">Loading patients...</div>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <!-- Patient Table -->
+  <div class="center-container mb-3">
+    <div class="center-narrow">
+      <table class="table table-hover" *ngIf="patients.length > 0; else noData">
+        <thead class="table-light">
+          <tr>
+            <th>Register #</th>
+            <th>Full Name</th>
+            <th>Gender</th>
+            <th>DOB</th>
+            <th>Age</th>
+            <th>Contact</th>
+            <th>Emergency Contact</th>
+            <th>Blood Group</th>
+            <th>Address</th>
+            <th style="width:80px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of patients | paginate: { itemsPerPage: 8, currentPage: page }">
+            <td>{{ p.registerNumber || 'N/A' }}</td>
+            <td>{{ p.firstName }} {{ p.lastName }}</td>
+            <td>{{ p.gender }}</td>
+            <td>{{ p.dob | date: 'dd-MM-yyyy' }}</td>
+            <td>{{ calculateAge(p.dob) }}</td>
+            <td>{{ p.contact }}</td>
+            <td>{{ p.emergencyNumber }}</td>
+            <td>{{ p.bloodGroup }}</td>
+            <td>{{ p.address || 'N/A' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-warning" (click)="onEditPatient(p)">
+                <i class="fa fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-  <!-- Patients Table -->
-  <table *ngIf="!loading && patients.length" class="patient-table">
-    <thead>
-      <tr>
-        <th>Patient ID</th>
-        <th>Patient Number</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Age</th>
-        <th>Gender</th>
-        <th>Address</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of patients">
-        <td>{{ p.patientId }}</td>
-        <td>{{ p.registerNumber }}</td>
-        <td>{{ p.firstName }} {{ p.lastName }}</td>
-        <td>{{ p.contact }}</td>
-        <td>{{ calculateAge(p.dob) }}</td>
-        <td>{{ p.gender }}</td>
-        <td>{{ p.address }}</td>
-        <td>
-          <button (click)="onEditPatient(p)">✏️ Edit</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <ng-template #noData>
+        <div class="text-center text-muted py-4">
+          {{ errorMessage || 'No patients found.' }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
 
-  <!-- No Data Message -->
-  <div *ngIf="!loading && !patients.length" class="no-data">
-    No patients found.
+  <!-- Pagination -->
+  <div class="footer-pagination" *ngIf="patients.length > 0">
+    <pagination-controls
+      (pageChange)="page = $event"
+      class="custom-page"
+    ></pagination-controls>
   </div>
 </div>

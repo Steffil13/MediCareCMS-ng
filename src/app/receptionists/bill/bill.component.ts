@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Receptionist } from 'src/app/shared/model/admin/receptionist';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-bill',
@@ -21,7 +21,6 @@ export class BillComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get appointmentId from query params
     this.route.queryParams.subscribe(params => {
       this.appointmentId = params['appointmentId'] || null;
       if (this.appointmentId) {
@@ -37,8 +36,6 @@ export class BillComponent implements OnInit {
     this.http.get(`${environment.apiUrl}/receptionist/appointments/${id}`)
       .subscribe({
         next: (data) => {
-          console.log("data", data);
-          
           this.appointmentDetails = data;
           this.loading = false;
         },
@@ -66,7 +63,10 @@ export class BillComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}/receptionist/billings`, billData)
       .subscribe({
-        next: () => alert('Bill generated successfully!'),
+        next: () => {
+          alert('Bill generated successfully!');
+          this.downloadBillPdf(billData);
+        },
         error: (err) => {
           console.error(err);
           this.errorMessage = 'Failed to generate bill.';
@@ -74,8 +74,25 @@ export class BillComponent implements OnInit {
       });
   }
 
+  downloadBillPdf(billData: any) {
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Clinic Billing Receipt', 20, 20);
+
+    doc.setFontSize(12);
+    doc.text(`Bill Number: ${billData.billNumber}`, 20, 40);
+    doc.text(`Appointment ID: ${billData.appointmentId}`, 20, 50);
+    doc.text(`Patient ID: ${billData.patientId}`, 20, 60);
+    doc.text(`Doctor ID: ${billData.doctorId}`, 20, 70);
+    doc.text(`Receptionist ID: ${billData.receptionistId}`, 20, 80);
+    doc.text(`Amount: ₹${this.calculateAmount(this.appointmentDetails)}`, 20, 90);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 100);
+
+    doc.save(`${billData.billNumber}.pdf`);
+  }
+
   calculateAmount(details: any) {
-    // Placeholder — you can adjust calculation logic
-    return 500; 
+    return 500; // static for now, change if needed
   }
 }

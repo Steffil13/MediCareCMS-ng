@@ -52,11 +52,11 @@ const routes: Routes = [
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   //parent : Lazy loading the employee module
-  // {
-  //   path: 'admin', loadChildren: () =>
-  //     import('./admins/admins.module')
-  //       .then(em => em.AdminsModule)
-  // },
+  {
+    path: 'admin', loadChildren: () =>
+      import('./admins/admins.module')
+        .then(em => em.AdminsModule)
+  },
   { path: 'labtest-view', component: LabtestViewComponent },
   {
     path: 'auth', loadChildren: () =>

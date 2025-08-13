@@ -1,23 +1,55 @@
-<div *ngIf="loading">Loading appointment details...</div>
-<div *ngIf="errorMessage">{{ errorMessage }}</div>
-
-<div *ngIf="appointmentDetails">
-  <h2>Bill for Appointment {{ appointmentDetails.appointmentNumber }}</h2>
-
-  <!-- <p>Appointment ID: {{ appointmentDetails.appointmentId }}</p> -->
-  <p>Appointment Number: {{ appointmentDetails.appointmentNumber }}</p>
-  
-  <p>Patient Name: {{ appointmentDetails.patient.firstName }} {{ appointmentDetails.patient.lastName }}</p>
-  <p>Register Number: {{ appointmentDetails.patient.registerNumber }}</p>
-  
-  <p>Doctor Name: {{ appointmentDetails.doctor.firstName }} {{ appointmentDetails.doctor.lastName }}</p>
-  <!-- <p>Department ID: {{ appointmentDetails.doctor.departmentId }}</p> -->
-  
-  <p>Appointment Date: {{ appointmentDetails.appointmentDate | date:'mediumDate' }}</p>
-  <p>Appointment Time: {{ appointmentDetails.appointmentTime }}</p>
-
-  <p>Total Fee: {{ appointmentDetails.doctor.doctorFee | currency:'INR' }}</p>
-
-  <button (click)="generateBill()">Generate and Print Bill</button>
+<div *ngIf="loading" class="loading-message">
+  Loading appointment details...
 </div>
 
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="appointmentDetails" class="bill-container">
+  <header class="bill-header">
+    <img src="assets/logo.png" alt="Clinic Logo" class="bill-logo" />
+    <div class="bill-header-text">
+      <h1>MEDICARE</h1>
+      <p>Address Line 1, City, ZIP</p>
+      <p>Phone: (123) 456-7890 | Email: info@clinic.com</p>
+    </div>
+  </header>
+
+  <h2 class="bill-title">Consultation Bill </h2>
+
+  <section class="bill-details">
+    <div class="bill-section">
+      <h3>Patient Details</h3>
+      <p><strong>Name:</strong> {{ appointmentDetails.patient.firstName }} {{ appointmentDetails.patient.lastName }}</p>
+      <p><strong>Register Number:</strong> {{ appointmentDetails.patient.registerNumber }}</p>
+    </div>
+
+    <div class="bill-section">
+      <h3>Doctor Details</h3>
+      <p><strong>Name:</strong> Dr. {{ appointmentDetails.doctor.firstName }} {{ appointmentDetails.doctor.lastName }}</p>
+      <p><strong>Department:</strong> {{ appointmentDetails.doctor.departmentName || 'N/A' }}</p>
+    </div>
+
+    <div class="bill-section">
+      <h3>Appointment Details</h3>
+      <p><strong>Date:</strong> {{ appointmentDetails.appointmentDate | date:'mediumDate' }}</p>
+      <p><strong>Time:</strong> {{ appointmentDetails.appointmentTime }}</p>
+      <p><strong>Appointment No:</strong> {{ appointmentDetails.appointmentNumber }}</p>
+    </div>
+
+    <div class="bill-section fee-section">
+      <h3>Total Fee</h3>
+      <p class="fee-amount">{{ appointmentDetails.doctor.doctorFee | currency:'INR' }}</p>
+    </div>
+  </section>
+
+  <footer class="bill-footer">
+    <p>Thank you for choosing our clinic. Wishing you good health!</p>
+  </footer>
+
+  <div class="bill-actions">
+    <button class="btn-primary" (click)="generateBill()">Print Bill</button>
+    <button class="btn-secondary" (click)="cancelBill()">Cancel</button>
+  </div>
+</div>

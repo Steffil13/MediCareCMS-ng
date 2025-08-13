@@ -26,6 +26,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./labs/labs.module').then((m) => m.LabsModule)
   },
+  {
+    path: 'labs',
+    loadChildren: () =>
+      import('./labs/labs.module').then((m) => m.LabsModule)
+  },
 
   { path: 'labtests', component: LabtestViewComponent },
   { path: 'addlabtest', component: AddLabtestComponent },   
@@ -52,11 +57,11 @@ const routes: Routes = [
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   //parent : Lazy loading the employee module
-  // {
-  //   path: 'admin', loadChildren: () =>
-  //     import('./admins/admins.module')
-  //       .then(em => em.AdminsModule)
-  // },
+  {
+    path: 'admin', loadChildren: () =>
+      import('./admins/admins.module')
+        .then(em => em.AdminsModule)
+  },
   { path: 'labtest-view', component: LabtestViewComponent },
   {
     path: 'auth', loadChildren: () =>

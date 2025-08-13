@@ -31,7 +31,6 @@ export class AppointmentComponent implements OnInit {
   ];
 
   todayString = new Date().toISOString().split('T')[0];
-  
 
   isEditMode = false;
   editAppointmentId: number | null = null;
@@ -50,7 +49,6 @@ export class AppointmentComponent implements OnInit {
     this.resetAppointmentForm(); // initialize with today's date
   }
 
-  /** Returns a fresh empty appointment object */
   private getEmptyAppointment(): Appointment {
     return {
       appointmentId: undefined,
@@ -64,28 +62,23 @@ export class AppointmentComponent implements OnInit {
     };
   }
 
-  /** Returns tomorrow's date in yyyy-MM-dd format */
   maxDate(): string {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow.toISOString().split('T')[0];
   }
 
-  /** Returns doctor name by ID */
   getDoctorNameById(id?: number): string {
-    console.log("hello", this.todayString);
-    
     if (!id) return 'Unknown Doctor';
     const doctor = this.doctors.find(d => d.doctorId === id);
     return doctor ? doctor.doctorName : 'Unknown Doctor';
   }
 
-  /** Loads department list */
   loadDepartments() {
-    this.receptionistService.getDepartments().subscribe(data => this.departments = data);
+    this.receptionistService.getDepartments()
+      .subscribe(data => this.departments = data);
   }
 
-  /** Loads doctors for the selected department */
   loadDoctors(departmentId?: number) {
     const deptId = departmentId ?? this.selectedDepartmentId;
     if (!deptId) {
@@ -96,7 +89,6 @@ export class AppointmentComponent implements OnInit {
       .subscribe(data => this.doctors = data);
   }
 
-  /** Searches patients by register number */
   searchPatients() {
     if (!this.registerNumber.trim()) {
       this.errorMessage = 'Please enter a register number.';
@@ -118,7 +110,6 @@ export class AppointmentComponent implements OnInit {
       });
   }
 
-  /** Selects a patient from search results */
   selectPatient(patient: Patient) {
     this.selectedPatient = patient;
     this.searchedPatients = [];
@@ -126,14 +117,24 @@ export class AppointmentComponent implements OnInit {
     this.loadAppointments();
   }
 
-  /** On department change, load doctors */
   onDepartmentChange() {
     if (this.selectedDepartmentId) {
       this.loadDoctors(this.selectedDepartmentId);
     }
+    this.newAppointment.doctorId = 0;
+    this.newAppointment.appointmentTime = '';
   }
 
-  /** Loads appointments for selected patient */
+  onDoctorChange() {
+    this.newAppointment.appointmentTime = '';
+    this.loadAppointments(); // Refresh booked appointments for the selected patient + doctor + date
+  }
+
+  onDateChange() {
+    this.newAppointment.appointmentTime = '';
+    this.loadAppointments();
+  }
+
   loadAppointments() {
     if (!this.selectedPatient) return;
     this.receptionistService.getAppointmentsByPatientId(this.selectedPatient.patientId)
@@ -142,112 +143,126 @@ export class AppointmentComponent implements OnInit {
       });
   }
 
-  /** Checks if the time slot is already booked */
   isTimeSlotBooked(time: string): boolean {
     if (!this.newAppointment.appointmentDate || !this.newAppointment.doctorId) return false;
+
+    const selectedDateStr = typeof this.newAppointment.appointmentDate === 'string'
+      ? this.newAppointment.appointmentDate
+      : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+
+    // Disable past time slots if the selected date is today
+    if (selectedDateStr === todayStr) {
+      const [hour, minute] = time.split(':').map(Number);
+      if (hour < now.getHours() || (hour === now.getHours() && minute <= now.getMinutes())) {
+        return true;
+      }
+    }
+
+    // Disable if already booked for this doctor on this date (except if editing the same appointment)
+    return this.appointments.some(appt =>
+      appt.doctorId === this.newAppointment.doctorId &&
+      appt.appointmentTime === time &&
+      new Date(appt.appointmentDate as string).toISOString().split('T')[0] === selectedDateStr &&
+      appt.appointmentId !== this.editAppointmentId
+    );
+  }
+
+  scheduleAppointment() {
+    if (!this.selectedPatient) {
+      this.errorMessage = 'Please select a patient first.';
+      return;
+    }
+    if (!this.newAppointment.doctorId || !this.newAppointment.appointmentDate || !this.newAppointment.appointmentTime) {
+      this.errorMessage = 'Please fill all appointment fields.';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
 
     const dateStr = typeof this.newAppointment.appointmentDate === 'string'
       ? this.newAppointment.appointmentDate
       : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
 
-    return Array.isArray(this.appointments) && this.appointments.some(appt =>
+    // Calculate token number for the doctor on selected date
+    const currentTokens = this.appointments.filter(appt =>
       appt.doctorId === this.newAppointment.doctorId &&
-      new Date(appt.appointmentDate as Date).toISOString().split('T')[0] === dateStr &&
-      appt.appointmentTime === time
-    );
+      appt.appointmentDate != null &&
+      (new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr) &&
+      (appt.appointmentId !== this.editAppointmentId)
+    ).length;
+
+    this.newAppointment.tokenNumber = currentTokens + 1;
+
+    // Generate a random appointment number if new
+    if (!this.isEditMode) {
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      this.newAppointment.appointmentNumber = `APT${randomNum}`;
+    }
+
+    // Prepare ISO datetime string for backend
+    const dateObj = new Date(this.newAppointment.appointmentDate);
+    console.log("dddd", dateObj);
+    
+    const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
+    dateObj.setHours(hours, minutes, 0, 0);
+    this.newAppointment.appointmentDate = dateObj.toISOString();
+
+    const payload: Appointment = {
+      ...this.newAppointment,
+      patientId: this.selectedPatient.patientId
+    };
+
+    if (this.isEditMode && this.editAppointmentId) {
+      payload.appointmentId = this.editAppointmentId;
+      this.receptionistService.editAppointment(payload).subscribe({
+        next: () => {
+          this.successMessage = 'Appointment updated successfully!';
+          this.loadAppointments();
+          this.resetAppointmentForm();
+        },
+        error: () => this.errorMessage = 'Failed to update appointment.'
+      });
+    } else {
+      this.receptionistService.scheduleAppointment(payload).subscribe({
+        next: (res: any) => {
+          this.successMessage = 'Appointment scheduled successfully!';
+          this.loadAppointments();
+          this.resetAppointmentForm();
+
+          const apptId = res?.appointmentId || payload.appointmentId;
+
+          this.toastr.info('Appointment scheduled! Click here to generate bill.', 'Info', {
+            timeOut: 8000,
+            closeButton: true,
+            tapToDismiss: false,
+            extendedTimeOut: 0,
+            onActivateTick: true
+          }).onTap.subscribe(() => {
+            this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
+          });
+        },
+        error: () => this.errorMessage = 'Failed to schedule appointment.'
+      });
+    }
   }
 
-  /** Schedules or edits an appointment */
- scheduleAppointment() {
-  if (!this.selectedPatient) {
-    this.errorMessage = 'Please select a patient first.';
-    return;
-  }
-  if (!this.newAppointment.doctorId || !this.newAppointment.appointmentDate || !this.newAppointment.appointmentTime) {
-    this.errorMessage = 'Please fill all appointment fields.';
-    return;
-  }
-
-  this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
-
-  // Simple token increment logic:
-  // Count how many appointments are already loaded for this doctor on selected date
-  const dateStr = typeof this.newAppointment.appointmentDate === 'string'
-    ? this.newAppointment.appointmentDate
-    : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
-
-  const currentTokens = this.appointments.filter(appt =>
-  appt.doctorId === this.newAppointment.doctorId &&
-  appt.appointmentDate != null && // <-- check not null
-  (new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr)
-).length;
-console.log("ct", currentTokens);
-
-
-  // Assign next token number
-  this.newAppointment.tokenNumber = currentTokens + 1;
-  console.log("dddd", this.newAppointment.tokenNumber)
-
-  // Generate Appointment Number: APT + 4 digit random number
-  const randomNum = Math.floor(1000 + Math.random() * 9000);
-  this.newAppointment.appointmentNumber = `APT${randomNum}`;
-
-  // Convert to ISO datetime (include appointment time)
-  const dateObj = new Date(this.newAppointment.appointmentDate);
-  const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
-  dateObj.setHours(hours, minutes, 0, 0);
-  this.newAppointment.appointmentDate = dateObj.toISOString();
-
-  const payload: Appointment = {
-    ...this.newAppointment,
-    patientId: this.selectedPatient.patientId
-  };
-
-  if (this.isEditMode && this.editAppointmentId) {
-    payload.appointmentId = this.editAppointmentId;
-    this.receptionistService.editAppointment(payload).subscribe({
-      next: () => {
-        this.successMessage = 'Appointment updated successfully!';
-        this.loadAppointments();
-        this.resetAppointmentForm();
-      },
-      error: () => this.errorMessage = 'Failed to update appointment.'
-    });
-  } else {
-    this.receptionistService.scheduleAppointment(payload).subscribe({
-      next: (res: any) => {
-        this.successMessage = 'Appointment scheduled successfully!';
-        this.loadAppointments();
-        this.resetAppointmentForm();
-
-        // Show toastr with generate bill option
-        const apptId = res?.appointmentId || payload.appointmentId;
-
-        this.toastr.info('Appointment scheduled! Click here to generate bill.', 'Info', {
-          timeOut: 8000,
-          closeButton: true,
-          tapToDismiss: false,
-          extendedTimeOut: 0,
-          onActivateTick: true
-        }).onTap.subscribe(() => {
-          this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
-        });
-
-      },
-      error: () => this.errorMessage = 'Failed to schedule appointment.'
-    });
-  }
-}
-
-
-  /** Enables edit mode for an appointment */
   editAppointment(appt: Appointment) {
     this.isEditMode = true;
     this.editAppointmentId = appt.appointmentId || null;
-    this.newAppointment = { ...appt };
+    // Convert appointmentDate to ISO string date for date input compatibility
+    let appointmentDateStr = appt.appointmentDate;
+    if (appointmentDateStr) {
+      appointmentDateStr = new Date(appointmentDateStr).toISOString().split('T')[0];
+    }
+    this.newAppointment = { ...appt, appointmentDate: appointmentDateStr };
   }
 
-  /** Deletes an appointment by ID */
   deleteAppointment(id: number) {
     this.receptionistService.deleteAppointment(id).subscribe({
       next: () => {
@@ -258,7 +273,6 @@ console.log("ct", currentTokens);
     });
   }
 
-  /** Resets the appointment form to defaults */
   resetAppointmentForm() {
     this.newAppointment = this.getEmptyAppointment();
     this.isEditMode = false;

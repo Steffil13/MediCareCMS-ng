@@ -27,7 +27,7 @@ export class DoctorAppointmentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const doctorId = this.route.snapshot.paramMap.get('doctorId'); // or use subscribe
+    const doctorId = Number(this.route.snapshot.paramMap.get('doctorId')); // or use subscribe
     console.log('Doctor ID:', doctorId);
 
     if (doctorId) {
@@ -35,8 +35,8 @@ export class DoctorAppointmentsComponent implements OnInit {
     }
   }
 
-  loadAppointments(doctorId: string) {
-    this.http.get<any[]>(`https://localhost:7288/api/doctor/appointments/${doctorId}`)
+  loadAppointments(doctorId: number) {
+    this.http.get<any[]>(`https://localhost:7288/api/Doctor/appointments/${doctorId}`)
       .subscribe({
         next: (data) => {
           console.log('Appointments:', data);

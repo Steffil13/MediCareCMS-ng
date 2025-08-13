@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AppointmentRoutingModule } from './appointment-routing.module';
 import { AppointmentComponent } from './appointment.component';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/nav/shared/shared.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    AppointmentRoutingModule
+    AppointmentRoutingModule,
+    SharedModule,
+    NgxPaginationModule
   ]
 })
 export class AppointmentModule { }

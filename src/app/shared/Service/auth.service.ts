@@ -31,7 +31,7 @@ export class AuthService {
       localStorage.removeItem("USER_NAME");
       localStorage.removeItem("ACCESS_ROLE");
       localStorage.removeItem("JWT_TOKEN");
-
+      
       //redirect to login
       this.router.navigate(['auth/login']);
     }

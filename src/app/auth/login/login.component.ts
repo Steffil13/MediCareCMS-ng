@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm?.valid) {
       this.errorMessage = '';
-      console.log(this.loginForm.value);
+      console.log("fghjkjhgfdf",this.loginForm.value);
 
       this.authService.loginVerify(this.loginForm.value).subscribe(
         (response) => {
@@ -62,16 +62,16 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['auth/admin']);
           } else if (response.roleId == 2) {
             console.log("Manager Login");
-            this.router.navigate(['auth/manager']);
+            this.router.navigate(['auth/receptionist']);
           } else if (response.roleId == 5) {
             console.log("Doctor Login");
             this.router.navigate(['auth/doctor']);
           } else if (response.roleId == 3) {
             console.log("Pharmacist Login");
-            this.router.navigate(['auth/pharmacist']);
+            this.router.navigate(['auth/pharmacistdashboard']);
           } else if (response.roleId == 4) {
             console.log("Lab Technician Login");
-            this.router.navigate(['auth/lab']);
+            this.router.navigate(['auth/labdashboard']);
           } else {
             this.errorMessage = "Sorry! Invalid credentials Not allowed";
           }

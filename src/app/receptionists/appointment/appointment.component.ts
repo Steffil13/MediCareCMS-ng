@@ -5,6 +5,7 @@ import { Department } from 'src/app/shared/model/admin/department';
 import { Doctor } from 'src/app/shared/model/admin/doctor';
 import { Appointment } from 'src/app/shared/model/receptionist/appointment';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-appointment',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent implements OnInit {
+
   registerNumber = '';
   searchedPatients: Patient[] = [];
   selectedPatient: Patient | null = null;
@@ -30,7 +32,6 @@ export class AppointmentComponent implements OnInit {
   ];
 
   todayString = new Date().toISOString().split('T')[0];
-  
 
   isEditMode = false;
   editAppointmentId: number | null = null;
@@ -45,16 +46,15 @@ export class AppointmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDepartments();
-    this.resetAppointmentForm(); // initialize with today's date
+    this.resetAppointmentForm();
   }
 
-  /** Returns a fresh empty appointment object */
   private getEmptyAppointment(): Appointment {
     return {
       appointmentId: undefined,
       patientId: 0,
       doctorId: 0,
-      appointmentDate: this.todayString, // default as string for HTML date input
+      appointmentDate: this.todayString,
       appointmentTime: '',
       tokenNumber: 0,
       appointmentNumber: '',
@@ -62,28 +62,10 @@ export class AppointmentComponent implements OnInit {
     };
   }
 
-  /** Returns tomorrow's date in yyyy-MM-dd format */
-  maxDate(): string {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
-  }
-
-  /** Returns doctor name by ID */
-  getDoctorNameById(id?: number): string {
-    console.log("hello", this.todayString);
-    
-    if (!id) return 'Unknown Doctor';
-    const doctor = this.doctors.find(d => d.doctorId === id);
-    return doctor ? doctor.doctorName : 'Unknown Doctor';
-  }
-
-  /** Loads department list */
   loadDepartments() {
     this.receptionistService.getDepartments().subscribe(data => this.departments = data);
   }
 
-  /** Loads doctors for the selected department */
   loadDoctors(departmentId?: number) {
     const deptId = departmentId ?? this.selectedDepartmentId;
     if (!deptId) {
@@ -94,7 +76,6 @@ export class AppointmentComponent implements OnInit {
       .subscribe(data => this.doctors = data);
   }
 
-  /** Searches patients by register number */
   searchPatients() {
     if (!this.registerNumber.trim()) {
       this.errorMessage = 'Please enter a register number.';
@@ -116,7 +97,6 @@ export class AppointmentComponent implements OnInit {
       });
   }
 
-  /** Selects a patient from search results */
   selectPatient(patient: Patient) {
     this.selectedPatient = patient;
     this.searchedPatients = [];
@@ -124,14 +104,12 @@ export class AppointmentComponent implements OnInit {
     this.loadAppointments();
   }
 
-  /** On department change, load doctors */
   onDepartmentChange() {
     if (this.selectedDepartmentId) {
       this.loadDoctors(this.selectedDepartmentId);
     }
   }
 
-  /** Loads appointments for selected patient */
   loadAppointments() {
     if (!this.selectedPatient) return;
     this.receptionistService.getAppointmentsByPatientId(this.selectedPatient.patientId)
@@ -140,7 +118,7 @@ export class AppointmentComponent implements OnInit {
       });
   }
 
-  /** Checks if the time slot is already booked */
+  /** Check if slot booked by doctor/date */
   isTimeSlotBooked(time: string): boolean {
     if (!this.newAppointment.appointmentDate || !this.newAppointment.doctorId) return false;
 
@@ -150,12 +128,34 @@ export class AppointmentComponent implements OnInit {
 
     return Array.isArray(this.appointments) && this.appointments.some(appt =>
       appt.doctorId === this.newAppointment.doctorId &&
-      new Date(appt.appointmentDate as Date).toISOString().split('T')[0] === dateStr &&
-      appt.appointmentTime === time
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      appt.appointmentTime.trim() === time.trim()
     );
   }
 
-  /** Schedules or edits an appointment */
+  /** Show only non-booked and future slots */
+  shouldShowTimeSlot(time: string): boolean {
+    if (this.isTimeSlotBooked(time)) return false;
+
+    if (this.newAppointment.appointmentDate) {
+      const selectedDateStr = typeof this.newAppointment.appointmentDate === 'string'
+        ? this.newAppointment.appointmentDate
+        : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (selectedDateStr === todayStr) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const now = new Date();
+        const slotTime = new Date();
+        slotTime.setHours(hours, minutes, 0, 0);
+        if (slotTime <= now) return false;
+      }
+    }
+    return true;
+  }
+
+  /** Schedule appointment with patient/doctor conflict checks */
   scheduleAppointment() {
     if (!this.selectedPatient) {
       this.errorMessage = 'Please select a patient first.';
@@ -166,13 +166,53 @@ export class AppointmentComponent implements OnInit {
       return;
     }
 
-    this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
+    const selectedPatientId = this.selectedPatient.patientId;
+    const selectedDoctorId = Number(this.newAppointment.doctorId);
+    const dateStr = typeof this.newAppointment.appointmentDate === 'string'
+      ? this.newAppointment.appointmentDate
+      : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+    const appointmentTime = this.newAppointment.appointmentTime.trim();
 
-    // Generate Appointment Number: APT + 4 digit random number
+    // conflict: patient same date/time with any doctor
+    const patientConflict = this.appointments.some(appt =>
+      appt.patientId === selectedPatientId &&
+      appt.appointmentTime.trim() === appointmentTime &&
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      (!this.isEditMode || appt.appointmentId !== this.editAppointmentId)
+    );
+    if (patientConflict) {
+      this.errorMessage = 'This patient already has an appointment at the selected date and time.';
+      return;
+    }
+
+    // conflict: doctor same date/time with any patient
+    const doctorConflict = this.appointments.some(appt =>
+      appt.doctorId === selectedDoctorId &&
+      appt.appointmentTime.trim() === appointmentTime &&
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      (!this.isEditMode || appt.appointmentId !== this.editAppointmentId)
+    );
+    if (doctorConflict) {
+      this.errorMessage = 'The selected doctor already has an appointment at that date and time.';
+      return;
+    }
+
+    // Assign token
+    this.newAppointment.doctorId = selectedDoctorId;
+    const currentTokens = this.appointments.filter(appt =>
+      appt.doctorId === selectedDoctorId &&
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr
+    ).length;
+    this.newAppointment.tokenNumber = currentTokens + 1;
+
+    // Generate appointment number
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     this.newAppointment.appointmentNumber = `APT${randomNum}`;
 
-    // Convert to ISO datetime
+    // Set appointmentDate to ISO time including hours and minutes
     const dateObj = new Date(this.newAppointment.appointmentDate);
     const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
     dateObj.setHours(hours, minutes, 0, 0);
@@ -180,7 +220,7 @@ export class AppointmentComponent implements OnInit {
 
     const payload: Appointment = {
       ...this.newAppointment,
-      patientId: this.selectedPatient.patientId
+      patientId: selectedPatientId
     };
 
     if (this.isEditMode && this.editAppointmentId) {
@@ -200,26 +240,31 @@ export class AppointmentComponent implements OnInit {
           this.loadAppointments();
           this.resetAppointmentForm();
 
-          // ✅ Ask user if they want to generate bill
-          if (confirm('Do you want to generate bill for this appointment?')) {
-            // Assuming backend returns appointmentId in response
-            const apptId = res?.appointmentId || payload.appointmentId;
-            this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
-          }
+          const apptId = res?.appointmentId || payload.appointmentId;
+          Swal.fire({
+            title: 'Appointment Scheduled!',
+            text: 'Do you want to generate a bill for this appointment?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate Bill',
+            cancelButtonText: 'No'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
+            }
+          });
         },
         error: () => this.errorMessage = 'Failed to schedule appointment.'
       });
     }
   }
 
-  /** Enables edit mode for an appointment */
   editAppointment(appt: Appointment) {
     this.isEditMode = true;
     this.editAppointmentId = appt.appointmentId || null;
     this.newAppointment = { ...appt };
   }
 
-  /** Deletes an appointment by ID */
   deleteAppointment(id: number) {
     this.receptionistService.deleteAppointment(id).subscribe({
       next: () => {
@@ -230,12 +275,17 @@ export class AppointmentComponent implements OnInit {
     });
   }
 
-  /** Resets the appointment form to defaults */
   resetAppointmentForm() {
     this.newAppointment = this.getEmptyAppointment();
     this.isEditMode = false;
     this.editAppointmentId = null;
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  getDoctorNameById(id?: number): string {
+    if (!id) return 'Unknown Doctor';
+    const doctor = this.doctors.find(d => d.doctorId === id);
+    return doctor ? doctor.doctorName : 'Unknown Doctor';
   }
 }

@@ -9,8 +9,24 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     const userRole = localStorage.getItem('ACCESS_ROLE');
-    if (userRole == '5') {
+    if (userRole == '1') {
       return true;
+    }
+    else if (userRole == '2'){
+      return true;
+
+    }
+    else if (userRole == '3'){
+      return true;
+
+    }
+    else if (userRole == '4'){
+      return true;
+
+    }
+    else if (userRole == '5'){
+      return true;
+
     } else {
       this.router.navigate(['/login']);
       return false;

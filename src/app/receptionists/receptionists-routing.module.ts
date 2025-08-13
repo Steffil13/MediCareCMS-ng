@@ -8,9 +8,9 @@ import { AppointmentComponent } from './appointment/appointment.component';
 import { BillComponent } from './bill/bill.component';
 
 const routes: Routes = [
-  { path: 'patient', loadChildren: () => import('./patient/patient.module').then(m => m.PatientModule) }, 
-  { path: 'appointment', loadChildren: () => import('./appointment/appointment.module').then(m => m.AppointmentModule) }, 
-  { path: 'bill', loadChildren: () => import('./bill/bill.module').then(m => m.BillModule) },
+  // { path: 'patient', component: PatientComponent }, 
+  // { path: 'appointment', component: AppointmentComponent }, 
+  // { path: 'bill', component: BillComponent},
   {
     path: '',
     component: ReceptionistDashboardComponent,

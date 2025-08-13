@@ -9,18 +9,16 @@ import { ReceptionistService } from 'src/app/shared/service/receptionist.service
   styleUrls: ['./edit-patient.component.scss']
 })
 export class EditPatientComponent implements OnInit {
-  patient: Patient = new Patient();
+  patient: Patient = {} as Patient;
   isSubmitting = false;
   successMessage = '';
   errorMessage = '';
+  submitted = false;
 
-  // Validation flags
   dobFutureError = false;
-  emergencySameError = false;
   phonePatternError = false;
   emergencyPatternError = false;
-
-  submitted = false; // track form submission to show errors
+  emergencySameError = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,83 +26,61 @@ export class EditPatientComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.patientService.getPatientById(id).subscribe({
-        next: (res) => {
-          this.patient = {
-            ...res,
-            dob: res.dob instanceof Date
-              ? res.dob.toISOString().substring(0, 10)
-              : (typeof res.dob === 'string' ? (res.dob as string).split('T')[0] : '')
-          };
-        },
-        error: (err) => {
-          console.error('Error loading patient', err);
-          this.errorMessage = '❌ Failed to load patient details.';
+  ngOnInit() {
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  if (id) {
+    this.patientService.getPatientById(id).subscribe({
+      next: (data) => {
+        if (data.dob) {
+          // Convert to yyyy-MM-dd for date input
+          data.dob = new Date(data.dob).toISOString().split('T')[0];
         }
-      });
-    }
+        this.patient = data;
+      },
+      error: (err) => console.error(err)
+    });
   }
+}
 
-  // Validate DOB is not in the future
+
   checkDOB() {
-    if (!this.patient.dob) {
-      this.dobFutureError = false;
-      return;
+    if (this.patient.dob) {
+      const today = new Date();
+      const enteredDate = new Date(this.patient.dob);
+      this.dobFutureError = enteredDate > today;
     }
-    const today = new Date();
-    const dobDate = new Date(this.patient.dob);
-    this.dobFutureError = dobDate > today;
   }
 
-  // Validate phone pattern
   validatePhone() {
-    const phoneRegex = /^[6-9][0-9]{9}$/;
+    const phoneRegex = /^[0-9]{10}$/;
     this.phonePatternError = !phoneRegex.test(this.patient.contact || '');
-    this.checkEmergencyVsPhone();
   }
 
-  // Validate emergency phone pattern
   validateEmergency() {
-    const phoneRegex = /^[6-9][0-9]{9}$/;
+    const phoneRegex = /^[0-9]{10}$/;
     this.emergencyPatternError = !phoneRegex.test(this.patient.emergencyNumber || '');
-    this.checkEmergencyVsPhone();
+    this.emergencySameError = this.patient.contact === this.patient.emergencyNumber;
   }
 
-  // Emergency number must be different from phone number
-  checkEmergencyVsPhone() {
-    this.emergencySameError = this.patient.contact && this.patient.emergencyNumber
-      ? this.patient.contact === this.patient.emergencyNumber
-      : false;
-  }
+  onSubmit(form: any) {
+    this.submitted = true;
 
-  onSubmit() {
-    if (this.isSubmitting) return;
-
-    this.submitted = true; // Show validation errors now
-
+    // Run validations
     this.checkDOB();
     this.validatePhone();
     this.validateEmergency();
 
-    if (
-      this.dobFutureError ||
-      this.emergencySameError ||
-      this.phonePatternError ||
-      this.emergencyPatternError
-    ) {
-      this.errorMessage = 'Please fix errors in the form before submitting.';
+    if (!form.valid || this.dobFutureError || this.emergencySameError || this.phonePatternError || this.emergencyPatternError) {
+      this.errorMessage = 'Please fix the errors before submitting.';
       return;
     }
 
     this.isSubmitting = true;
-    this.successMessage = '';
     this.errorMessage = '';
+    this.successMessage = '';
 
     this.patientService.editPatient(this.patient, this.patient.patientId).subscribe({
-      next: (res) => {
+      next: () => {
         this.successMessage = '✅ Patient updated successfully!';
         setTimeout(() => {
           this.router.navigate(['/auth/receptionist/patients']);
@@ -116,5 +92,9 @@ export class EditPatientComponent implements OnInit {
         this.isSubmitting = false;
       }
     });
+  }
+
+  cancel(): void {
+    this.router.navigate(['/receptionist/patients']);
   }
 }

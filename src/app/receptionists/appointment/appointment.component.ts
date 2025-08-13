@@ -63,8 +63,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   loadDepartments() {
-    this.receptionistService.getDepartments()
-      .subscribe(data => this.departments = data);
+    this.receptionistService.getDepartments().subscribe(data => this.departments = data);
   }
 
   loadDoctors(departmentId?: number) {
@@ -123,23 +122,11 @@ export class AppointmentComponent implements OnInit {
   isTimeSlotBooked(time: string): boolean {
     if (!this.newAppointment.appointmentDate || !this.newAppointment.doctorId) return false;
 
-    const selectedDateStr = typeof this.newAppointment.appointmentDate === 'string'
+    const dateStr = typeof this.newAppointment.appointmentDate === 'string'
       ? this.newAppointment.appointmentDate
       : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
 
-    const now = new Date();
-    const todayStr = now.toISOString().split('T')[0];
-
-    // Disable past time slots if the selected date is today
-    if (selectedDateStr === todayStr) {
-      const [hour, minute] = time.split(':').map(Number);
-      if (hour < now.getHours() || (hour === now.getHours() && minute <= now.getMinutes())) {
-        return true;
-      }
-    }
-
-    // Disable if already booked for this doctor on this date (except if editing the same appointment)
-    return this.appointments.some(appt =>
+    return Array.isArray(this.appointments) && this.appointments.some(appt =>
       appt.doctorId === this.newAppointment.doctorId &&
       appt.appointmentDate != null &&
       new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&

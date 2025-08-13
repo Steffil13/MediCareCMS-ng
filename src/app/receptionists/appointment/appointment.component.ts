@@ -5,7 +5,7 @@ import { Department } from 'src/app/shared/model/admin/department';
 import { Doctor } from 'src/app/shared/model/admin/doctor';
 import { Appointment } from 'src/app/shared/model/receptionist/appointment';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-appointment',
@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent implements OnInit {
+
   registerNumber = '';
   searchedPatients: Patient[] = [];
   selectedPatient: Patient | null = null;
@@ -40,13 +41,12 @@ export class AppointmentComponent implements OnInit {
 
   constructor(
     private receptionistService: ReceptionistService,
-    private router: Router,
-    private toastr: ToastrService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadDepartments();
-    this.resetAppointmentForm(); // initialize with today's date
+    this.resetAppointmentForm();
   }
 
   private getEmptyAppointment(): Appointment {
@@ -54,24 +54,12 @@ export class AppointmentComponent implements OnInit {
       appointmentId: undefined,
       patientId: 0,
       doctorId: 0,
-      appointmentDate: this.todayString, // default as string for HTML date input
+      appointmentDate: this.todayString,
       appointmentTime: '',
       tokenNumber: 0,
       appointmentNumber: '',
       receptionistId: 1
     };
-  }
-
-  maxDate(): string {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
-  }
-
-  getDoctorNameById(id?: number): string {
-    if (!id) return 'Unknown Doctor';
-    const doctor = this.doctors.find(d => d.doctorId === id);
-    return doctor ? doctor.doctorName : 'Unknown Doctor';
   }
 
   loadDepartments() {
@@ -121,18 +109,6 @@ export class AppointmentComponent implements OnInit {
     if (this.selectedDepartmentId) {
       this.loadDoctors(this.selectedDepartmentId);
     }
-    this.newAppointment.doctorId = 0;
-    this.newAppointment.appointmentTime = '';
-  }
-
-  onDoctorChange() {
-    this.newAppointment.appointmentTime = '';
-    this.loadAppointments(); // Refresh booked appointments for the selected patient + doctor + date
-  }
-
-  onDateChange() {
-    this.newAppointment.appointmentTime = '';
-    this.loadAppointments();
   }
 
   loadAppointments() {
@@ -143,6 +119,7 @@ export class AppointmentComponent implements OnInit {
       });
   }
 
+  /** Check if slot booked by doctor/date */
   isTimeSlotBooked(time: string): boolean {
     if (!this.newAppointment.appointmentDate || !this.newAppointment.doctorId) return false;
 
@@ -164,12 +141,34 @@ export class AppointmentComponent implements OnInit {
     // Disable if already booked for this doctor on this date (except if editing the same appointment)
     return this.appointments.some(appt =>
       appt.doctorId === this.newAppointment.doctorId &&
-      appt.appointmentTime === time &&
-      new Date(appt.appointmentDate as string).toISOString().split('T')[0] === selectedDateStr &&
-      appt.appointmentId !== this.editAppointmentId
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      appt.appointmentTime.trim() === time.trim()
     );
   }
 
+  /** Show only non-booked and future slots */
+  shouldShowTimeSlot(time: string): boolean {
+    if (this.isTimeSlotBooked(time)) return false;
+
+    if (this.newAppointment.appointmentDate) {
+      const selectedDateStr = typeof this.newAppointment.appointmentDate === 'string'
+        ? this.newAppointment.appointmentDate
+        : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (selectedDateStr === todayStr) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const now = new Date();
+        const slotTime = new Date();
+        slotTime.setHours(hours, minutes, 0, 0);
+        if (slotTime <= now) return false;
+      }
+    }
+    return true;
+  }
+
+  /** Schedule appointment with patient/doctor conflict checks */
   scheduleAppointment() {
     if (!this.selectedPatient) {
       this.errorMessage = 'Please select a patient first.';
@@ -180,42 +179,61 @@ export class AppointmentComponent implements OnInit {
       return;
     }
 
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    this.newAppointment.doctorId = Number(this.newAppointment.doctorId);
-
+    const selectedPatientId = this.selectedPatient.patientId;
+    const selectedDoctorId = Number(this.newAppointment.doctorId);
     const dateStr = typeof this.newAppointment.appointmentDate === 'string'
       ? this.newAppointment.appointmentDate
       : new Date(this.newAppointment.appointmentDate).toISOString().split('T')[0];
+    const appointmentTime = this.newAppointment.appointmentTime.trim();
 
-    // Calculate token number for the doctor on selected date
-    const currentTokens = this.appointments.filter(appt =>
-      appt.doctorId === this.newAppointment.doctorId &&
+    // conflict: patient same date/time with any doctor
+    const patientConflict = this.appointments.some(appt =>
+      appt.patientId === selectedPatientId &&
+      appt.appointmentTime.trim() === appointmentTime &&
       appt.appointmentDate != null &&
-      (new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr) &&
-      (appt.appointmentId !== this.editAppointmentId)
-    ).length;
-
-    this.newAppointment.tokenNumber = currentTokens + 1;
-
-    // Generate a random appointment number if new
-    if (!this.isEditMode) {
-      const randomNum = Math.floor(1000 + Math.random() * 9000);
-      this.newAppointment.appointmentNumber = `APT${randomNum}`;
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      (!this.isEditMode || appt.appointmentId !== this.editAppointmentId)
+    );
+    if (patientConflict) {
+      this.errorMessage = 'This patient already has an appointment at the selected date and time.';
+      return;
     }
 
-    // Prepare ISO datetime string for backend
+    // conflict: doctor same date/time with any patient
+    const doctorConflict = this.appointments.some(appt =>
+      appt.doctorId === selectedDoctorId &&
+      appt.appointmentTime.trim() === appointmentTime &&
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr &&
+      (!this.isEditMode || appt.appointmentId !== this.editAppointmentId)
+    );
+    if (doctorConflict) {
+      this.errorMessage = 'The selected doctor already has an appointment at that date and time.';
+      return;
+    }
+
+    // Assign token
+    this.newAppointment.doctorId = selectedDoctorId;
+    const currentTokens = this.appointments.filter(appt =>
+      appt.doctorId === selectedDoctorId &&
+      appt.appointmentDate != null &&
+      new Date(appt.appointmentDate).toISOString().split('T')[0] === dateStr
+    ).length;
+    this.newAppointment.tokenNumber = currentTokens + 1;
+
+    // Generate appointment number
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    this.newAppointment.appointmentNumber = `APT${randomNum}`;
+
+    // Set appointmentDate to ISO time including hours and minutes
     const dateObj = new Date(this.newAppointment.appointmentDate);
-    console.log("dddd", dateObj);
-    
     const [hours, minutes] = this.newAppointment.appointmentTime.split(':').map(Number);
     dateObj.setHours(hours, minutes, 0, 0);
     this.newAppointment.appointmentDate = dateObj.toISOString();
 
     const payload: Appointment = {
       ...this.newAppointment,
-      patientId: this.selectedPatient.patientId
+      patientId: selectedPatientId
     };
 
     if (this.isEditMode && this.editAppointmentId) {
@@ -236,15 +254,17 @@ export class AppointmentComponent implements OnInit {
           this.resetAppointmentForm();
 
           const apptId = res?.appointmentId || payload.appointmentId;
-
-          this.toastr.info('Appointment scheduled! Click here to generate bill.', 'Info', {
-            timeOut: 8000,
-            closeButton: true,
-            tapToDismiss: false,
-            extendedTimeOut: 0,
-            onActivateTick: true
-          }).onTap.subscribe(() => {
-            this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
+          Swal.fire({
+            title: 'Appointment Scheduled!',
+            text: 'Do you want to generate a bill for this appointment?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate Bill',
+            cancelButtonText: 'No'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/billing'], { queryParams: { appointmentId: apptId } });
+            }
           });
         },
         error: () => this.errorMessage = 'Failed to schedule appointment.'
@@ -255,12 +275,7 @@ export class AppointmentComponent implements OnInit {
   editAppointment(appt: Appointment) {
     this.isEditMode = true;
     this.editAppointmentId = appt.appointmentId || null;
-    // Convert appointmentDate to ISO string date for date input compatibility
-    let appointmentDateStr = appt.appointmentDate;
-    if (appointmentDateStr) {
-      appointmentDateStr = new Date(appointmentDateStr).toISOString().split('T')[0];
-    }
-    this.newAppointment = { ...appt, appointmentDate: appointmentDateStr };
+    this.newAppointment = { ...appt };
   }
 
   deleteAppointment(id: number) {
@@ -279,5 +294,11 @@ export class AppointmentComponent implements OnInit {
     this.editAppointmentId = null;
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  getDoctorNameById(id?: number): string {
+    if (!id) return 'Unknown Doctor';
+    const doctor = this.doctors.find(d => d.doctorId === id);
+    return doctor ? doctor.doctorName : 'Unknown Doctor';
   }
 }
